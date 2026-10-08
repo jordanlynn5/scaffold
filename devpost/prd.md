@@ -22,7 +22,7 @@ Develops `scope.md > The Core Loop`.
    - **Outcome:** the best result if you achieve it. This is your *why*, saved and reused in reminders.
    - **Obstacle:** the main thing *inside you* that gets in the way (e.g. "I scroll instead of drawing").
    - If the obstacle involves your phone, the Architect suggests setting a limit with your phone's own Screen Time settings.
-4. **Georgina the General Contractor builds your plan.** AI builds (a) a **roadmap of big milestones** toward the wish and (b) **daily tasks for the first 2 weeks**. Each task takes 5–15 minutes. The plan includes if–then responses to your obstacle (the "P" in WOOP).
+4. **Georgina the General Contractor builds your plan.** AI builds (a) a **roadmap of big milestones** toward the wish and (b) **daily tasks for the first 2 weeks**. Each task takes 20 minutes or less. The plan includes if–then responses to your obstacle (the "P" in WOOP).
 5. **Commit.** You review the plan and commit to it. The process is now in play.
 6. **Every day: get nudged by Sarah the Site Lead.** One WhatsApp message with a motivational line and today's task.
 7. **Do the task.** One small, clear task. Afterward you can keep going or stop until tomorrow.
@@ -97,7 +97,7 @@ New during design. Develops `scope.md > Later` ("help planning brand-new goals f
 : Roadmap and 2-Week Chunks
 - As a user, I want to see the path to my dream without being overwhelmed by every future day.
   - [ ] After WOOP, the General Contractor shows a roadmap of **five milestones** plus 2 weeks of daily tasks. I see my Wish, Outcome, and Obstacle alongside it, and can ask for changes or commit with "I commit to this plan." *(design handoff §6.5)*
-  - [ ] Each daily task is one clear, finishable exercise sized at 5–15 minutes (e.g. "draw 10 hands, 3 minutes each").
+  - [ ] Each daily task is one clear, finishable exercise sized at **20 minutes or less** (e.g. "draw 6 hands, 3 minutes each," which is 18 minutes).
   - [ ] The plan includes at least one if–then response to my named obstacle.
   - [ ] Only the current 2 weeks are broken into daily tasks. Later milestones show as roadmap steps.
   - [ ] When a 2-week chunk ends, the next chunk is generated toward the current milestone.
@@ -173,16 +173,16 @@ Develops `scope.md > Later` ("a log of what you learned from each task").
 
 ### Why This Task
 Develops `scope.md > Later` ("real, cited sources behind tasks and suggestions"). Replaces the earlier "cited sources" idea.
-- As a user, I want to know what a task is based on, so I trust it's good advice. For "draw 10 hands, 3 minutes each": "why 10 and why 3. What is it based on."
+- As a user, I want to know what a task is based on, so I trust it's good advice. For a task like "draw 6 hands, 3 minutes each," the learner asked of an earlier version: "why 10 and why 3. What is it based on."
   - [ ] Next to a task there is a small **?**. The explanation appears only when I ask for it, never by default.
-  - [ ] Opening it shows Georgina's short explanation of the task, including why its numbers are what they are (why 10, why 3 minutes).
+  - [ ] Opening it shows Georgina's short explanation of the task, including why its numbers are what they are (why 6, why 3 minutes).
   - [ ] On desktop it opens on hover or keyboard focus. On a phone, where there is no hover, it opens on tap. *(Assumption, to confirm.)*
   - [ ] Georgina explains in her own words. She does not claim something is "proven" or name a book or study unless it is real. *(Assumption, to confirm: an AI can invent sources that sound real, and "bad advice is worse than no advice at all.")*
 
 ### Mastery Tasks (Refreshers)
 Develops `scope.md > Later` ("refreshers that bring back things you learned earlier"). Called **mastery** in the app.
 - As a user, I want things I learned earlier to come back so I keep the skill, not just tick it off.
-  - [ ] A mastery task appears like any other daily task: on Home, in Plan, and in the WhatsApp nudge. Same size (5–15 minutes), same "Mark as done," same brick.
+  - [ ] A mastery task appears like any other daily task: on Home, in Plan, and in the WhatsApp nudge. Same size (20 minutes or less), same "Mark as done," same brick.
   - [ ] It is labeled "Mastery" so I can tell it revisits something I've already practiced.
   - [ ] Georgina decides when to include one as she plans each 2-week chunk. There is no fixed schedule.
 
@@ -222,13 +222,14 @@ Includes the follow-up conversation from `scope.md > Later`.
 - **Abandoning deletes everything tied to the project,** including the learning log and team chats, and the warning says so plainly.
 - **Onboarding asks name, nudge time, and days per week, then prior experience after the Wish.**
 - **Weeks start on Monday. Nudge time is chosen by the user.**
+- **Tasks are 20 minutes or less.** Raised from 5–15 minutes by the learner at review. The design handoff still says 5–15 in places (§1, §6.4, §7.8, §10); this PRD is newer on that point.
 - **"Why this task" on request, instead of cited sources.** Georgina explains a task and its numbers only when asked, through a **?** next to the task. It keeps the daily task simple and still answers "what is it based on."
 - **Refreshers are ordinary tasks called "mastery."** No new screen or separate system: a mastery task looks and works like any other daily task.
 - **No separate levels or rewards.** The bricks and stages already are the levels and rewards, so a second system would only add clutter.
 - **Screens before WhatsApp in the build.** "The WhatsApp nudge isn't valuable without the rest": a nudge needs a real task, plan, and house behind it. This reverses the earlier order, which had the nudge in the core build.
 - **Name: Scaffold** (replaces the working title "Dream Friend"). "Dream Friend" made the friend sound like the dream. Scaffold centers the accomplishment with support behind it: the house is your dream, the daily tasks are bricks, and the scaffolding is the support system. As in teaching, scaffolding is temporary support that comes down once you can build on your own.
 - **Full-featured, not a minimal POC.** The learner has 25 days and wants an ambitious, complete product. *Safeguard:* the build does the core features first, so a working, submittable version exists early (see **What We're Building**).
-- **WOOP replaces "goal, why, time."** Wish = goal, Outcome = why, and Obstacle targets the real problem: "I stop working on it." The 5–15 minute task size replaces the "how much time do you have" question.
+- **WOOP replaces "goal, why, time."** Wish = goal, Outcome = why, and Obstacle targets the real problem: "I stop working on it." The 20-minutes-or-less task size replaces the "how much time do you have" question.
 - **AI creates the plan, the user commits to it.** Commitment is an explicit step.
 - **Roadmap + 2-week chunks.** Chosen over a whole plan (goes stale, overwhelming, wasted generation) and over chunks alone (lose sight of the end goal).
 - **Plan view shows one week or a chosen time frame, never everything.** The whole plan at once is "ugly and overwhelming."

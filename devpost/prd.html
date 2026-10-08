@@ -185,7 +185,7 @@
 
       <text class="rowlabel" x="170" y="140">EVERY DAY</text>
       <g class="node daily" data-step="5"><rect x="10" y="152" width="140" height="64" rx="12"/><text x="80" y="180" text-anchor="middle">6 · Nudge</text><text class="s" x="80" y="199" text-anchor="middle">Sarah, on WhatsApp</text></g>
-      <g class="node daily" data-step="6"><rect x="170" y="152" width="140" height="64" rx="12"/><text x="240" y="180" text-anchor="middle">7 · Do the task</text><text class="s" x="240" y="199" text-anchor="middle">5 to 15 minutes</text></g>
+      <g class="node daily" data-step="6"><rect x="170" y="152" width="140" height="64" rx="12"/><text x="240" y="180" text-anchor="middle">7 · Do the task</text><text class="s" x="240" y="199" text-anchor="middle">20 minutes or less</text></g>
       <g class="node daily" data-step="7"><rect x="330" y="152" width="140" height="64" rx="12"/><text x="400" y="180" text-anchor="middle">8 · Mark it done</text><text class="s" x="400" y="199" text-anchor="middle">note or photo optional</text></g>
       <g class="node daily" data-step="8"><rect x="490" y="152" width="140" height="64" rx="12"/><text x="560" y="180" text-anchor="middle">9 · A brick is laid</text><text class="s" x="560" y="199" text-anchor="middle">your house goes up</text></g>
       <path class="arrow" d="M150 184 H166" marker-end="url(#ah)"/><path class="arrow" d="M310 184 H326" marker-end="url(#ah)"/><path class="arrow" d="M470 184 H486" marker-end="url(#ah)"/>
@@ -206,10 +206,10 @@
   <p class="sub">A sketch for illustration, with example data. The real screens are in your design handoff.</p>
   <div class="cols">
     <div class="card">
-      <span class="label tag">Today's brick</span> <span style="color:var(--muted);font-size:14px">About 15 minutes</span>
-      <div class="task-title"><span>Draw 5 hands, 3 minutes each</span>
+      <span class="label tag">Today's brick</span> <span style="color:var(--muted);font-size:14px">About 18 minutes</span>
+      <div class="task-title"><span>Draw 6 hands, 3 minutes each</span>
         <span class="why" id="why"><button type="button" aria-label="Why this task?" aria-expanded="false" aria-describedby="whyPop">?</button>
-          <span class="pop" id="whyPop" role="tooltip"><span class="label">Georgina · why this task</span>Example: three minutes is short enough that you draw the whole shape instead of fussing over one finger. Five hands fits your 15 minutes and gives you enough tries to see the last one beat the first.</span></span>
+          <span class="pop" id="whyPop" role="tooltip"><span class="label">Georgina · why this task</span>Example: three minutes is short enough that you draw the whole shape instead of fussing over one finger. Six hands stays under 20 minutes and gives you enough tries to see the last one beat the first.</span></span>
       </div>
       <p style="color:var(--text-2)">Hover, focus, or tap the <strong>?</strong> to ask why. It only appears when you ask.</p>
       <button class="primary" id="doneBtn" type="button">Mark as done</button>
@@ -327,6 +327,7 @@
     <div class="card"><h3>Screens before WhatsApp</h3><blockquote>"The WhatsApp nudge isn't valuable without the rest."</blockquote></div>
     <div class="card"><h3>No separate levels or rewards</h3><blockquote>"The bricks and stages are the levels and rewards."</blockquote></div>
     <div class="card"><h3>Refreshers are "mastery" tasks</h3><blockquote>"A refresher would appear as any other task, but we can call it mastery."</blockquote><p style="margin:8px 0 0">Georgina decides when to include one.</p></div>
+    <div class="card"><h3>Tasks are 20 minutes or less</h3><blockquote>"Tasks should be kept to 20 minutes and under."</blockquote><p style="margin:8px 0 0">Up from 5 to 15. Example: 6 hands, 3 minutes each.</p></div>
     <div class="card"><h3>"Why this task" on request</h3><blockquote>"Why 10 and why 3. What is it based on."</blockquote><p style="margin:8px 0 0">A <strong>?</strong> next to the task. Georgina explains only when you ask.</p></div>
   </div>
   <p class="sub" style="margin-top:14px">The twelve decisions from your design handoff are also recorded in <code>prd.md</code> under Product Decisions.</p>
@@ -340,7 +341,6 @@
       <li><strong>Mastery label:</strong> a small tag like "TODAY'S BRICK." <span class="assume">assumed</span></li>
       <li><strong>Voice note:</strong> one week after the email. <span class="assume">assumed</span></li>
       <li><strong>Build steps 13, 18, 19:</strong> where I placed them.</li>
-      <li><strong>Task size:</strong> your example "draw 10 hands, 3 minutes each" is 30 minutes, but tasks are 5 to 15. Which one gives?</li>
       <li><strong>Eight open design questions</strong> from your handoff (§13), each with a recommendation, such as whether the dream survives an abandoned house.</li>
       <li><strong>Not designed yet:</strong> Home after today's task is done, Profile before a goal, sign-up and log-in, the <strong>?</strong> and Mastery tag, and the wording of WhatsApp, email, and voice-note messages.</li>
     </ul>
@@ -355,7 +355,7 @@
     ["1 · Sign up", "You", "Create an account with your email and WhatsApp number, so your goal and progress are yours and others can use Scaffold too."],
     ["2 · Meet Alice", "Alice · Architect", "Alice welcomes you and asks three things: what to call you, when your daily WhatsApp message should arrive, and how many days a week you want to build. Not sure what to build? She helps you find a goal first."],
     ["3 · WOOP", "Alice · Architect", "A chat, one question at a time. Wish: what you want to accomplish, then whether you've done any of it before. Outcome: your why, saved and reused in reminders. Obstacle: the thing inside you that gets in the way. A vague obstacle gets a gentle follow-up."],
-    ["4 · Georgina's plan", "Georgina · General Contractor", "A roadmap of five milestones (Groundwork, Foundation, Walls, Roof, Finishing) and daily tasks for the first two weeks only. Each task takes 5 to 15 minutes. The plan includes an if–then answer to your obstacle."],
+    ["4 · Georgina's plan", "Georgina · General Contractor", "A roadmap of five milestones (Groundwork, Foundation, Walls, Roof, Finishing) and daily tasks for the first two weeks only. Each task takes 20 minutes or less. The plan includes an if–then answer to your obstacle."],
     ["5 · Commit", "You", "You look the plan over, ask for changes if you want, and press \"I commit to this plan.\" Commitment is its own step."],
     ["6 · Nudge", "Sarah · Site Lead", "One WhatsApp message a day at the time you chose: a motivational line and today's task. Built late (step 15), after the screens it depends on."],
     ["7 · Do the task", "You", "One small, clear task. Afterward you can keep going or stop until tomorrow. A ? next to the task explains why, if you ask. Some tasks are labeled Mastery: they bring back something you practiced earlier."],
@@ -489,7 +489,7 @@
       "When I finish a house, I'm offered the next one on my path, or I can choose something else."]],
     ["The plan: roadmap and 2-week chunks", "I want to see the path without being overwhelmed by every future day.", [
       "After WOOP I see five milestones plus two weeks of daily tasks, and can commit.",
-      "Each task is one clear, finishable exercise of 5 to 15 minutes.",
+      "Each task is one clear, finishable exercise of 20 minutes or less.",
       "The plan includes at least one if–then response to my obstacle.",
       "Only the current two weeks are broken into daily tasks.",
       "When two weeks end, the next two are generated toward the current milestone.",
