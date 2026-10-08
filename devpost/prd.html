@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scaffold PRD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Colors and type come from the learner's "Blueprint" design handoff. */
+  :root {
+    color-scheme: light;
+    --navy: #1F3A5F; --ink: #14202E; --yellow: #F2B705; --bg: #F4F6F9; --surface: #FFFFFF;
+    --text-2: #3A4A5E; --muted: #4A5A6E; --on-navy: #DCE4EE;
+    --line: #D5DDE7; --input: #C2CDDA; --track: #E6ECF3; --grid: #E9EEF4; --dash: #9AABBF; --slate: #7D8CA0;
+    --y-tint: #FFF4CC; --y-wash: #FFFBEB; --y-text: #6B4E00;
+    --head: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+    --body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); }
+  main { max-width: 900px; margin: 0 auto; padding: 36px 16px 80px; }
+  h1, h2, h3 { font-family: var(--head); line-height: 1.2; }
+  h1 { font-size: clamp(30px, 6vw, 42px); letter-spacing: -0.02em; margin: 14px 0 8px; }
+  h2 { font-size: 24px; margin: 52px 0 6px; }
+  h3 { font-size: 18px; margin: 0 0 6px; }
+  p { margin: 0 0 12px; }
+  .sub { color: var(--text-2); margin: 0 0 16px; }
+  .lede { font-size: 19px; color: var(--text-2); margin: 0 0 20px; max-width: 62ch; }
+  .label { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 999px; background: var(--y-tint); color: var(--y-text); }
+  .tag.plain { background: var(--track); color: var(--text-2); }
+  .tag.navy { background: var(--navy); color: #fff; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
+  .card.dark { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .card.dark .label { color: var(--yellow); }
+  .card.current { border: 2px solid var(--yellow); background: var(--y-wash); }
+  .quiet { background: var(--bg); border-radius: 12px; padding: 12px 16px; }
+  .gridpaper { background-color: #fff;
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 18px 18px; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+  ul { margin: 0; padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  code { font-size: 14px; background: var(--track); padding: 1px 6px; border-radius: 6px; }
+  button { font: inherit; cursor: pointer; }
+  button:focus-visible, summary:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+  /* Then / now */
+  .thennow { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .thennow > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--surface); }
+  .thennow .then { padding: 14px 18px; color: var(--muted); background: var(--bg); }
+  .thennow .now { padding: 14px 18px; }
+  .thennow .label { display: block; margin-bottom: 2px; color: var(--muted); }
+
+  /* Journey */
+  .scroll { overflow-x: auto; }
+  .scroll svg { min-width: 700px; width: 100%; height: auto; display: block; }
+  .node { cursor: pointer; }
+  .node rect { fill: #fff; stroke: var(--input); stroke-width: 1.5; }
+  .node.daily rect { fill: var(--y-wash); stroke: var(--yellow); }
+  .node.active rect { stroke: var(--navy); stroke-width: 3.5; }
+  .node text { font-family: var(--body); font-size: 14px; font-weight: 600; fill: var(--ink); }
+  .node text.s { font-size: 12px; font-weight: 400; fill: var(--muted); }
+  .arrow { stroke: var(--slate); stroke-width: 1.8; fill: none; }
+  .arrow.loop { stroke: var(--navy); stroke-dasharray: 6 5; }
+  .rowlabel { font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: .06em; fill: var(--muted); }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 14px; }
+  .pills button { min-width: 44px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--navy); background: #fff; color: var(--navy); font-weight: 500; }
+  .pills button[aria-pressed="true"], .pills button[aria-selected="true"] { background: var(--navy); color: #fff; }
+  .who { color: var(--navy); font-size: 13px; font-weight: 600; margin: 0 0 4px; }
+
+  /* Screens */
+  .seg { display: inline-flex; background: var(--track); border-radius: 10px; padding: 4px; margin-bottom: 14px; }
+  .seg button { min-height: 40px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; color: var(--text-2); font-weight: 500; }
+  .seg button[aria-pressed="true"] { background: #fff; color: var(--ink); font-weight: 600; box-shadow: 0 1px 3px rgba(20,32,46,.15); }
+  .notdesigned { border: 1.5px dashed var(--input); border-radius: 12px; padding: 10px 14px; color: var(--text-2); margin-top: 12px; }
+
+  /* Try it */
+  .task-title { font-family: var(--head); font-size: 24px; font-weight: 700; margin: 8px 0 4px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .why { position: relative; display: inline-block; }
+  .why button { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--navy); background: #fff; color: var(--navy); font-weight: 700; font-family: var(--head); font-size: 18px; }
+  .why .pop { display: none; position: absolute; z-index: 2; top: 50px; left: 50%; transform: translateX(-50%); width: min(300px, 78vw);
+    background: var(--ink); color: #fff; border-radius: 12px; padding: 12px 14px; font: 400 14px/1.5 var(--body); }
+  .why:hover .pop, .why:focus-within .pop, .why.open .pop { display: block; }
+  .pop .label { color: var(--yellow); display: block; margin-bottom: 4px; }
+  .primary { min-height: 48px; padding: 0 22px; border-radius: 10px; border: 0; background: var(--navy); color: #fff; font-weight: 600; }
+  .primary[disabled] { background: var(--track); color: var(--muted); cursor: default; }
+  .linkbtn { border: 0; background: none; color: var(--navy); min-height: 44px; padding: 0 8px; text-decoration: underline; }
+  .week { display: flex; gap: 8px; margin: 10px 0 6px; }
+  .week div { text-align: center; font-size: 12px; color: var(--muted); }
+  .week i { display: block; width: 28px; height: 28px; border-radius: 6px; background: var(--track); margin-bottom: 4px; }
+  .week i.done { background: var(--navy); }
+  .week i.today { background: #fff; outline: 2px dashed var(--yellow); outline-offset: -2px; }
+  .brick { fill: none; stroke: var(--dash); stroke-width: 1.5; stroke-dasharray: 4 3; }
+  .brick.slate { fill: var(--slate); stroke: var(--slate); stroke-dasharray: none; }
+  .brick.laid { fill: var(--navy); stroke: var(--navy); stroke-dasharray: none; }
+  .brick.new { animation: drop .5s ease-out; }
+  @keyframes drop { from { transform: translateY(-14px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .brick.new { animation: none; } }
+  .cheer { margin-top: 12px; padding: 12px 16px; border-radius: 12px; background: var(--y-tint); color: var(--y-text); font-weight: 600; }
+  .stagebar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 12px; }
+  .stagebar div { font-size: 12px; color: var(--muted); text-align: center; }
+  .stagebar i { display: block; height: 8px; border-radius: 99px; background: var(--track); margin-bottom: 4px; overflow: hidden; }
+  .stagebar i.fin { background: var(--slate); }
+  .stagebar i b { display: block; height: 100%; background: var(--navy); border-radius: 99px; transition: width .6s; }
+
+  /* Features */
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; }
+  summary { min-height: 52px; padding: 12px 18px; font-family: var(--head); font-weight: 700; font-size: 17px; list-style: none; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; margin-left: auto; color: var(--muted); font-size: 22px; font-weight: 400; }
+  details[open] summary::after { content: "–"; }
+  details .in { padding: 0 18px 16px; }
+  details .story { color: var(--text-2); margin-bottom: 10px; }
+  ul.crit { list-style: none; padding: 0; }
+  ul.crit li { position: relative; padding-left: 28px; }
+  ul.crit li::before { content: ""; position: absolute; left: 0; top: 5px; width: 15px; height: 15px; border: 1.5px solid var(--slate); border-radius: 4px; }
+  .assume { color: var(--y-text); background: var(--y-tint); border-radius: 6px; padding: 0 6px; font-size: 13px; white-space: nowrap; }
+
+  .timeline { list-style: none; padding: 0; margin: 0; border-left: 2px solid var(--line); }
+  .timeline li { position: relative; padding: 0 0 12px 20px; margin: 0; }
+  .timeline li::before { content: ""; position: absolute; left: -7px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--slate); }
+  .timeline li.stop::before { background: #fff; border: 2px dashed var(--dash); }
+  .timeline li.reset::before { background: var(--navy); }
+  .timeline b { display: block; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { font-weight: 600; width: 34%; }
+
+  ol.build { margin: 0; padding-left: 26px; }
+  ol.build li { margin-bottom: 4px; }
+  blockquote { margin: 6px 0 0; padding-left: 12px; border-left: 3px solid var(--yellow); color: var(--text-2); font-style: italic; }
+  footer { margin-top: 48px; font-size: 14px; color: var(--muted); }
+  @media (max-width: 699px) { td:first-child { width: 42%; } .card { padding: 18px; } }
+</style>
+</head>
+<body>
+<main>
+  <span class="label tag">PRD · draft · for your review</span>
+  <h1>Scaffold</h1>
+  <p class="lede">You're the builder, and you have a team behind you. Scaffold's AI build team turns your dream into one small task a day, nudges you on WhatsApp, and shows your house going up, brick by brick.</p>
+
+  <div class="cols">
+    <div class="card"><span class="label" style="color:var(--muted)">The team</span>
+      <p style="margin:6px 0 0"><strong>Alice</strong> · Architect. <strong>Georgina</strong> · General Contractor. <strong>Paula</strong> · Project Manager. <strong>Sarah</strong> · Site Lead.</p></div>
+    <div class="card"><span class="label" style="color:var(--muted)">Who it's for</span>
+      <p style="margin:6px 0 0">Anyone who enjoys something and wants to get better at it, but drifts without clear, assigned tasks. First user: you, the illustrator.</p></div>
+    <div class="card dark"><span class="label">Success feels like</span>
+      <p style="margin:6px 0 0">Capable of setting, sticking to, and finishing a goal. Never overwhelmed, never guilted.</p></div>
+  </div>
+
+  <h2>From sketch to definition</h2>
+  <p class="sub">Your scope was a sketch. Here is what each line turned into.</p>
+  <div class="thennow">
+    <div><div class="then"><span class="label">Scope said</span>"Set up once: goal, why, time."</div>
+      <div class="now"><span class="label">Now</span>A chat with Alice using WOOP: Wish, Outcome (your why), Obstacle, and your experience. Saved after every answer.</div></div>
+    <div><div class="then"><span class="label">Scope said</span>"A Duolingo-style streak or path."</div>
+      <div class="now"><span class="label">Now</span>A house under construction. Each task is a brick, each milestone a stage, and a finished goal brings the scaffolding down.</div></div>
+    <div><div class="then"><span class="label">Scope said</span>"A friend who keeps you on track."</div>
+      <div class="now"><span class="label">Now</span>A team of four, each with a job. You can let the team decide who answers, or pick someone.</div></div>
+    <div><div class="then"><span class="label">Scope said</span>A 2–4 hour proof of concept.</div>
+      <div class="now"><span class="label">Now</span>A full product in 19 build steps, screens first, with a submittable version after step 8. Deadline Oct 26.</div></div>
+  </div>
+
+  <h2>The journey</h2>
+  <p class="sub">Tap any step. Yellow steps repeat every day.</p>
+  <div class="card">
+    <div class="scroll">
+    <svg viewBox="0 0 800 350" role="img" aria-label="Journey: sign up, meet Alice, WOOP, Georgina's plan, commit. Then each day: nudge from Sarah, do the task, mark it done, a brick is added, and tomorrow it repeats. Every two weeks Georgina plans the next two weeks. Talk to Team is available any time.">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+      <text class="rowlabel" x="10" y="16">ONCE</text>
+      <g class="node" data-step="0"><rect x="10" y="26" width="140" height="64" rx="12"/><text x="80" y="54" text-anchor="middle">1 · Sign up</text><text class="s" x="80" y="73" text-anchor="middle">email + WhatsApp</text></g>
+      <g class="node" data-step="1"><rect x="170" y="26" width="140" height="64" rx="12"/><text x="240" y="54" text-anchor="middle">2 · Meet Alice</text><text class="s" x="240" y="73" text-anchor="middle">3 profile questions</text></g>
+      <g class="node" data-step="2"><rect x="330" y="26" width="140" height="64" rx="12"/><text x="400" y="54" text-anchor="middle">3 · WOOP</text><text class="s" x="400" y="73" text-anchor="middle">wish, why, obstacle</text></g>
+      <g class="node" data-step="3"><rect x="490" y="26" width="140" height="64" rx="12"/><text x="560" y="54" text-anchor="middle">4 · Georgina's plan</text><text class="s" x="560" y="73" text-anchor="middle">5 stages + 2 weeks</text></g>
+      <g class="node" data-step="4"><rect x="650" y="26" width="140" height="64" rx="12"/><text x="720" y="54" text-anchor="middle">5 · Commit</text><text class="s" x="720" y="73" text-anchor="middle">"I commit to this plan"</text></g>
+      <path class="arrow" d="M150 58 H166" marker-end="url(#ah)"/><path class="arrow" d="M310 58 H326" marker-end="url(#ah)"/>
+      <path class="arrow" d="M470 58 H486" marker-end="url(#ah)"/><path class="arrow" d="M630 58 H646" marker-end="url(#ah)"/>
+      <path class="arrow" d="M720 90 V118 H80 V148" marker-end="url(#ah)"/>
+
+      <text class="rowlabel" x="170" y="140">EVERY DAY</text>
+      <g class="node daily" data-step="5"><rect x="10" y="152" width="140" height="64" rx="12"/><text x="80" y="180" text-anchor="middle">6 · Nudge</text><text class="s" x="80" y="199" text-anchor="middle">Sarah, on WhatsApp</text></g>
+      <g class="node daily" data-step="6"><rect x="170" y="152" width="140" height="64" rx="12"/><text x="240" y="180" text-anchor="middle">7 · Do the task</text><text class="s" x="240" y="199" text-anchor="middle">5 to 15 minutes</text></g>
+      <g class="node daily" data-step="7"><rect x="330" y="152" width="140" height="64" rx="12"/><text x="400" y="180" text-anchor="middle">8 · Mark it done</text><text class="s" x="400" y="199" text-anchor="middle">note or photo optional</text></g>
+      <g class="node daily" data-step="8"><rect x="490" y="152" width="140" height="64" rx="12"/><text x="560" y="180" text-anchor="middle">9 · A brick is laid</text><text class="s" x="560" y="199" text-anchor="middle">your house goes up</text></g>
+      <path class="arrow" d="M150 184 H166" marker-end="url(#ah)"/><path class="arrow" d="M310 184 H326" marker-end="url(#ah)"/><path class="arrow" d="M470 184 H486" marker-end="url(#ah)"/>
+      <path class="arrow loop" d="M560 216 V244 H80 V220" marker-end="url(#ah)"/>
+      <text class="rowlabel" x="290" y="262" style="fill:var(--navy)">TOMORROW</text>
+      <g class="node" data-step="9"><rect x="650" y="152" width="140" height="64" rx="12"/><text x="720" y="180" text-anchor="middle">10 · Next 2 weeks</text><text class="s" x="720" y="199" text-anchor="middle">every 2 weeks</text></g>
+      <path class="arrow" d="M630 184 H646" marker-end="url(#ah)"/>
+
+      <text class="rowlabel" x="10" y="290">ANY TIME</text>
+      <g class="node" data-step="10"><rect x="10" y="298" width="780" height="44" rx="12"/><text x="400" y="325" text-anchor="middle">11 · Talk to Team: how it's going, how you feel, or changing the plan</text></g>
+    </svg>
+    </div>
+    <div class="pills" id="stepPills" aria-label="Journey steps"></div>
+    <div id="stepBody" aria-live="polite"></div>
+  </div>
+
+  <h2>Try the daily loop</h2>
+  <p class="sub">A sketch for illustration, with example data. The real screens are in your design handoff.</p>
+  <div class="cols">
+    <div class="card">
+      <span class="label tag">Today's brick</span> <span style="color:var(--muted);font-size:14px">About 15 minutes</span>
+      <div class="task-title"><span>Draw 5 hands, 3 minutes each</span>
+        <span class="why" id="why"><button type="button" aria-label="Why this task?" aria-expanded="false" aria-describedby="whyPop">?</button>
+          <span class="pop" id="whyPop" role="tooltip"><span class="label">Georgina · why this task</span>Example: three minutes is short enough that you draw the whole shape instead of fussing over one finger. Five hands fits your 15 minutes and gives you enough tries to see the last one beat the first.</span></span>
+      </div>
+      <p style="color:var(--text-2)">Hover, focus, or tap the <strong>?</strong> to ask why. It only appears when you ask.</p>
+      <button class="primary" id="doneBtn" type="button">Mark as done</button>
+      <button class="linkbtn" id="resetBtn" type="button" hidden>Reset the sketch</button>
+      <div class="week" id="week" aria-hidden="true"></div>
+      <div id="weekText" style="font-size:14px;color:var(--text-2)"></div>
+      <div class="cheer" id="cheer" hidden>Congratulations, you hit your weekly target!</div>
+    </div>
+    <div class="card gridpaper">
+      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span class="label tag plain">Stage 3 of 5 · Walls</span><strong id="brickText"></strong></div>
+      <svg id="wall" viewBox="0 0 300 150" style="width:100%;height:auto;display:block;margin-top:10px" role="img" aria-label="A wall of bricks filling in as tasks are done"></svg>
+      <div class="stagebar">
+        <div><i class="fin"></i>Groundwork</div><div><i class="fin"></i>Foundation</div><div><i><b id="stageFill" style="width:33%"></b></i>Walls</div><div><i></i>Roof</div><div><i></i>Finishing</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>The five menus</h2>
+  <p class="sub">Nothing is locked. Every menu works before you have a goal, and points you to Alice.</p>
+  <div class="card">
+    <div class="pills" id="screenTabs" role="tablist" aria-label="Menus"></div>
+    <div class="seg" role="group" aria-label="State">
+      <button type="button" id="segBefore" aria-pressed="false">Before a goal</button>
+      <button type="button" id="segWith" aria-pressed="true">With a goal</button>
+    </div>
+    <div id="screenBody" aria-live="polite"></div>
+  </div>
+
+  <h2>Features, and how you'd know each works</h2>
+  <p class="sub">Each box is something you could check by looking at the screen during the build.</p>
+  <div id="features"></div>
+
+  <h2>When you miss days</h2>
+  <p class="sub">The no-guilt sequence. "Activity" means completing a task. Opening the app or chatting doesn't count.</p>
+  <div class="card">
+    <ul class="timeline">
+      <li><b>Any missed task</b>It rolls forward: tomorrow shows the same task and the plan shifts by one day. No red, no blame.</li>
+      <li><b>Day 1 missed</b>The normal WhatsApp nudge, gentle about yesterday.</li>
+      <li><b>Day 2 missed</b>Smaller and warmer: "just 5 minutes today?"</li>
+      <li><b>Day 3 missed</b>Sarah invites a chat with the team to adjust the plan.</li>
+      <li class="stop"><b>After day 3</b>Daily nudges stop.</li>
+      <li><b>Start of next week, still nothing done</b>A sincere email reminding you why you started.</li>
+      <li><b>The week after, still nothing done</b>A final WhatsApp voice note from the team. <span class="assume">assumed timing</span></li>
+      <li class="stop"><b>Then</b>Silence.</li>
+      <li class="reset"><b>Any task completed, at any point</b>Everything resets. Daily nudges resume the next day.</li>
+    </ul>
+  </div>
+
+  <h2>What if?</h2>
+  <div class="card" style="padding:6px 10px">
+    <table>
+      <tr><th>Situation</th><th>What happens</th></tr>
+      <tr><td>You haven't set a goal yet</td><td>Home shows an empty lot: "Every dream house starts with a plan." Every menu shows a friendly empty state pointing to Alice.</td></tr>
+      <tr><td>You don't know what to build</td><td>Alice helps you find a goal. A big dream is broken into a path of smaller goals, each its own house.</td></tr>
+      <tr><td>You leave onboarding halfway</td><td>Everything is saved. Home says "Welcome back" and offers "Continue where you left off."</td></tr>
+      <tr><td>You hit some days but not your target</td><td>No message at all.</td></tr>
+      <tr><td>You lower your target below what you've done</td><td>No confetti from the setting change. The celebration comes with the next task you mark done that week.</td></tr>
+      <tr><td>One task finishes a stage and hits your target</td><td>The milestone celebration first, then the weekly one after you close it. Never two at once.</td></tr>
+      <tr><td>A teammate suggests changing the plan</td><td>You see the old and new task side by side. Nothing changes until you confirm. You can decline.</td></tr>
+      <tr><td>You change your goal</td><td>A warning lists what is deleted forever (house, plan, WOOP answers, learning log, team chats) and what you keep (account, settings, houses built). You must press "Yes, I want to abandon this project."</td></tr>
+      <tr><td>You finish the house</td><td>The scaffolding comes down, you cut the ribbon yourself, and your houses-built count goes up for good.</td></tr>
+      <tr><td>You say you did a task you didn't</td><td>The app trusts you. Proof is optional and never checked.</td></tr>
+    </table>
+  </div>
+
+  <h2>What gets built, in order</h2>
+  <p class="sub">Screens first, then WhatsApp. Your reason: "the WhatsApp nudge isn't valuable without the rest."</p>
+  <div class="cols">
+    <div class="card current">
+      <span class="label tag">Core first · submittable after step 8</span>
+      <ol class="build" style="margin-top:10px">
+        <li>Foundations: the look, the menu, shared pieces</li>
+        <li>Sign up and log in</li>
+        <li>Home before a goal, and the other empty states</li>
+        <li>Onboarding + WOOP, saved as you go</li>
+        <li>Roadmap + first 2 weeks, review, commit</li>
+        <li>Home: today's task, mark done, note or photo</li>
+        <li>Progress: the house, roadmap, weekly target</li>
+        <li>Weekly target celebration</li>
+      </ol>
+    </div>
+    <div class="card">
+      <span class="label tag plain">Then layered on</span>
+      <ol class="build" start="9" style="margin-top:10px">
+        <li>Plan view, learning log, missed tasks rolling forward</li>
+        <li>Talk to Team with confirmed plan changes</li>
+        <li>Profile and the abandon flow</li>
+        <li>Milestone and house-complete celebrations</li>
+        <li>Next 2-week plan generation <span class="assume">my placement</span></li>
+        <li>Goal-finder chat, dreams, and paths</li>
+        <li>Daily WhatsApp nudge</li>
+        <li>Two-way WhatsApp: replying with proof</li>
+        <li>Missed-day nudges, email, voice note</li>
+        <li>Mastery tasks <span class="assume">my placement</span></li>
+        <li>"Why this task" explanations <span class="assume">my placement</span></li>
+      </ol>
+    </div>
+  </div>
+  <div class="cols" style="margin-top:16px">
+    <div class="card"><h3>Left out on purpose</h3><ul>
+      <li>Automatically adjusting tasks to how you feel that day</li>
+      <li>Dark mode</li>
+      <li>Tracking other apps' usage (replaced by a Screen Time suggestion)</li>
+      <li>Verifying proof</li>
+      <li>Guilt or punishment of any kind</li></ul></div>
+    <div class="card"><h3>Possible later</h3><ul>
+      <li>Links to real, checkable sources behind each "why this task"</li>
+      <li>Day 1 vs. day 20 proof comparison</li>
+      <li>Email as a cheaper nudge at large scale</li>
+      <li>Several goals at once</li></ul></div>
+  </div>
+
+  <h2>Decisions you made today</h2>
+  <div class="cols">
+    <div class="card"><h3>Screens before WhatsApp</h3><blockquote>"The WhatsApp nudge isn't valuable without the rest."</blockquote></div>
+    <div class="card"><h3>No separate levels or rewards</h3><blockquote>"The bricks and stages are the levels and rewards."</blockquote></div>
+    <div class="card"><h3>Refreshers are "mastery" tasks</h3><blockquote>"A refresher would appear as any other task, but we can call it mastery."</blockquote><p style="margin:8px 0 0">Georgina decides when to include one.</p></div>
+    <div class="card"><h3>"Why this task" on request</h3><blockquote>"Why 10 and why 3. What is it based on."</blockquote><p style="margin:8px 0 0">A <strong>?</strong> next to the task. Georgina explains only when you ask.</p></div>
+  </div>
+  <p class="sub" style="margin-top:14px">The twelve decisions from your design handoff are also recorded in <code>prd.md</code> under Product Decisions.</p>
+
+  <h2>To confirm as you read</h2>
+  <p class="sub">None of these blocks the next step. Each has an assumed answer you can change.</p>
+  <div class="card">
+    <ul>
+      <li><strong>Why this task:</strong> opens on tap on a phone, since phones have no hover. <span class="assume">assumed</span></li>
+      <li><strong>Why this task:</strong> Georgina explains in her own words and doesn't say "proven" or name a book or study unless it's real. <span class="assume">assumed</span></li>
+      <li><strong>Mastery label:</strong> a small tag like "TODAY'S BRICK." <span class="assume">assumed</span></li>
+      <li><strong>Voice note:</strong> one week after the email. <span class="assume">assumed</span></li>
+      <li><strong>Build steps 13, 18, 19:</strong> where I placed them.</li>
+      <li><strong>Task size:</strong> your example "draw 10 hands, 3 minutes each" is 30 minutes, but tasks are 5 to 15. Which one gives?</li>
+      <li><strong>Eight open design questions</strong> from your handoff (§13), each with a recommendation, such as whether the dream survives an abandoned house.</li>
+      <li><strong>Not designed yet:</strong> Home after today's task is done, Profile before a goal, sign-up and log-in, the <strong>?</strong> and Mastery tag, and the wording of WhatsApp, email, and voice-note messages.</li>
+    </ul>
+  </div>
+
+  <footer>Companion to <code>devpost/prd.md</code>, which is the official version. Look and behavior detail: <code>SCAFFOLD_DESIGN_HANDOFF.md</code>.</footer>
+</main>
+
+<script>
+  // ---------- Journey ----------
+  const steps = [
+    ["1 · Sign up", "You", "Create an account with your email and WhatsApp number, so your goal and progress are yours and others can use Scaffold too."],
+    ["2 · Meet Alice", "Alice · Architect", "Alice welcomes you and asks three things: what to call you, when your daily WhatsApp message should arrive, and how many days a week you want to build. Not sure what to build? She helps you find a goal first."],
+    ["3 · WOOP", "Alice · Architect", "A chat, one question at a time. Wish: what you want to accomplish, then whether you've done any of it before. Outcome: your why, saved and reused in reminders. Obstacle: the thing inside you that gets in the way. A vague obstacle gets a gentle follow-up."],
+    ["4 · Georgina's plan", "Georgina · General Contractor", "A roadmap of five milestones (Groundwork, Foundation, Walls, Roof, Finishing) and daily tasks for the first two weeks only. Each task takes 5 to 15 minutes. The plan includes an if–then answer to your obstacle."],
+    ["5 · Commit", "You", "You look the plan over, ask for changes if you want, and press \"I commit to this plan.\" Commitment is its own step."],
+    ["6 · Nudge", "Sarah · Site Lead", "One WhatsApp message a day at the time you chose: a motivational line and today's task. Built late (step 15), after the screens it depends on."],
+    ["7 · Do the task", "You", "One small, clear task. Afterward you can keep going or stop until tomorrow. A ? next to the task explains why, if you ask. Some tasks are labeled Mastery: they bring back something you practiced earlier."],
+    ["8 · Mark it done", "You", "In the app or by replying on WhatsApp. \"Mark as done\" is the official record. A note or photo is optional and can be added or edited any time later."],
+    ["9 · A brick is laid", "Your house", "Every completed task adds a brick. Every milestone completes a stage, with a celebration. Hit your weekly target and you get confetti."],
+    ["10 · Next 2 weeks", "Georgina · General Contractor", "When two weeks end, Georgina plans the next two toward the current milestone, based on how the last two went."],
+    ["11 · Talk to Team", "The whole team", "Chat about how it's going, get motivated, talk about how you feel, or change the plan. The team decides who answers, or you pick. The plan only changes after you confirm."]
+  ];
+  const pills = document.getElementById('stepPills'), stepBody = document.getElementById('stepBody');
+  const nodes = document.querySelectorAll('.node');
+  function showStep(i) {
+    [...pills.children].forEach((b, j) => b.setAttribute('aria-pressed', j === i));
+    nodes.forEach(n => n.classList.toggle('active', +n.dataset.step === i));
+    stepBody.innerHTML = `<p class="who">${steps[i][1]}</p><h3>${steps[i][0]}</h3><p style="margin:0;color:var(--text-2)">${steps[i][2]}</p>`;
+  }
+  steps.forEach((s, i) => {
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = i + 1;
+    b.setAttribute('aria-label', s[0]); b.onclick = () => showStep(i); pills.appendChild(b);
+  });
+  nodes.forEach(n => n.addEventListener('click', () => showStep(+n.dataset.step)));
+  showStep(5);
+
+  // ---------- Try it ----------
+  const wall = document.getElementById('wall');
+  const SLATE = 12, START = 7, TOTAL = 30;
+  let laid = START, doneToday = false;
+  function drawWall(fresh) {
+    let html = '', n = 0;
+    for (let row = 0; row < 5; row++) {
+      const y = 122 - row * 28, off = row % 2 ? 25 : 0;
+      for (let c = 0; c < 6; c++) {
+        const cls = n < SLATE ? 'slate' : n < SLATE + laid ? 'laid' : '';
+        const isNew = fresh && n === SLATE + laid - 1 ? ' new' : '';
+        html += `<rect class="brick ${cls}${isNew}" x="${4 + off + c * 46}" y="${y}" width="42" height="24" rx="3"/>`;
+        n++;
+      }
+    }
+    wall.innerHTML = html;
+    document.getElementById('brickText').textContent = (SLATE + laid) + ' bricks laid';
+    document.getElementById('stageFill').style.width = Math.round(laid / (TOTAL - SLATE) * 100) + '%';
+  }
+  function drawWeek() {
+    const days = ['M','T','W','T','F','S','S'], done = [0, 2];
+    document.getElementById('week').innerHTML = days.map((d, i) => {
+      const cls = done.includes(i) || (i === 3 && doneToday) ? 'done' : i === 3 ? 'today' : '';
+      return `<div><i class="${cls}"></i>${d}</div>`;
+    }).join('');
+    document.getElementById('weekText').textContent = `This week: ${doneToday ? 3 : 2} of 3 days`;
+  }
+  const doneBtn = document.getElementById('doneBtn'), resetBtn = document.getElementById('resetBtn'), cheer = document.getElementById('cheer');
+  doneBtn.onclick = () => {
+    doneToday = true; laid++; drawWall(true); drawWeek();
+    doneBtn.disabled = true; doneBtn.textContent = 'Done for today'; cheer.hidden = false; resetBtn.hidden = false;
+  };
+  resetBtn.onclick = () => {
+    doneToday = false; laid = START; drawWall(false); drawWeek();
+    doneBtn.disabled = false; doneBtn.textContent = 'Mark as done'; cheer.hidden = true; resetBtn.hidden = true;
+  };
+  drawWall(false); drawWeek();
+  const why = document.getElementById('why'), whyBtn = why.querySelector('button');
+  whyBtn.onclick = () => { const o = why.classList.toggle('open'); whyBtn.setAttribute('aria-expanded', o); };
+
+  // ---------- Screens ----------
+  const screens = {
+    "Home": {
+      before: ["An empty lot with the heading \"Every dream house starts with a plan.\"", "One main button: \"Get to work on your dream,\" which opens the chat with Alice.", "A link: \"Not sure what to build? Chat with Alice.\"", "If you left onboarding halfway: \"Welcome back,\" your wish so far, and \"Continue where you left off.\""],
+      with: ["A greeting, the date, and which day of the two weeks you're on.", "Your goal. With a dream: \"House 1 of 4 toward\" your dream.", "Today's task, the largest thing on the screen, with Mark as done, Add a note, Add a photo, and the ? to ask why.", "Your house, small, with the stage and bricks laid.", "This week's days against your target.", "Your if–then plan and why you started.", "Today's line from Sarah."],
+      gap: "Not designed yet: what Home looks like after today's task is done."
+    },
+    "Progress": {
+      before: ["\"Nothing to track yet. This is where your house goes up.\"", "The same button and link to Alice."],
+      with: ["Your path of houses toward your dream, if you have one.", "The house on blueprint paper: finished stages, the current stage partly built, the rest as dashed outlines, scaffolding up.", "The stage bar: Groundwork, Foundation, Walls, Roof, Finishing.", "Days done this week against your target, and your streak of weeks on target.", "Houses built over your lifetime.", "The roadmap of five milestones."]
+    },
+    "Plan": {
+      before: ["\"No plan yet. Georgina draws up your roadmap and daily tasks once you've designed your goal with Alice.\""],
+      with: ["Two tabs: Tasks and Learning log.", "A \"Show\" choice: last week, this week, next week, or this milestone. Never the whole plan at once. Weeks start on Monday.", "Each task shows as done, today, missed, or upcoming, told apart by shape as well as shade.", "Done tasks show your note or photo, and you can add or edit them any time.", "Where the planned two weeks end, a card says when Georgina plans the next two.", "Learning log: every note and photo, newest first."]
+    },
+    "Talk to Team": {
+      before: ["A chat with Alice that helps you find a goal.", "Name an interest and she offers three goal ideas.", "Name a big dream and Georgina joins, asks about your experience, and lays out a path of smaller goals starting at your level.", "It ends with \"Design this goal with Alice.\""],
+      with: ["A chat with your build team. By default the team decides who answers.", "You can pick a teammate. If the topic isn't theirs, they bring in the right colleague.", "Quick replies such as \"This task is too big\" and \"Remind me why I started.\"", "Plan changes arrive as a card showing old task and new task. Nothing changes until you confirm."]
+    },
+    "Profile": {
+      before: [],
+      with: ["Your current goal, wish, and why, with a \"Change goal\" button.", "Your weekly target, 1 to 7 days. Changes apply right away.", "The time your daily WhatsApp message arrives.", "Email and WhatsApp number.", "Houses built: \"Finished houses stay in this count forever.\"", "Log out.", "Changing your goal opens the abandon warning, with \"Keep building\" as the main button."],
+      gapBefore: "Not designed yet. Recommended in the handoff: contact details, weekly target, and nudge time only."
+    }
+  };
+  const tabs = document.getElementById('screenTabs'), screenBody = document.getElementById('screenBody');
+  const segBefore = document.getElementById('segBefore'), segWith = document.getElementById('segWith');
+  let cur = "Home", mode = "with";
+  function showScreen() {
+    [...tabs.children].forEach(b => b.setAttribute('aria-selected', b.textContent === cur));
+    segBefore.setAttribute('aria-pressed', mode === 'before'); segWith.setAttribute('aria-pressed', mode === 'with');
+    const s = screens[cur], items = s[mode];
+    let html = `<h3>${cur} · ${mode === 'before' ? 'before a goal' : 'with a goal'}</h3>`;
+    if (items.length) html += '<ul>' + items.map(t => `<li>${t}</li>`).join('') + '</ul>';
+    const gap = mode === 'before' ? s.gapBefore : s.gap;
+    if (gap) html += `<div class="notdesigned">${gap}</div>`;
+    screenBody.innerHTML = html;
+  }
+  Object.keys(screens).forEach(name => {
+    const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.textContent = name;
+    b.onclick = () => { cur = name; showScreen(); }; tabs.appendChild(b);
+  });
+  segBefore.onclick = () => { mode = 'before'; showScreen(); };
+  segWith.onclick = () => { mode = 'with'; showScreen(); };
+  showScreen();
+
+  // ---------- Features ----------
+  const A = t => ` <span class="assume">${t}</span>`;
+  const features = [
+    ["Sign up and profile", "I want an account so my goal and progress are mine.", [
+      "I can sign up with email and WhatsApp number, and log back in to the same goal and progress.",
+      "Profile shows my goal, weekly target, nudge time, and contact details, all editable.",
+      "Changing my goal shows what is deleted forever and what I keep, and needs \"Yes, I want to abandon this project.\"",
+      "Abandoning deletes the house, goal, WOOP answers, plan, learning log, and team chats. Account, settings, and houses built stay.",
+      "One active goal at a time."]],
+    ["Onboarding and WOOP", "I want to set my goal through a conversation, not a form.", [
+      "Welcome, then three profile questions, then Wish, Outcome, Obstacle, one at a time as chat messages.",
+      "After my Wish, Alice asks about my prior experience.",
+      "A step bar shows where I am: You, Wish, Outcome, Obstacle, Plan.",
+      "My progress is saved after every answer, and Home offers \"Continue where you left off.\"",
+      "A vague obstacle gets a gentle follow-up.",
+      "If my obstacle involves my phone, Alice suggests a Screen Time limit. Scaffold doesn't check.",
+      "My Outcome appears later in nudges and re-engagement messages."]],
+    ["Finding a goal, dreams, and paths", "If I'm not sure what to build, I want help finding a goal.", [
+      "Before a goal exists, Talk to Team is a goal-finder chat with Alice.",
+      "For an interest, Alice offers three goal ideas. I pick one or type my own.",
+      "For a big dream, Georgina breaks it into a path of smaller goals, starting at my level, each finishable in weeks.",
+      "Each goal on the path is its own house. Home and Progress show \"House n of m toward\" my dream.",
+      "When I finish a house, I'm offered the next one on my path, or I can choose something else."]],
+    ["The plan: roadmap and 2-week chunks", "I want to see the path without being overwhelmed by every future day.", [
+      "After WOOP I see five milestones plus two weeks of daily tasks, and can commit.",
+      "Each task is one clear, finishable exercise of 5 to 15 minutes.",
+      "The plan includes at least one if–then response to my obstacle.",
+      "Only the current two weeks are broken into daily tasks.",
+      "When two weeks end, the next two are generated toward the current milestone.",
+      "Plan shows a week or a time frame I pick. Never everything."]],
+    ["Daily task and marking done", "I want one clear task a day, so I either did it or I didn't.", [
+      "Home shows my goal and today's task.",
+      "I can mark it done, with an optional note or photo.",
+      "\"Mark as done\" alone is the official record. I can add or edit a note or photo later without changing my target or streak.",
+      "A missed task rolls forward: tomorrow I get the same task and the plan shifts by one day."]],
+    ["Why this task", "I want to know what a task is based on, so I trust it's good advice.", [
+      "Next to a task there is a small ?. The explanation appears only when I ask.",
+      "It shows Georgina's short explanation, including why the numbers are what they are.",
+      "On desktop it opens on hover or keyboard focus. On a phone it opens on tap." + A("assumed"),
+      "Georgina doesn't claim something is \"proven\" or name a book or study unless it's real." + A("assumed")]],
+    ["Mastery tasks", "I want things I learned earlier to come back, so I keep the skill.", [
+      "A mastery task appears like any other daily task: same size, same \"Mark as done,\" same brick.",
+      "It is labeled \"Mastery\" so I can tell it revisits something I've practiced.",
+      "Georgina decides when to include one. There is no fixed schedule."]],
+    ["WhatsApp nudges and replies", "I want the nudge to reach me where I already am.", [
+      "Once a day I get one WhatsApp message: a motivational line plus today's task.",
+      "I can reply on WhatsApp to mark the task done, with a photo or a sentence as proof.",
+      "A WhatsApp reply marks the task done in the app, and the proof appears in the learning log."]],
+    ["Weekly target, streak, and celebration", "I want room for real life without losing my progress.", [
+      "I set a target of 1 to 7 days a week. Changes apply right away, including this week.",
+      "When I hit it: confetti and \"Congratulations, you hit your weekly target!\"",
+      "A week below target gets no message.",
+      "The streak counts consecutive weeks on target.",
+      "Celebrations only come from marking a task done. Changing a setting never triggers one.",
+      "Milestone celebration before weekly, never both at once."]],
+    ["Progress: the house", "I want to see my dream literally being built.", [
+      "Progress shows my house as the main image, with the roadmap, weekly target, and streak.",
+      "Each completed task visibly adds a brick.",
+      "Five stages, one per milestone: Groundwork, Foundation, Walls, Roof, Finishing.",
+      "Completing a milestone shows a \"Stage complete\" stamp and a line from Paula about what's next.",
+      "House complete: the scaffolding comes down and I cut the ribbon myself. It never cuts on its own.",
+      "Progress shows how many houses I've built. The number never goes down."]],
+    ["Learning log", "I want a record of what I did and noticed.", [
+      "Each note and photo is saved to the learning log, a tab in Plan, newest first.",
+      "I can add a note or photo to any finished task, any time.",
+      "With no entries: \"Nothing here yet. Entries appear after you finish a task and add a note or photo.\""]],
+    ["Talk to Team", "I want a team to talk to, so I adjust instead of giving up.", [
+      "By default the teammate whose role fits answers. Plan: Georgina. Feelings: Sarah. Goal or why: Alice. Progress or unclear: Paula.",
+      "I can pick a teammate. They answer first and hand over if the topic belongs to someone else.",
+      "A teammate can propose a plan change. No change is applied until I confirm, and I can decline.",
+      "Confirmed changes appear in Plan."]]
+  ];
+  document.getElementById('features').innerHTML = features.map((f, i) =>
+    `<details${i === 5 ? ' open' : ''}><summary>${f[0]}</summary><div class="in"><p class="story">${f[1]}</p><ul class="crit">${f[2].map(c => `<li>${c}</li>`).join('')}</ul></div></details>`
+  ).join('');
+</script>
+</body>
+</html>

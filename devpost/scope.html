@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dream Friend Scope</title>
+<style>
+  :root {
+    --bg: #fbf7f2;
+    --surface: #ffffff;
+    --ink: #2a2522;
+    --muted: #6b625b;
+    --line: #e7ddd2;
+    --accent: #d9603b;
+    --accent-soft: #fbe6dc;
+    --green: #3f8f5a;
+    --green-soft: #e1f1e5;
+    --amber: #b7791f;
+    --amber-soft: #fbefd8;
+    --gray-soft: #efebe7;
+    --wa: #dcf8c6;
+    --wa-ink: #1f2c1a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1c1917;
+      --surface: #262220;
+      --ink: #f3ede7;
+      --muted: #b0a69d;
+      --line: #3b3531;
+      --accent: #f08a66;
+      --accent-soft: #43291f;
+      --green: #7ccf96;
+      --green-soft: #1f3526;
+      --amber: #e8b562;
+      --amber-soft: #3b2f1a;
+      --gray-soft: #302b28;
+      --wa: #1f4a36;
+      --wa-ink: #e6f4ea;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 820px; margin: 0 auto; padding: 40px 16px 80px; }
+  .tag { display: inline-block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+         color: var(--accent); background: var(--accent-soft); padding: 3px 10px; border-radius: 99px; }
+  h1 { font-size: clamp(30px, 6vw, 44px); line-height: 1.1; margin: 14px 0 8px; }
+  h1 small { font-size: 16px; color: var(--muted); font-weight: 400; }
+  .lede { font-size: 19px; color: var(--muted); margin: 0 0 32px; }
+  h2 { font-size: 22px; margin: 44px 0 12px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
+  .kernel { border-left: 5px solid var(--accent); }
+  .kernel p { margin: 0 0 12px; }
+  blockquote { margin: 0 0 10px; padding: 0 0 0 14px; border-left: 3px solid var(--line); color: var(--muted); font-style: italic; }
+  blockquote:last-child { margin-bottom: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .grid h3 { margin: 0 0 6px; font-size: 16px; }
+  .grid p { margin: 0; color: var(--muted); }
+
+  svg { width: 100%; height: auto; display: block; }
+  .node rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; transition: stroke .2s; }
+  .node.kern rect { fill: var(--accent-soft); stroke: var(--accent); }
+  .node.active rect { stroke: var(--accent); stroke-width: 3; }
+  .node text { fill: var(--ink); font-size: 14px; font-weight: 600; }
+  .node text.sub { fill: var(--muted); font-size: 12px; font-weight: 400; }
+  .arrow { stroke: currentColor; stroke-width: 1.6; fill: none; }
+  .arrow.back { stroke-dasharray: 5 4; }
+  .lbl { fill: var(--accent); font-size: 12px; }
+
+  .steps { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 12px; }
+  .steps button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--surface);
+                  color: var(--ink); padding: 6px 12px; border-radius: 99px; cursor: pointer; }
+  .steps button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .step-body h3 { margin: 0 0 4px; }
+  .step-body p { margin: 0; color: var(--muted); }
+
+  .demo { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; align-items: start; }
+  .phone { background: var(--gray-soft); border-radius: 22px; padding: 14px; border: 1px solid var(--line); }
+  .phone .bar { font-size: 12px; color: var(--muted); margin-bottom: 10px; text-align: center; }
+  .wa { background: var(--wa); color: var(--wa-ink); padding: 10px 12px; border-radius: 12px; font-size: 14px;
+        opacity: 0; transform: translateY(-8px); transition: all .4s; }
+  .wa.show { opacity: 1; transform: none; }
+  .wa small { display: block; text-align: right; opacity: .6; font-size: 11px; }
+  .app h3 { margin: 0 0 8px; font-size: 16px; }
+  .app label { display: flex; gap: 8px; align-items: center; padding: 8px 0; cursor: pointer; }
+  .progress { height: 14px; background: var(--gray-soft); border-radius: 99px; overflow: hidden; margin-top: 10px; }
+  .progress i { display: block; height: 100%; width: 40%; background: var(--green); border-radius: 99px; transition: width .6s; }
+  .streak { font-size: 14px; color: var(--muted); margin-top: 6px; }
+  .btn { font: inherit; font-size: 14px; background: var(--accent); color: #fff; border: 0; border-radius: 99px; padding: 8px 14px; cursor: pointer; }
+  .demo-note { font-size: 13px; color: var(--muted); }
+
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; }
+  summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; margin-left: auto; color: var(--muted); font-size: 20px; }
+  details[open] summary::after { content: "–"; }
+  .pill { font-size: 12px; padding: 2px 10px; border-radius: 99px; font-weight: 600; }
+  .now .pill { background: var(--green-soft); color: var(--green); }
+  .later .pill { background: var(--amber-soft); color: var(--amber); }
+  .cut .pill { background: var(--gray-soft); color: var(--muted); }
+  details ul { margin: 0; padding: 0 18px 16px 38px; }
+  details li { margin-bottom: 6px; }
+  .why { color: var(--muted); }
+  .shift { font-size: 14px; color: var(--muted); background: var(--gray-soft); border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; }
+  footer { margin-top: 48px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <span class="tag">Scope · approved</span>
+  <h1>Dream Friend <small>(working title)</small></h1>
+  <p class="lede">A friend who keeps you on track with a goal you care about. She gives you one clear task each day and nudges you on WhatsApp to do it.</p>
+
+  <div class="shift"><strong>What changed from draft 1:</strong> the problem moved from "I don't know where to start" to "I know what to do, but I stop doing it." Planning is now just setup. The heart is a clear daily task and a nudge that reaches you.</div>
+
+  <h2>The kernel</h2>
+  <div class="card kernel">
+    <p><strong>Clear, assigned tasks plus a nudge that reaches you.</strong> One small, finishable task a day, a WhatsApp reminder that includes your own why, and visible progress, Duolingo-style.</p>
+    <blockquote>"I have a goal and I might even have a great plan, but if I'm not working on it I'll never achieve it."</blockquote>
+    <blockquote>"I either did the task or I didn't."</blockquote>
+  </div>
+
+  <h2>The core loop</h2>
+  <div class="card">
+    <svg viewBox="0 0 760 290" role="img" aria-label="Core loop: set up once, then each day a WhatsApp nudge, do today's task, mark it done, see progress, and repeat tomorrow">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/>
+        </marker>
+      </defs>
+      <g style="color:var(--muted)">
+        <g class="node" data-step="0"><rect x="10" y="30" width="150" height="80" rx="12"/>
+          <text x="85" y="58" text-anchor="middle">1 · Set up once</text>
+          <text class="sub" x="85" y="78" text-anchor="middle">goal → why → time</text>
+          <text class="sub" x="85" y="96" text-anchor="middle">e.g. better illustrator</text></g>
+        <path class="arrow" d="M160 70 H215" marker-end="url(#ah)"/>
+
+        <g class="node kern" data-step="1"><rect x="220" y="25" width="210" height="90" rx="12"/>
+          <text x="325" y="55" text-anchor="middle">2 · WhatsApp nudge 📱</text>
+          <text class="sub" x="325" y="75" text-anchor="middle">today's task + your why</text>
+          <text class="sub" x="325" y="93" text-anchor="middle">arrives on your real phone</text></g>
+        <path class="arrow" d="M430 70 H505" marker-end="url(#ah)"/>
+
+        <g class="node kern" data-step="2"><rect x="510" y="25" width="230" height="90" rx="12"/>
+          <text x="625" y="55" text-anchor="middle">3 · Do today's task</text>
+          <text class="sub" x="625" y="75" text-anchor="middle">one clear, small exercise</text>
+          <text class="sub" x="625" y="93" text-anchor="middle">"draw 10 hands, 3 min each"</text></g>
+        <path class="arrow" d="M625 115 V175" marker-end="url(#ah)"/>
+
+        <g class="node" data-step="3"><rect x="510" y="180" width="230" height="70" rx="12"/>
+          <text x="625" y="208" text-anchor="middle">4 · Mark it done ✓</text>
+          <text class="sub" x="625" y="228" text-anchor="middle">did it or didn't</text></g>
+        <path class="arrow" d="M510 215 H435" marker-end="url(#ah)"/>
+
+        <g class="node" data-step="4"><rect x="220" y="180" width="210" height="70" rx="12"/>
+          <text x="325" y="208" text-anchor="middle">5 · See progress</text>
+          <text class="sub" x="325" y="228" text-anchor="middle">streak · how far you've come</text></g>
+        <g style="color:var(--accent)">
+          <path class="arrow back" d="M325 180 V120" marker-end="url(#ah)"/>
+        </g>
+        <text class="lbl" x="335" y="155">tomorrow</text>
+      </g>
+    </svg>
+    <div class="steps" id="steps"></div>
+    <div class="step-body" id="stepBody"></div>
+  </div>
+
+  <h2>Who it's for</h2>
+  <div class="grid">
+    <div class="card"><h3>Someone who wants to get better, but drifts</h3>
+      <p>They enjoy something and want to improve, but struggle to be consistent without clear, assigned tasks. Books and videos help until they run out or life gets busy.</p></div>
+    <div class="card"><h3>First real user: you, the illustrator</h3>
+      <p>"I really enjoy art and creating it, but I struggle to be consistent when I don't have clear, assigned tasks." Built so anyone with a goal could use it.</p></div>
+  </div>
+
+  <h2>What "working" looks like</h2>
+  <div class="card">
+    <p style="margin-top:0" class="demo-note">A sketch of the ~1-minute demo, for illustration only. The PRD decides the real screens and wording.</p>
+    <div class="demo">
+      <div class="phone">
+        <div class="bar">📱 Your phone · WhatsApp</div>
+        <div class="wa" id="wa">Hey! 🎨 Today's task: draw 10 hands, 3 minutes each.<br>Remember why you started: <em>"I want to feel proud of my art."</em><small>9:00</small></div>
+        <p style="text-align:center;margin:12px 0 0"><button class="btn" id="send">Send the nudge</button></p>
+      </div>
+      <div class="card app">
+        <h3>Today</h3>
+        <label><input type="checkbox" id="done"> Draw 10 hands, 3 min each</label>
+        <div class="progress"><i id="bar"></i></div>
+        <div class="streak" id="streak">🔥 3-day streak</div>
+      </div>
+    </div>
+    <p><strong>The "oh, that's cool" beat:</strong> your phone buzzes with the nudge, in your own words about why you started.</p>
+  </div>
+
+  <h2>The boundary</h2>
+  <details class="now" open><summary><span class="pill">Now</span> In the proof of concept</summary>
+    <ul>
+      <li>One-time setup: goal → why → available time</li>
+      <li>A clear, small daily task the friend assigns toward the goal</li>
+      <li>Marking the task done: did it or didn't</li>
+      <li>A visible progress indicator (streak or path)</li>
+      <li>A WhatsApp nudge to your own phone with today's task and your why, using the Twilio WhatsApp Sandbox (a free test setup)</li>
+    </ul></details>
+  <details class="later"><summary><span class="pill">Later</span> Worth doing, not now</summary>
+    <ul>
+      <li>Replying "done" directly in WhatsApp</li>
+      <li>Refreshers on things you learned earlier</li>
+      <li>A log of what you learned from each task</li>
+      <li>Real, cited sources behind tasks, so she never gives bad advice</li>
+      <li>Adjusting tasks to how you're feeling that day</li>
+      <li>Fuller gamification: levels, rewards</li>
+      <li>A follow-up conversation that adjusts the next task</li>
+      <li>Planning brand-new goals from scratch (e.g. the AI group for women in Gijón)</li>
+    </ul></details>
+  <details class="cut"><summary><span class="pill">Cut</span> Out of the PoC, and why</summary>
+    <ul>
+      <li><strong>Two-way WhatsApp</strong> <span class="why">receiving replies needs the app to be reachable from the internet. One-way nudges prove the idea.</span></li>
+      <li><strong>Real-sources research</strong> <span class="why">it matters, but the focus moved to follow-through and WhatsApp took that time. First in line for later.</span></li>
+      <li><strong>Refreshers &amp; learning log</strong> <span class="why">valuable, but not needed to prove "a clear task plus a nudge keeps me going."</span></li>
+      <li><strong>Production WhatsApp</strong> <span class="why">business approval to message anyone isn't needed; the sandbox reaches your own phone.</span></li>
+    </ul></details>
+
+  <h2>Feel &amp; inspiration</h2>
+  <div class="grid">
+    <div class="card"><h3>Duolingo · Khan Academy</h3><p>Clear daily lessons, reminders, and visible progress. Less intimidating.</p></div>
+    <div class="card"><h3>Step-by-step drawing books &amp; videos</h3><p>Clear tasks and practice over theory.</p></div>
+    <div class="card"><h3>A gentle friend</h3><p>Encouraging, simple, never overwhelming. Not a drill sergeant.</p></div>
+  </div>
+
+  <footer>Companion to <code>devpost/scope.md</code>, which is the official version.</footer>
+</main>
+<script>
+  const steps = [
+    ["1 · Set up once", "Tell her your goal, why it matters (saved to remind you later), and roughly how much time you have."],
+    ["2 · WhatsApp nudge", "The kernel. A message on your real phone with today's task and your own why, so the goal finds you instead of waiting for you."],
+    ["3 · Do today's task", "The kernel. One clear, small, finishable exercise, like the step-by-step books you like."],
+    ["4 · Mark it done", "In the app. You did it or you didn't; no ambiguity."],
+    ["5 · See progress", "A Duolingo-style streak or path. How far you've come, and tomorrow's nudge starts the loop again."]
+  ];
+  const stepsEl = document.getElementById('steps'), body = document.getElementById('stepBody');
+  const nodes = document.querySelectorAll('.node');
+  function show(i) {
+    [...stepsEl.children].forEach((b, j) => b.setAttribute('aria-pressed', j === i));
+    nodes.forEach(n => n.classList.toggle('active', +n.dataset.step === i));
+    body.innerHTML = `<h3>${steps[i][0]}</h3><p>${steps[i][1]}</p>`;
+  }
+  steps.forEach((s, i) => {
+    const b = document.createElement('button'); b.textContent = i + 1;
+    b.onclick = () => show(i); stepsEl.appendChild(b);
+  });
+  nodes.forEach(n => { n.style.cursor = 'pointer'; n.onclick = () => show(+n.dataset.step); });
+  show(1);
+  document.getElementById('send').onclick = () => document.getElementById('wa').classList.add('show');
+  document.getElementById('done').onchange = e => {
+    document.getElementById('bar').style.width = e.target.checked ? '55%' : '40%';
+    document.getElementById('streak').textContent = e.target.checked ? '🔥 4-day streak' : '🔥 3-day streak';
+  };
+</script>
+</body>
+</html>
