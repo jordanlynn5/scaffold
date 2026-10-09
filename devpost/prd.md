@@ -226,7 +226,7 @@ Includes the follow-up conversation from `scope.md > Later`.
 - **"Why this task" on request, instead of cited sources.** Georgina explains a task and its numbers only when asked, through a **?** next to the task. It keeps the daily task simple and still answers "what is it based on."
 - **Refreshers are ordinary tasks called "mastery."** No new screen or separate system: a mastery task looks and works like any other daily task.
 - **No separate levels or rewards.** The bricks and stages already are the levels and rewards, so a second system would only add clutter.
-- **Screens before WhatsApp in the build.** "The WhatsApp nudge isn't valuable without the rest": a nudge needs a real task, plan, and house behind it. This reverses the earlier order, which had the nudge in the core build.
+- **Screens before WhatsApp in the build.** "The WhatsApp nudge isn't valuable without the rest": a nudge needs a real task, plan, and house behind it. *Refined in `5-build`:* the nudge is built straight after the core screens (step 6) rather than near the end, so the kernel and its unverified services are proven early.
 - **Name: Scaffold** (replaces the working title "Dream Friend"). "Dream Friend" made the friend sound like the dream. Scaffold centers the accomplishment with support behind it: the house is your dream, the daily tasks are bricks, and the scaffolding is the support system. As in teaching, scaffolding is temporary support that comes down once you can build on your own.
 - **Full-featured, not a minimal POC.** The learner has 25 days and wants an ambitious, complete product. *Safeguard:* the build does the core features first, so a working, submittable version exists early (see **What We're Building**).
 - **WOOP replaces "goal, why, time."** Wish = goal, Outcome = why, and Obstacle targets the real problem: "I stop working on it." The 20-minutes-or-less task size replaces the "how much time do you have" question.
@@ -247,32 +247,27 @@ Includes the follow-up conversation from `scope.md > Later`.
 
 ## What We're Building
 
-**Screens first, then WhatsApp.** Decided by the learner: "the WhatsApp nudge isn't valuable without the rest." The order follows the design handoff §11.
+**Screens first, then WhatsApp.** Decided by the learner: "the WhatsApp nudge isn't valuable without the rest." The first screens follow the design handoff §11.
 
 **Core first.** This builds the first working, submittable version:
-1. Foundations: the look (colors, type), the menu, and shared pieces like buttons and cards
-2. Sign up and log in
-3. Home before a goal, and the other empty states
-4. Onboarding + WOOP conversation, saved as you go
-5. AI roadmap + first 2-week plan, review, and commit
-6. Home: goal, today's task, mark done with note/photo
-7. Progress: the house growing brick by brick, roadmap position, weekly target
-8. Weekly target celebration (confetti)
+1. Foundations (the look, the menu, shared pieces like buttons and cards), sign up and log in, Home before a goal, and the other empty states
+2. Onboarding + WOOP conversation, saved as you go
+3. AI roadmap + first 2-week plan, review, and commit
+4. Home: goal, today's task, mark done with note/photo
+5. Progress: the house growing brick by brick, roadmap position, weekly target and its celebration (confetti)
+6. Daily WhatsApp nudge, with email when WhatsApp is blocked, and Profile settings
 
 **Then layered on**, one at a time:
-9. Plan view (by week / time frame), learning log, and missed tasks rolling forward
+7. Two-way WhatsApp: replying with proof
+8. Plan view (by week / time frame), learning log, missed tasks rolling forward, and "Why this task" explanations (the **?** next to a task)
+9. Missed-day nudges and the sincere re-engagement email
 10. Talk to Team chat with confirmed plan changes
-11. Profile and the abandon flow
-12. Milestone and house-complete celebrations
-13. Next 2-week chunk generation
+11. Milestone celebration, next 2-week chunk generation, and mastery tasks (refreshers)
+12. The abandon flow
+13. House-complete celebration
 14. Goal-finder chat, dreams, and paths
-15. Daily WhatsApp nudge
-16. Two-way WhatsApp: replying with proof
-17. Missed-day nudges (email when WhatsApp is blocked) and the sincere re-engagement email
-18. Mastery tasks (refreshers)
-19. "Why this task" explanations (the **?** next to a task)
 
-*Where steps 13, 18, and 19 sit is a proposal: the handoff's order doesn't mention them.*
+*Order changed in `5-build` (Oct 9, 2026), agreed by the learner: the WhatsApp nudge moved up to sit straight after the core screens. It still comes after a real task, plan and house exist. It is the kernel and rests on unverified services, so problems should surface early. The steps match `checklist.md`.*
 
 ## Deferred From the Build
 - **Adjusting tasks to how you feel that day** (automatic): not chosen. Feelings can still come up in Talk to Team.
