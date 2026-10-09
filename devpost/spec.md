@@ -79,7 +79,7 @@ Documentation:
 The local app talks to the same Supabase project as the hosted one. WhatsApp replies and the 15-minute bell only reach the hosted app, because Twilio and Supabase need a public address to call.
 
 **Secret keys (`.env.local` locally, Vercel project settings when hosted):**
-`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM`, `TWILIO_SANDBOX_JOIN_CODE`, `RESEND_API_KEY`, `EMAIL_FROM`, `CRON_SECRET`, `APP_URL`.
+`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`, `PLAN_MODEL` (optional), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM`, `TWILIO_SANDBOX_JOIN_CODE`, `RESEND_API_KEY`, `EMAIL_FROM`, `CRON_SECRET`, `APP_URL`.
 These never go into the GitHub repository. `.env.example` lists the names with no values.
 
 **For the demo video** (required, along with the public GitHub repository): record on the hosted app. Join the sandbox from your phone, sign up, do the WOOP chat, commit, then press **"Send my nudge now"** in Profile so the WhatsApp message arrives on camera without waiting for the clock. Reply with a photo and show the brick appear. `6-ship` reads this section.
@@ -302,6 +302,7 @@ The app's files sit in the repository root alongside `devpost/`. Next.js's setup
 - **Models (checked Oct 9, 2026):** `claude-opus-5-5` at $4 in / $20 out per million tokens. `claude-haiku-5-5` at $0.10 in / $0.50 out.
 - **Key:** `ANTHROPIC_API_KEY`, used only on the server. Set a monthly spending cap in the Claude Console.
 - **Estimated cost:** under $15 for the hackathon. An estimate, not a measurement.
+- **Haiku while developing (learner decision, Oct 9, 2026):** the plan-writing model is read from a setting, `PLAN_MODEL`. On the laptop it is set to `claude-haiku-5-5`, so a full test run from onboarding to a finished plan costs well under a cent. On Vercel it is left unset and defaults to `claude-opus-5-5`. Switch the laptop to Opus when judging real plan quality.
 - The build should load the `claude-api` skill before writing this code, for current request details.
 
 ### Supabase
@@ -358,6 +359,7 @@ Nothing in the kernel (`scope.md > The Unique Kernel`) is faked: the tasks are w
 - **Next.js, Vercel, Supabase, Resend:** accepted from the agent's recommendation.
 - **Claude for the AI,** after comparing Gemini and the free tiers (Gemini, Mistral, Groq, Cerebras, OpenRouter, Cloudflare). Tradeoff: a few dollars instead of free, in exchange for no daily caps and no user text used for training.
 - **Opus 5.5 for plans, Haiku 5.5 for chat and nudges.** The learner raised the plan model from the recommended Sonnet to Opus. Tradeoff: twice the price for plan writing, which happens rarely.
+- **Haiku for plans too while developing,** to keep testing costs near zero. Tradeoff: plans seen during everyday testing are not the quality users will get, so plan quality is judged in separate Opus runs.
 - **Free WhatsApp sandbox only.** The agent recommended also starting real-sender registration. The learner chose the sandbox alone.
 - **Email as the backup** when WhatsApp cannot deliver.
 - **No final voice note.** Confirmed at review. The missed-day sequence ends at the sincere email, then silence.
