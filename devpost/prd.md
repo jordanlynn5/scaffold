@@ -94,7 +94,7 @@ New during design. Develops `scope.md > Later` ("help planning brand-new goals f
   - [ ] **Each goal on the path is its own house.** With a dream, Home and Progress show "House [n] of [m] toward [dream]." Without one, the path isn't shown.
   - [ ] When I finish a house, I'm offered the next one on my path, or I can choose something else.
 - One optional dream at a time. Goal ideas and paths are written by the AI for each person, not picked from a fixed list.
-: Roadmap and 2-Week Chunks
+### Roadmap and 2-Week Chunks
 - As a user, I want to see the path to my dream without being overwhelmed by every future day.
   - [ ] After WOOP, the General Contractor shows a roadmap of **five milestones** plus 2 weeks of daily tasks. I see my Wish, Outcome, and Obstacle alongside it, and can ask for changes or commit with "I commit to this plan." *(design handoff §6.5)*
   - [ ] Each daily task is one clear, finishable exercise sized at **20 minutes or less** (e.g. "draw 6 hands, 3 minutes each," which is 18 minutes).
@@ -133,13 +133,13 @@ The no-guilt sequence, in the learner's design:
 | Day 3 missed | Sarah the Site Lead invites a chat with the team to adjust the plan. |
 | After day 3 | Daily nudges stop. |
 | Start of next week, still no task done | A sincere **email** reminding me why I started (my Outcome). |
-| Start of the following week, still no task done | A final **WhatsApp voice note** from the team. |
 | Then | Silence. |
 | Any task completed | Everything resets: daily nudges resume. |
 
 - "Activity" means **completing a task**. Opening the app or chatting doesn't count.
   - [ ] No nudges are sent after day 3 of inactivity.
-  - [ ] The email and voice note are sent only if no task has been completed since the nudges stopped.
+  - [ ] The email is sent only if no task has been completed since the nudges stopped.
+  - [ ] When WhatsApp can't deliver a nudge, the same message is sent by email, and Home shows a short notice with the code word to reconnect WhatsApp. *(spec, Oct 9, 2026)*
   - [ ] Completing any task restarts daily nudges the next day.
 
 ### Weekly Target, Streak, and Celebration
@@ -238,7 +238,8 @@ Includes the follow-up conversation from `scope.md > Later`.
 - **Two-way WhatsApp is in,** for replying with proof.
 - **A missed task rolls forward,** because "there is no progress without action."
 - **Weekly target instead of a daily streak,** set by the user, with a celebration when hit. It leaves room for life without guilt.
-- **No nudges after 3 missed days,** to avoid nagging. Re-engagement then escalates gently: email, then voice note, then silence.
+- **No nudges after 3 missed days,** to avoid nagging. Re-engagement then ends gently: a sincere email, then silence.
+- **No final voice note, and email as the WhatsApp backup.** Decided in `4-spec` (Oct 9, 2026). The free WhatsApp test setup can't message someone who has been quiet for 24 hours, so a blocked nudge goes by email in the same words, and Home shows a notice when WhatsApp is disconnected. The voice note couldn't be delivered that way and needed another service. See `spec.md > What Was Simplified and Why`.
 - **Daily nudge on WhatsApp, not email.** Briefly switched to email for cost, then moved back. WhatsApp better fits the kernel ("the nudge finds you") and the judging criteria (innovation, presentation, impact). Cost at hackathon scale is cents.
 - **App tracking (e.g. noticing Instagram use) replaced by a Screen Time suggestion.** Tracking would require a native phone app and could feel like surveillance.
 - **The team changes the plan only after confirmation.** The user stays in control.
@@ -267,7 +268,7 @@ Includes the follow-up conversation from `scope.md > Later`.
 14. Goal-finder chat, dreams, and paths
 15. Daily WhatsApp nudge
 16. Two-way WhatsApp: replying with proof
-17. Missed-day nudges and re-engagement: sincere email, final voice note
+17. Missed-day nudges (email when WhatsApp is blocked) and the sincere re-engagement email
 18. Mastery tasks (refreshers)
 19. "Why this task" explanations (the **?** next to a task)
 
@@ -279,7 +280,8 @@ Includes the follow-up conversation from `scope.md > Later`.
 
 ## Possible Later Enhancements
 - "Where you started → where you're going" (day 1 vs. day 20 proof comparison): dropped in favor of the house, but the saved proof would make it possible later.
-- Email as a cheaper daily-nudge fallback at large scale.
+- A final WhatsApp voice note from the team, a week after the sincere email. Needs a real WhatsApp sender and a text-to-speech service.
+- A real WhatsApp sender, so nobody has to join with a code word.
 - Links to real, checkable sources (books, courses, studies) behind each "why this task."
 - Multiple goals at once.
 
@@ -298,7 +300,6 @@ Must answer before `4-spec`: none left.
 Can be confirmed at review:
 - **Why this task:** tap on a phone instead of hover? And should Georgina avoid "proven" claims and named sources unless they're real? (Both assumed yes.) The **?** isn't in the design handoff yet.
 - **Mastery tasks:** does the "Mastery" label need a design? (Assumed: a status tag like "TODAY'S BRICK.")
-5. **Voice note timing:** one week after the email? (Assumed yes.)
 6. **Open design questions** (`SCAFFOLD_DESIGN_HANDOFF.md` §13, each with the designer's recommendation):
    - Is the dream named separately, or can a big Outcome become the dream? (Recommended: optional; Alice may suggest it.)
    - Does the dream survive when its current house is abandoned? (Recommended: yes.)
@@ -308,4 +309,4 @@ Can be confirmed at review:
    - Do missed days stay visible in Plan? (Recommended: yes.)
    - A small "ground-breaking" moment after committing? (Recommended: optional, no confetti.)
    - When the weekly target is hit by a WhatsApp reply, where does the celebration show? (Recommended: next app visit, plus a line in Sarah's reply.)
-7. **Not designed yet:** Home after today's task is done, Profile before a goal exists, sign-up and log-in screens, and the wording of WhatsApp messages, the re-engagement email, and the voice note.
+7. **Not designed yet:** Home after today's task is done, Profile before a goal exists, sign-up and log-in screens, and and the wording of WhatsApp messages and the re-engagement email.
