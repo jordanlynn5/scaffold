@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+/* Design tokens from SCAFFOLD_DESIGN_HANDOFF.md §2, names unchanged.
+   Tailwind's own palette and breakpoints are switched off, so a color or
+   size that is not a token cannot be used by accident. */
+@theme {
+  --color-*: initial;
+  --breakpoint-*: initial;
+
+  /* Core */
+  --color-navy: #1f3a5f;
+  --color-ink: #14202e;
+  --color-yellow: #f2b705;
+  --color-bg: #f4f6f9;
+  --color-surface: #ffffff;
+
+  /* Text */
+  --color-text-secondary: #3a4a5e;
+  --color-text-muted: #4a5a6e;
+  --color-text-on-navy: #dce4ee;
+
+  /* Lines and fills */
+  --color-line: #d5dde7;
+  --color-input-border: #c2cdda;
+  --color-track: #e6ecf3;
+  --color-grid: #e9eef4;
+  --color-dash: #9aabbf;
+  --color-ground: #c9d3df;
+  --color-slate: #7d8ca0;
+  --color-sky: #8fb3e0;
+
+  /* Yellow family */
+  --color-yellow-tint: #fff4cc;
+  --color-yellow-wash: #fffbeb;
+  --color-yellow-text: #6b4e00;
+
+  /* Red: ONLY the abandon flow and the house-complete ribbon */
+  --color-danger: #b42318;
+  --color-danger-tint: #fdecea;
+  --color-danger-text: #8e1c12;
+  --color-ribbon: #d63b3b;
+  --color-ribbon-dark: #a82a2a;
+  --color-confetti-accent: #e4572e;
+
+  /* Overlay */
+  --color-scrim: rgba(20, 32, 46, 0.6);
+
+  /* §2.4: one breakpoint. Use as `desk:` */
+  --breakpoint-desk: 700px;
+
+  /* §2.3 radius */
+  --radius-button: 10px;
+  --radius-input: 12px;
+  --radius-card: 14px;
+  --radius-dialog: 18px;
+  --radius-badge: 8px;
+
+  /* §2.3 elevation */
+  --shadow-dialog: 0 20px 50px rgba(20, 32, 46, 0.3);
+  --shadow-float: 0 6px 16px rgba(20, 32, 46, 0.2);
+}
+
+@theme inline {
+  --font-heading: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-sans: var(--font-plex), system-ui, sans-serif;
+}
+
+/* §2.2 type scale. Phone size first, desktop size from 700px. */
+@utility text-display {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.15;
+  @media (width >= 700px) {
+    font-size: 40px;
+  }
+}
+@utility text-h1 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  @media (width >= 700px) {
+    font-size: 34px;
+  }
+}
+@utility text-task-title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.15;
+  @media (width >= 700px) {
+    font-size: 30px;
+  }
+}
+@utility text-h2 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+@utility text-h3 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+@utility text-body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+@utility text-body-sm {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+@utility text-caption {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+@utility text-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* §5: blueprint grid paper */
+@utility bg-grid-paper {
+  background-color: var(--color-surface);
+  background-image:
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+/* §2.5: reduced motion shows final states immediately */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

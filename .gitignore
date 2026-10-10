@@ -4,3 +4,20 @@
 !.env.example
 .claude/settings.local.json
 .DS_Store
+
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# vercel
+.vercel
+
+# misc
+*.pem
+npm-debug.log*

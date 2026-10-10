@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Scaffold: a web app whose AI "build team" (Alice the Architect, Georgina the General Contractor, Paula the Project Manager, Sarah the Site Lead) turns a goal into one small daily task, nudges the user on WhatsApp, and draws progress as a house going up brick by brick. Built for the Devpost "Build With AI: Basics" hackathon. Submission deadline: Oct 26, 2026.
 
-**Current state: planning only. No application code exists yet.** The commands and structure below are what `devpost/spec.md` plans. Check what actually exists before relying on them, and update this file once build step 1 creates the app.
+**Current state: building.** `devpost/checklist.md` is the progress record: the first unchecked slice is where the build is up to. Slice 1 created the app (shell, sign-up and log-in, empty states). The architecture below describes the finished plan, so check what actually exists before relying on a piece of it.
 
 ## Source-of-truth documents
 
@@ -18,7 +18,7 @@ Read these before building. Where they disagree, the later one in this list wins
 | `devpost/prd.md` | What the product does. Its **Features and Behavior** headings are what code must implement and cite. |
 | `SCAFFOLD_DESIGN_HANDOFF.md` | How it looks and responds: tokens, components, every screen, final copy, behavior rules (§7). |
 | `devpost/spec.md` | How it is built: stack, components, data model, file structure, service contracts. |
-| `devpost/checklist.md` | The ordered build steps (created by `5-build`; not present yet). |
+| `devpost/checklist.md` | The ordered build steps and progress state. `5-build` resumes at the first unchecked slice. |
 
 Before building or changing any UI, read `SCAFFOLD_DESIGN_HANDOFF.md`. Follow its tokens, components and rules exactly. If something is not covered, ask instead of inventing.
 
@@ -39,20 +39,34 @@ The owner plans to adopt the cc-rpi blueprint (github.com/juan294/cc-rpi) after 
 
 `devpost/learner-profile.md` is gitignored on purpose. The GitHub repository is public; never stage it.
 
-## Planned commands
-
-From `devpost/spec.md > Where It Runs and How Someone Tries It`. None work until the app is scaffolded.
+## Commands
 
 ```
 npm install        # once
 npm run dev        # http://localhost:3000
+npm run build      # production build and type check; every slice must pass it
+npm run lint       # eslint
+node --env-file=.env.local scripts/check-accounts.mjs   # slice 1 check against the real Supabase project
 ```
 
-Requires Node.js 22+ and a `.env.local` with the keys named in the spec. No test runner or linter has been chosen yet.
+Requires Node.js 22+ and a `.env.local` with the keys named in `.env.example`. There is no test runner. Each slice is verified by `npm run build` plus a small script in `scripts/` that runs against the real Supabase project and cleans up after itself.
 
-`create-next-app` refuses a non-empty directory, and this repository is already non-empty. Scaffold in a temporary folder and copy the result in.
+Database changes are SQL files in `supabase/migrations/`, numbered in order. The Supabase CLI is not installed: the owner runs each new file in the Supabase dashboard's SQL Editor.
 
-## Planned architecture
+## Next.js 16 specifics
+
+Read `AGENTS.md` and the guides in `node_modules/next/dist/docs/` before writing Next.js code. This version differs from older ones.
+
+- `cacheComponents` is on. Anything that reads the session (cookies) must render inside a `<Suspense>` boundary. `app/(app)/layout.tsx` already wraps every page in one, so pages can be `async` and call `getProfile()` from `lib/profile.ts`.
+- Middleware is called `proxy.ts`. It refreshes the Supabase session and redirects logged-out visitors. `/api/*` is excluded on purpose: those routes check their own secrets.
+
+## Styling
+
+- Tokens live in `app/globals.css` inside `@theme`, with the handoff's names (`bg-navy`, `text-text-muted`, `border-line`). Tailwind's default palette and breakpoints are switched off, so `bg-white` or `md:` do not exist. Use `bg-surface` and the single `desk:` breakpoint (700px).
+- Type sizes are utilities named after the handoff's type tokens: `text-h1`, `text-h2`, `text-h3`, `text-task-title`, `text-body`, `text-body-sm`, `text-caption`, `text-label`.
+- Shared pieces are in `components/ui/` (Button, ButtonLink, Card, Chip, Tag, Icon, TeammateBadge, Field, EmptyState).
+
+## Architecture (planned; partly built)
 
 Next.js 16 (App Router, TypeScript, Tailwind v4) hosted on Vercel's free plan, with Supabase (database, auth, photo storage, cron), Claude (`claude-opus-5-5` for plans, `claude-haiku-5-5` for chat and nudges), the Twilio WhatsApp Sandbox, and Resend for email.
 
