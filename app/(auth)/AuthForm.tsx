@@ -129,20 +129,9 @@ export function AuthForm({ mode }: { mode: "sign-up" | "log-in" }) {
               : "Log in →"}
         </Button>
 
-        {isSignUp ? (
-          // PLACEHOLDER links: the Terms and Privacy Policy are not written yet.
-          <p className="text-[13px] text-text-muted">
-            By creating an account you agree to the{" "}
-            <a href="#" className={linkClass}>
-              Terms
-            </a>{" "}
-            and{" "}
-            <a href="#" className={linkClass}>
-              Privacy Policy
-            </a>
-            .
-          </p>
-        ) : null}
+        {/* The handoff §6.0b has a legal line here ("By creating an account
+            you agree to the Terms and Privacy Policy"). It is left out until
+            those pages exist: see devpost/checklist.md > Final Review. */}
       </form>
     </div>
   );

@@ -320,5 +320,5 @@ Can be confirmed at review:
    - Do missed days stay visible in Plan? (Recommended: yes.)
    - A small "ground-breaking" moment after committing? (Recommended: optional, no confetti.)
    - When the weekly target is hit by a WhatsApp reply, where does the celebration show? (Recommended: next app visit, plus a line in Sarah's reply.)
-7. **Terms and Privacy Policy:** the sign-up screen links to them, but neither is written. The links are placeholders.
+7. **Terms and Privacy Policy:** neither is written yet, so the sign-up screen leaves out the handoff's legal line for now. Both pages are drafted and the line restored before the final review (`checklist.md > Final Review`).
 8. **Not designed yet:** Home after today's task is done, Profile before a goal exists, sign-up and log-in screens, and and the wording of WhatsApp messages and the re-engagement email.

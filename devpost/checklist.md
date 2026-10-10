@@ -157,6 +157,7 @@ Build mode: learn
 
 ## Final Review
 
+- [ ] Write a short plain-language Privacy Policy and Terms, add them as pages, and restore the legal line on sign-up (handoff §6.0b) with working links. Include how to stop WhatsApp messages and how to have an account deleted. Agreed with the learner on Oct 10, 2026; the line was removed until then.
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
