@@ -19,7 +19,7 @@ Build mode: learn
   Learner check: Open the Vercel link on your phone and on your laptop. Read the landing page as a stranger would. Sign up, look at all five menus, log out, log back in. Say whether it looks like your Blueprint design and whether anything feels off.
   Commit: `Add app shell, sign-up and the empty lot`
 
-- [ ] **2. You can do the onboarding and WOOP chat with Alice, and pick up where you left off**
+- [x] **2. You can do the onboarding and WOOP chat with Alice, and pick up where you left off**
   Becomes usable: "Design my goal with Alice" opens a real chat. Alice welcomes you, asks your name, nudge time and days per week, then Wish, prior experience, Outcome and Obstacle, with quick replies and the step bar. Close the tab mid-way and Home offers "Continue where you left off."
   Why now: This is the first time the app talks to Claude, so it is where we find out whether the AI setup works as the spec assumes. Everything Georgina writes later depends on these saved answers.
   PRD ref: `prd.md > Onboarding and WOOP Goal Setting`, `prd.md > The Core Journey` (steps 2–3)
@@ -181,3 +181,8 @@ Activity mode: [live app and editor, explicit static fallback, focused alternati
 - Editing in Profile (name, email, WhatsApp number, weekly target, nudge time, WhatsApp consent) moved from slice 6 into slice 1 — at the first hands-on check the learner asked to be able to edit everything in Profile straight away. Slice 6 keeps "Send my nudge now".
 - After sign-up a new user lands on the empty-lot Home, not the onboarding chat as the handoff §6.0b says — the learner asked for this at the first hands-on check. Confirmed by the learner on Oct 10, 2026.
 - The task limit rose from 20 to 30 minutes, with length chosen for each person — the learner decided this after the first hands-on check. Slice 3's checks, `prd.md > Roadmap and 2-Week Chunks` and `spec.md > Components > Plan Builder` were updated. No new settings screen: length changes go through "Ask for changes" and Talk to Team.
+- The onboarding chat moved from `app/(app)/onboarding/` to `app/(focus)/onboarding/` — the handoff §6.4 draws it full-height with its own header, and on a phone the bottom tabs would sit on top of the answer box. Same address, `/onboarding`.
+- `messages` gained a `chips` column — Alice's suggested replies have to survive closing the tab, or "Continue where you left off" would reopen without them.
+- The browser can only read `projects`, `conversations` and `messages`; the server does every write — the houses-built count and week records will depend on project status, so it must not be editable from outside the app.
+- Each free-text answer (Wish, experience, Outcome, Obstacle) gets a quick yes/no read by Haiku before it is saved — without it, asking Alice a question back ("what's an outcome?") was saved as the answer. Tapped suggestions skip the read. The same read decides whether an Obstacle is too general.
+- `zod` was installed in slice 2 instead of slice 3 — the yes/no read uses the same fixed-shape reply the plan will.

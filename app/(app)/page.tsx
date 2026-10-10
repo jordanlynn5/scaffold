@@ -1,7 +1,11 @@
 import { EmptyLot } from "@/components/house/EmptyLot";
+import { StartOver } from "@/components/onboarding/StartOver";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { StepBar } from "@/components/ui/StepBar";
 import { TeammateBadge, type TeammateId } from "@/components/ui/Teammate";
+import { getOnboarding } from "@/lib/onboarding/flow";
+import { getProfile } from "@/lib/profile";
 
 const steps: { who: TeammateId; verb: string; withWhom: string }[] = [
   { who: "alice", verb: "Design", withWhom: "with Alice" },
@@ -9,8 +13,42 @@ const steps: { who: TeammateId; verb: string; withWhom: string }[] = [
   { who: "sarah", verb: "Build daily", withWhom: "with Sarah" },
 ];
 
-// Home before a goal is set, new user. Handoff §6.1.
-export default function HomePage() {
+// Home before a goal is set (handoff §6.1). Two versions: a new user, and
+// someone who has started designing a goal with Alice and left partway.
+export default async function HomePage() {
+  const profile = await getProfile();
+  const onboarding = await getOnboarding(profile.id);
+
+  if (onboarding && onboarding.project.onboarding_step !== "name") {
+    const { project } = onboarding;
+    return (
+      <Card className="mx-auto flex max-w-[720px] flex-col gap-5">
+        <h1 className="text-h1">
+          Welcome back{profile.name ? `, ${profile.name}` : ""}
+        </h1>
+        <p className="text-body text-text-secondary">
+          Your design is halfway done. Alice saved everything, so you can pick
+          up right where you stopped.
+        </p>
+        <StepBar step={project.onboarding_step} />
+        {project.wish ? (
+          <Card variant="quiet">
+            <p className="text-body-sm text-text-secondary">
+              Your wish so far:{" "}
+              <strong className="font-semibold text-ink">{project.wish}</strong>
+            </p>
+          </Card>
+        ) : null}
+        <div className="flex flex-col items-start gap-1">
+          <ButtonLink href="/onboarding" className="w-full desk:w-auto">
+            Continue where you left off →
+          </ButtonLink>
+          <StartOver />
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <Card padded={false} className="mx-auto max-w-[720px] overflow-hidden">
       <div className="bg-grid-paper border-b border-line px-4 pt-4">

@@ -14,19 +14,27 @@ export type Profile = {
   houses_built: number;
 };
 
-// The logged-in person's own row. Sends logged-out visitors to log-in.
-export async function getProfile(): Promise<Profile> {
+const columns =
+  "id, name, email, whatsapp, whatsapp_consent, timezone, nudge_time, weekly_target, houses_built";
+
+// The logged-in person's own row, or null when nobody is logged in. For
+// places that answer with an error instead of sending you to log-in.
+export async function findProfile(): Promise<Profile | null> {
   const supabase = await createClient();
   const { data: auth } = await supabase.auth.getClaims();
-  if (!auth?.claims) redirect("/log-in");
+  if (!auth?.claims) return null;
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("profiles")
-    .select(
-      "id, name, email, whatsapp, whatsapp_consent, timezone, nudge_time, weekly_target, houses_built",
-    )
+    .select(columns)
     .eq("id", auth.claims.sub)
     .single();
-  if (error || !data) redirect("/log-in");
-  return data;
+  return data ?? null;
+}
+
+// The logged-in person's own row. Sends logged-out visitors to log-in.
+export async function getProfile(): Promise<Profile> {
+  const profile = await findProfile();
+  if (!profile) redirect("/log-in");
+  return profile;
 }

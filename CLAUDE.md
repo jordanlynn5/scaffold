@@ -52,6 +52,7 @@ npm run build      # production build and type check; every slice must pass it
 npm run lint       # eslint
 node --env-file=.env.local scripts/check-accounts.mjs   # sign-up, profile row and access rules, against the real Supabase project
 node --env-file=.env.local scripts/check-pages.mjs      # every page logged out and logged in; needs `npm run dev` running
+node --env-file=.env.local scripts/check-onboarding.mjs # the whole chat with Alice, with the real Claude; needs `npm run dev` running
 ```
 
 Requires Node.js 22+ and a `.env.local` with the keys named in `.env.example`. There is no test runner. Each slice is verified by `npm run build` plus a small script in `scripts/` that runs against the real Supabase project and cleans up after itself.
@@ -63,6 +64,7 @@ Database changes are SQL files in `supabase/migrations/`, numbered in order. The
 Read `AGENTS.md` and the guides in `node_modules/next/dist/docs/` before writing Next.js code. This version differs from older ones.
 
 - `cacheComponents` is on. Anything that reads the session (cookies) must render inside a `<Suspense>` boundary. `app/(app)/layout.tsx` already wraps every page in one, so pages can be `async` and call `getProfile()` from `lib/profile.ts`.
+- The onboarding chat lives in `app/(focus)/`, a route group with no menu around it. Its own header replaces the shell.
 - Middleware is called `proxy.ts`. It refreshes the Supabase session, serves the landing page (`app/(public)/welcome`) at `/` for logged-out visitors, and redirects them to log-in from anywhere else. `/api/*` is excluded on purpose: those routes check their own secrets.
 
 ## Styling
@@ -77,6 +79,7 @@ Next.js 16 (App Router, TypeScript, Tailwind v4) hosted on Vercel's free plan, w
 
 Things that take reading several sections of the spec to see:
 
+- **Only the server writes `projects`, `conversations` and `messages`.** The browser can read its own rows and nothing else, so `lib/` uses the admin client for these tables and filters by the person's id itself.
 - **`lib/` is the only layer that talks to outside services.** Screens in `app/` and `components/` never call Claude, Twilio or Resend directly.
 - **`completeTask` is the only way a task becomes done,** whether the tap came from the app or a WhatsApp reply. It also updates the week record and decides which celebrations are owed. Celebrations are never triggered by anything else, including settings changes.
 - **`bringPlanUpToDate` runs lazily** on app open and before each nudge. It rolls missed tasks forward and starts next-chunk generation. There is no midnight job.
