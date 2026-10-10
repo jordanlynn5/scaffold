@@ -22,7 +22,7 @@ Develops `scope.md > The Core Loop`.
    - **Outcome:** the best result if you achieve it. This is your *why*, saved and reused in reminders.
    - **Obstacle:** the main thing *inside you* that gets in the way (e.g. "I scroll instead of drawing").
    - If the obstacle involves your phone, the Architect suggests setting a limit with your phone's own Screen Time settings.
-4. **Georgina the General Contractor builds your plan.** AI builds (a) a **roadmap of big milestones** toward the wish and (b) **daily tasks for the first 2 weeks**. Each task takes 20 minutes or less. The plan includes if–then responses to your obstacle (the "P" in WOOP).
+4. **Georgina the General Contractor builds your plan.** AI builds (a) a **roadmap of big milestones** toward the wish and (b) **daily tasks for the first 2 weeks**. Each task takes 30 minutes or less, sized to you. The plan includes if–then responses to your obstacle (the "P" in WOOP).
 5. **Commit.** You review the plan and commit to it. The process is now in play.
 6. **Every day: get nudged by Sarah the Site Lead.** One WhatsApp message with a motivational line and today's task.
 7. **Do the task.** One small, clear task. Afterward you can keep going or stop until tomorrow.
@@ -74,7 +74,7 @@ Added Oct 10, 2026 from the learner's design. *(design handoff §6.0)*
 - As a new user, I want to create an account so my goal and progress are mine and others can use Scaffold too.
   - [ ] I can sign up with my email and WhatsApp number, and log back in later to the same goal and progress.
   - [ ] Sign-up asks for email, WhatsApp number (with country code) and a password of at least 8 characters, then takes me straight to Alice. A mistake is explained under the field it belongs to, never in red. *(design handoff §6.0b)*
-  - [ ] Sign-up has a tick box: "Yes, send me one message a day on WhatsApp with my task. I can stop it any time." My answer is saved. *(Whether an unticked box blocks sign-up is open. See Open Questions.)*
+  - [ ] Sign-up has a tick box: "Yes, send me one message a day on WhatsApp with my task. I can stop it any time." My answer is saved. Leaving it unticked does not block sign-up: I get no WhatsApp messages until I tick it in Profile.
   - [ ] Profile shows my current goal, my weekly target (1–7 days), the time my daily nudge arrives, and my contact details, all editable.
   - [ ] Changing my goal means **abandoning the current project**. I see a warning listing what is deleted forever and what I keep, and must explicitly confirm ("Yes, I want to abandon this project") before the old goal is replaced. "Keep building" is the main button.
   - [ ] Abandoning **deletes everything tied to that project**: the house and its bricks, the goal and WOOP answers, the roadmap and plan, the learning log (all notes and photos), and team chats about the goal. I keep my account, settings, and houses-built count. *(design handoff §7.5)*
@@ -107,7 +107,9 @@ New during design. Develops `scope.md > Later` ("help planning brand-new goals f
 ### Roadmap and 2-Week Chunks
 - As a user, I want to see the path to my dream without being overwhelmed by every future day.
   - [ ] After WOOP, the General Contractor shows a roadmap of **five milestones** plus 2 weeks of daily tasks. I see my Wish, Outcome, and Obstacle alongside it, and can ask for changes or commit with "I commit to this plan." *(design handoff §6.5)*
-  - [ ] Each daily task is one clear, finishable exercise sized at **20 minutes or less** (e.g. "draw 6 hands, 3 minutes each," which is 18 minutes).
+  - [ ] Each daily task is one clear, finishable exercise sized at **30 minutes or less** (e.g. "draw 6 hands, 3 minutes each," which is 18 minutes).
+  - [ ] **Task length fits the person.** Georgina chooses how long tasks are, up to 30 minutes, from my goal, my experience and what I have told the team. If I say tasks are too long or too short, the team can propose a change, which applies only after I confirm.
+  - [ ] A task's total time is its count times its minutes, and the "About n minutes" label always equals that total.
   - [ ] The plan includes at least one if–then response to my named obstacle.
   - [ ] Only the current 2 weeks are broken into daily tasks. Later milestones show as roadmap steps.
   - [ ] When a 2-week chunk ends, the next chunk is generated toward the current milestone.
@@ -192,7 +194,7 @@ Develops `scope.md > Later` ("real, cited sources behind tasks and suggestions")
 ### Mastery Tasks (Refreshers)
 Develops `scope.md > Later` ("refreshers that bring back things you learned earlier"). Called **mastery** in the app.
 - As a user, I want things I learned earlier to come back so I keep the skill, not just tick it off.
-  - [ ] A mastery task appears like any other daily task: on Home, in Plan, and in the WhatsApp nudge. Same size (20 minutes or less), same "Mark as done," same brick.
+  - [ ] A mastery task appears like any other daily task: on Home, in Plan, and in the WhatsApp nudge. Same size (30 minutes or less), same "Mark as done," same brick.
   - [ ] It is labeled "Mastery" so I can tell it revisits something I've already practiced.
   - [ ] Georgina decides when to include one as she plans each 2-week chunk. There is no fixed schedule.
 
@@ -232,21 +234,23 @@ Includes the follow-up conversation from `scope.md > Later`.
 - **Abandoning deletes everything tied to the project,** including the learning log and team chats, and the warning says so plainly.
 - **Onboarding asks name, nudge time, and days per week, then prior experience after the Wish.**
 - **Weeks start on Monday. Nudge time is chosen by the user.**
-- **Tasks are 20 minutes or less.** Raised from 5–15 minutes by the learner at review. The design handoff still says 5–15 in places (§1, §6.4, §7.8, §10); this PRD is newer on that point.
+- **Tasks are 30 minutes or less, and their length adjusts to the person.** Raised from 5–15 to 20 minutes at PRD review, then to 30 on Oct 10, 2026, when the learner also decided that length should follow the user, their goal and their conversations with the team rather than one fixed size. Thirty minutes is the ceiling, not the target: a beginner's first tasks can still be 5 or 10 minutes. The design handoff still says 5–15 in places (§1, §6.0b, §6.4, §7.1, §7.8, §10); this PRD is newer on that point.
+- **WhatsApp consent is optional at sign-up** (Oct 10, 2026). Leaving the box unticked still creates the account. That person gets no WhatsApp messages until they tick it in Profile.
+- **A new user lands on the empty lot after signing up** (Oct 10, 2026), where "Get to work on your dream" starts their goal. The handoff §6.0b sends them straight into the chat with Alice; the learner chose the lot.
 - **"Why this task" on request, instead of cited sources.** Georgina explains a task and its numbers only when asked, through a **?** next to the task. It keeps the daily task simple and still answers "what is it based on."
 - **Refreshers are ordinary tasks called "mastery."** No new screen or separate system: a mastery task looks and works like any other daily task.
 - **No separate levels or rewards.** The bricks and stages already are the levels and rewards, so a second system would only add clutter.
 - **Screens before WhatsApp in the build.** "The WhatsApp nudge isn't valuable without the rest": a nudge needs a real task, plan, and house behind it. *Refined in `5-build`:* the nudge is built straight after the core screens (step 6) rather than near the end, so the kernel and its unverified services are proven early.
 - **Name: Scaffold** (replaces the working title "Dream Friend"). "Dream Friend" made the friend sound like the dream. Scaffold centers the accomplishment with support behind it: the house is your dream, the daily tasks are bricks, and the scaffolding is the support system. As in teaching, scaffolding is temporary support that comes down once you can build on your own.
 - **Full-featured, not a minimal POC.** The learner has 25 days and wants an ambitious, complete product. *Safeguard:* the build does the core features first, so a working, submittable version exists early (see **What We're Building**).
-- **WOOP replaces "goal, why, time."** Wish = goal, Outcome = why, and Obstacle targets the real problem: "I stop working on it." The 20-minutes-or-less task size replaces the "how much time do you have" question.
+- **WOOP replaces "goal, why, time."** Wish = goal, Outcome = why, and Obstacle targets the real problem: "I stop working on it." The 30-minutes-or-less task size replaces the "how much time do you have" question.
 - **AI creates the plan, the user commits to it.** Commitment is an explicit step.
 - **Roadmap + 2-week chunks.** Chosen over a whole plan (goes stale, overwhelming, wasted generation) and over chunks alone (lose sight of the end goal).
 - **Plan view shows one week or a chosen time frame, never everything.** The whole plan at once is "ugly and overwhelming."
 - **Note or photo with each done task.** It holds me accountable for what I claim and is "great motivation later."
 - **Sign-up is in,** so others can use it (`scope.md > Who It's For`).
 - **A public landing page is in** (Oct 10, 2026). The learner designed it so a visitor understands the product before signing up. Teammate portraits are used there only; the app keeps letter badges.
-- **The new handoff's task-length check is adopted with the 20-minute limit.** A task's total time is its count times its minutes ("5 hands, 2 minutes each" is 10 minutes), and the "About n minutes" label must equal that total. The handoff states the range as 5–15 minutes; the 20-minutes-or-less decision above still stands unless the learner changes it.
+- **The new handoff's task-length check is adopted with the 30-minute limit.** A task's total time is its count times its minutes ("5 hands, 2 minutes each" is 10 minutes), and the "About n minutes" label must equal that total.
 - **Two-way WhatsApp is in,** for replying with proof.
 - **A missed task rolls forward,** because "there is no progress without action."
 - **Weekly target instead of a daily streak,** set by the user, with a celebration when hit. It leaves room for life without guilt.
@@ -316,6 +320,5 @@ Can be confirmed at review:
    - Do missed days stay visible in Plan? (Recommended: yes.)
    - A small "ground-breaking" moment after committing? (Recommended: optional, no confetti.)
    - When the weekly target is hit by a WhatsApp reply, where does the celebration show? (Recommended: next app visit, plus a line in Sarah's reply.)
-7. **WhatsApp consent left unticked at sign-up:** block sign-up, or allow it with nudges switched off? (Handoff recommends: allow, keep nudges off, remind gently in Profile. Built that way for now.)
-8. **Terms and Privacy Policy:** the sign-up screen links to them, but neither is written. The links are placeholders.
-9. **Not designed yet:** Home after today's task is done, Profile before a goal exists, sign-up and log-in screens, and and the wording of WhatsApp messages and the re-engagement email.
+7. **Terms and Privacy Policy:** the sign-up screen links to them, but neither is written. The links are placeholders.
+8. **Not designed yet:** Home after today's task is done, Profile before a goal exists, sign-up and log-in screens, and and the wording of WhatsApp messages and the re-engagement email.

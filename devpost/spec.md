@@ -26,7 +26,7 @@ PRD ref: `prd.md > The Core Journey`.
 1. **Sign up.** You type your email, a password and your WhatsApp number. → Supabase creates your account and a row for you in the `profiles` sheet. → You land on Home, which shows the empty lot.
 2. **Onboarding with Alice.** You answer a question. → The app saves that answer to your project row straight away, then asks Claude (Haiku) for Alice's next message. → If you close the tab, the saved step is still there, and Home offers "Continue where you left off."
 3. **WOOP.** Same loop for Wish, prior experience, Outcome, Obstacle. Alice's instructions tell her to ask a follow-up for a vague obstacle and to suggest Screen Time if the obstacle involves your phone.
-4. **Georgina builds the plan.** The app sends your WOOP answers to Claude (Opus) and asks for a fixed shape back: five milestones, 14 daily tasks of 20 minutes or less, at least one if–then plan, and a short "why" for each task. → The app checks the shape (five milestones, no task over 20 minutes) and saves it as a draft plan. → You see the plan review screen.
+4. **Georgina builds the plan.** The app sends your WOOP answers to Claude (Opus) and asks for a fixed shape back: five milestones, 14 daily tasks of 30 minutes or less, sized to you, at least one if–then plan, and a short "why" for each task. → The app checks the shape (five milestones, no task over 30 minutes, each task's minutes equal to its count times its per-item time) and saves it as a draft plan. → You see the plan review screen.
 5. **Commit.** You press "I commit to this plan." → The project is marked active, the tasks get calendar dates starting today, and Home switches from the empty lot to today's task.
 6. **Daily nudge.** Every 15 minutes Supabase rings the bell. → The app finds everyone whose nudge time just arrived in their own time zone. → For each, it brings their plan up to date (see step 8), asks Claude (Haiku) for Sarah's line, and sends it by WhatsApp or by email.
 7. **Mark it done.** In the app, you press "Mark as done" and optionally add a note or photo. On WhatsApp, you reply with words or a photo. → Either way the same piece of code runs: the task is marked done, the note or photo is saved as proof, this week's count goes up, and the app works out whether a celebration is owed.
@@ -93,7 +93,7 @@ Carries forward `prd.md > Look and Feel` and `scope.md > Inspiration & Identity`
 - **Red** exists only in the abandon dialog and the ribbon.
 - **Motion:** every animation checks `prefers-reduced-motion` and shows its final state instead.
 - **Tone:** each teammate's instructions include the handoff's voice table (§9), so AI-written text follows the same "say / never say" rules as the fixed wording.
-- **Task size:** 20 minutes or less everywhere. The handoff's "5–15 minutes" is out of date (`prd.md > Product Decisions`).
+- **Task size:** 30 minutes or less everywhere, with the length chosen for the person. The handoff's "5–15 minutes" is out of date (`prd.md > Product Decisions`).
 - **Portraits:** the four teammate portraits appear on the landing page only. Inside the app, teammates are letter badges.
 - **Not designed yet:** log-in (reuses the sign-up layout), Home after today's task is done, Profile before a goal, the **?** popover, and the "Mastery" tag. These use the handoff's existing card, input, button and label styles.
 
@@ -125,8 +125,10 @@ Georgina. Uses Opus. Three jobs, all returning a fixed shape that the app checks
 2. **Next chunk:** 14 more tasks toward the current milestone, given what was done and missed. May mark tasks as mastery.
 3. **Path:** breaks a dream into an ordered list of goals.
 
-If the shape is wrong (a task over 20 minutes, not five milestones), it asks once more, then shows a retry button.
+If the shape is wrong (a task over 30 minutes, a minutes label that does not match the task, not five milestones), it asks once more, then shows a retry button.
 PRD ref: `prd.md > Roadmap and 2-Week Chunks`, `prd.md > Mastery Tasks (Refreshers)`, `prd.md > Why This Task`.
+
+**Task length fits the person.** Thirty minutes is a ceiling the code enforces. Inside it, Georgina picks the length from the person's goal, prior experience and what they have said to the team, and her instructions tell her to start short for beginners. There is no separate setting: asking for longer or shorter tasks goes through "Ask for changes" on the plan review or through Talk to Team, and the next 2-week chunk is told what length suited the person.
 
 ### Plan Review and Commit
 Shows the draft roadmap and first two weeks beside the Wish, Outcome and Obstacle. "Ask for changes" sends the request to Georgina, who returns a revised draft. "I commit to this plan" activates the project and dates the tasks.
@@ -201,7 +203,7 @@ projects        id, user_id, path_step_id?, status (onboarding|draft_plan|active
                 wish, experience, outcome, obstacle, if_then_plans (list),
                 onboarding_step, planned_through (date), committed_at, completed_at
 milestones      id, project_id, position (1–5), stage_name, title, status
-tasks           id, project_id, milestone_id, scheduled_date, title, how_to, minutes (≤20),
+tasks           id, project_id, milestone_id, scheduled_date, title, how_to, minutes (≤30),
                 why, is_mastery, status (upcoming|done|missed), done_at?, rolled_from_task_id?
 proofs          id, task_id, note?, photo_path?, source (app|whatsapp), created_at, updated_at
 conversations   id, user_id, project_id? (empty before a goal), kind (onboarding|team|goal_finder)
@@ -341,7 +343,7 @@ The app's files sit in the repository root alongside `devpost/`. Next.js's setup
 ## Important Failure Modes
 
 - **Claude is slow or fails while Georgina builds the plan** → a "Georgina is drawing up your plan" state, then a calm message with a "Try again" button. Your WOOP answers are already saved, so nothing is retyped.
-- **The plan comes back the wrong shape** (a task over 20 minutes, not five milestones) → the app asks once more without bothering you. If it fails again, the same "Try again" message.
+- **The plan comes back the wrong shape** (a task over 30 minutes, not five milestones) → the app asks once more without bothering you. If it fails again, the same "Try again" message.
 - **A teammate's chat reply fails** → your message stays in the chat with "That didn't send. Try again."
 - **WhatsApp can't reach you** → the nudge goes by email, and Home shows the connection notice with the join code.
 - **Nobody has used the app for a week** → Supabase's free plan pauses the project. Fix: press "Restore" in the Supabase dashboard. The 15-minute bell should keep it awake, which is something to confirm during the build.

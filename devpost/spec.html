@@ -312,7 +312,7 @@
       nodes: ["you","app","supabase"], edges: ["you-app","app-supabase"], prd: "Sign Up and Profile", files: ["app/(auth)/", "lib/supabase/"] },
     { t: "Onboarding with Alice", d: "You answer a question. The app saves it straight away, then asks Claude (Haiku) for Alice's next message. Close the tab and Home offers \"Continue where you left off.\"",
       nodes: ["you","app","supabase","claude"], edges: ["you-app","app-supabase","app-claude"], prd: "Onboarding and WOOP Goal Setting", files: ["app/(app)/onboarding/", "lib/ai/teammates.ts"] },
-    { t: "Georgina builds the plan", d: "The app sends your Wish, Outcome and Obstacle to Claude (Opus) and asks for a fixed shape: five milestones, 14 tasks of 20 minutes or less, an if–then plan, and a \"why\" for each task. The app checks the shape before saving.",
+    { t: "Georgina builds the plan", d: "The app sends your Wish, Outcome and Obstacle to Claude (Opus) and asks for a fixed shape: five milestones, 14 tasks of 30 minutes or less, an if–then plan, and a \"why\" for each task. The app checks the shape before saving.",
       nodes: ["app","supabase","claude"], edges: ["app-supabase","app-claude"], prd: "Roadmap and 2-Week Chunks", files: ["lib/ai/plan.ts"] },
     { t: "Commit", d: "You press \"I commit to this plan.\" The project becomes active, the tasks get calendar dates starting today, and Home switches from the empty lot to today's task.",
       nodes: ["you","app","supabase"], edges: ["you-app","app-supabase"], prd: "Roadmap and 2-Week Chunks", files: ["app/(app)/onboarding/plan/"] },

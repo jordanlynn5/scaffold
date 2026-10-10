@@ -23,8 +23,10 @@ Read these before building. Where they disagree, the later one in this list wins
 Before building or changing any UI, read `SCAFFOLD_DESIGN_HANDOFF.md`. Follow its tokens, components and rules exactly. If something is not covered, ask instead of inventing.
 
 Known disagreements, already decided:
-- Tasks are **20 minutes or less**. The handoff's "5–15 minutes" is out of date, including in the version of Oct 10, 2026 (§6.0b, §7.1). Its task-length check is adopted with the 20-minute limit: total time is count × minutes, and the "About n minutes" label must equal that total.
+- Tasks are **30 minutes or less**, and the length is chosen for the person (goal, experience, conversations with the team). 30 is a ceiling, not a target. The handoff's "5–15 minutes" is out of date, including in the version of Oct 10, 2026 (§6.0b, §7.1). Its task-length check is adopted with the 30-minute limit: total time is count × minutes, and the "About n minutes" label must equal that total.
 - Addresses are `/sign-up` and `/log-in` (spec). The handoff's `/signup` and `/login` redirect to them.
+- WhatsApp consent is optional at sign-up. No consent means no WhatsApp messages, never a blocked sign-up.
+- After sign-up a new user lands on the empty-lot Home, not in the onboarding chat (the handoff §6.0b says otherwise).
 - Teammate portraits are for the landing page only. Inside the app, teammates are letter badges.
 - There is **no final voice note**. The missed-day sequence ends at the sincere email.
 - The handoff asks to be renamed `DESIGN.md`. It has not been; the PRD and spec cite it by its current name.
@@ -82,7 +84,7 @@ Things that take reading several sections of the spec to see:
 - **Every nudge chooses its channel.** WhatsApp only if the user messaged the sandbox within 24 hours and joined within 3 days; otherwise the same message goes by email. This is a WhatsApp platform rule, not a preference, and it is why inbound-message time is stored on the profile.
 - **Derived values are never stored:** today's task, bricks laid, current stage, streak.
 - **Abandoning a project is a hard delete** that cascades to everything under the project. The profile, `houses_built`, week records and the dream survive.
-- **AI plan output is validated** (five milestones, no task over 20 minutes) before it is saved, with one silent retry.
+- **AI plan output is validated** (five milestones, no task over 30 minutes, minutes label equal to count × per-item time) before it is saved, with one silent retry.
 
 ## Design rules that are easy to break
 

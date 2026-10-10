@@ -7,8 +7,8 @@ import { Logo } from "@/components/ui/Logo";
 // Desktop: a navy panel (44%) beside the form. Phone: a navy top bar, then
 // the form only.
 const promises = [
-  // The handoff says "5 to 15 minutes". Tasks are 20 minutes or less (prd.md).
-  "One small task a day, 20 minutes or less",
+  // The handoff says "5 to 15 minutes". Tasks are 30 minutes or less (prd.md).
+  "One small task a day, 30 minutes or less",
   "A gentle nudge on WhatsApp",
   "A weekly target that leaves room for life",
 ];
