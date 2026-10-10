@@ -9,7 +9,7 @@ Build mode: learn
 
 ## Slices
 
-- [ ] **1. You can sign up, log in, and land on the empty lot, on a live link**
+- [x] **1. You can sign up, log in, and land on the empty lot, on a live link**
   Becomes usable: A real website at a `*.vercel.app` address in the Blueprint look. A visitor sees the landing page and can create an account, log out and back in, and move between Home, Progress, Plan, Talk to Team and Profile. Each shows its "before a goal" state pointing to Alice.
   Why now: Everything else lands on this. Putting it on the live link now, instead of at the end, means any hosting or account problem shows up on day one while it is cheap to fix.
   PRD ref: `prd.md > Landing Page`, `prd.md > Sign Up and Profile`, `prd.md > Screens and Layout`, `prd.md > States and Boundaries` (first use), `prd.md > Look and Feel`
@@ -151,7 +151,7 @@ Build mode: learn
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — after slice 1, the look and the menu on your own phone, before any screen is built on top of them
+- [x] Early usable behavior explored — after slice 1, the look and the menu on your own phone, before any screen is built on top of them
 - [ ] Core journey explored end to end — after slice 6, from sign-up to the WhatsApp nudge on the live link (the first submittable version)
 - [ ] Final kick-the-tires exploration and feedback completed
 
