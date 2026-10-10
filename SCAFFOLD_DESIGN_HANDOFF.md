@@ -178,6 +178,9 @@ Fonts (Google Fonts): **Space Grotesk** (500, 600, 700) for headings, **IBM Plex
 
 | Screen | Suggested route | Canvas artboard(s) |
 |---|---|---|
+| Landing page (public, logged out) | `/` (logged out) | Landing (+ Phone) |
+| Sign up | `/signup` | Signup (+ Phone) |
+| Log in | `/login` | **[OPEN]** not designed |
 | Home — no goal (new / resume) | `/` | HomeEmpty, HomeResume (+ Phone) |
 | Progress — no goal | `/progress` | EmptyProgress (+ Phone) |
 | Plan — no goal | `/plan` | EmptyPlan (+ Phone) |
@@ -347,6 +350,110 @@ The house is the product's main visual. Build it as an **SVG component driven by
 ## 6. Screens
 
 Every screen exists in **phone and desktop** layouts. Text in quotes is **final copy** unless marked as example data.
+
+### 6.0 Landing page (public)
+
+**Goal:** the right visitor quickly understands what Scaffold does, why it matters, and what to do next. **One action only: sign up.** Logged-out visitors see this page at `/`; logged-in users go straight to the app.
+
+The layout is a fluid, full-width page with content up to 1160px wide. It uses the same tokens as the app.
+
+**1. Top bar** (inside the hero, navy)
+- Logo (links to the top of the page).
+- "How it works" text link that jumps to `#how` (desktop only).
+- A small outlined "Get started" button that goes to `/signup`.
+
+**2. Hero** (navy with a faint white grid: lines `rgba(255,255,255,0.06)` every 24px). Two columns on desktop: text on the left, visual on the right. On phone it stacks, text first.
+- **Headline** (h1, Space Grotesk 700, 60px desktop / 38px phone, line height 1.05): "Make progress on what matters to you, **one small task at a time.**" The second phrase is in `--color-yellow`.
+- **Explanation** (19px / 17px, `--color-text-on-navy`, max ~540px): "For anyone with an ambitious goal who finds it hard to stay consistent. Scaffold turns that goal into one small task a day and helps you keep going."
+- **Primary CTA:** highlight button "Get started on your goal →" (56px tall, 18px / 700), going to `/signup`. Full width on phone.
+- **Secondary:** text link "See how it works", which jumps to `#how`.
+- **Visual:** the real product, not a stock image.
+  - A white card on blueprint grid paper with a strong shadow, showing the **house illustration** (in-progress state, §5), the tag "Stage 3 of 5 · Walls" and "20 bricks laid".
+  - **Floating task card** (white, bottom-left, overlapping the edge on desktop): tag "TODAY'S BRICK" · "About 10 minutes", title "Draw 5 hands, 2 minutes each", and a non-interactive navy "Mark as done" bar.
+  - **Floating weekly card** (ink, top-right): "This week: 2 of 4 days", 4 day pills (2 yellow, 1 dashed yellow, 1 empty), "Room for real life, no guilt."
+  - On phone, both floating cards stack below the house card, full width.
+  - The whole visual is a `<figure>` with an `aria-label` describing it.
+
+**3. Key benefits** (`--color-bg`)
+- Label "WHY SCAFFOLD", h2 "Small steps that actually add up".
+- Three cards (3 columns desktop, 1 phone). Each has a 52px navy icon tile with a yellow icon, an h3 and one line of body text:
+
+  | Icon | Title | Text |
+  |---|---|---|
+  | target | Know what to do next | Get one clear, manageable task at a time. |
+  | heart | Keep going without guilt | Gentle nudges and a weekly target that leaves room for life. |
+  | house | See your progress | Watch small actions add up toward something you care about. |
+
+**4. How it works** (`id="how"`, white)
+- Label "HOW IT WORKS", h2 "From a goal to daily progress in three steps".
+- An ordered list of 3 steps (3 columns desktop, 1 phone). Each step has a 200px **preview panel** on grid paper (decorative, `aria-hidden`), then a 40px yellow number circle, an h3 and one line of text:
+
+  | Step | Title | Text | Preview |
+  |---|---|---|---|
+  | 1 | Choose a goal | Pick something you want to get better at or accomplish. | Alice asks "What do you want to accomplish?"; the user replies "Become a better illustrator" |
+  | 2 | Make a plan | Scaffold turns it into small, manageable tasks. | Three task rows (Day 1–3) with minute tags |
+  | 3 | Keep making progress | Get gentle nudges, mark tasks done, and see how far you've come. | Sarah's nudge "Five hands today. Small bricks, solid walls." + weekly tracker + "Done: one more brick in the wall" |
+
+**5. Meet your team** (`--color-bg`)
+- Label "MEET YOUR TEAM", h2 "You're the builder. They've got your back.", intro "Four teammates, each with one job: helping you build something you care about."
+- Four cards (4 columns desktop, 2×2 phone). Each card has a **square portrait** (1:1, `object-fit: cover`, `loading="lazy"`) and **one line of text below it**.
+- The name and role are **printed inside each image** (e.g. "ALICE · ARCHITECT"), so they are **not repeated as visible text**. Keep them for assistive technology instead:
+  - a visually hidden `h3` per card, e.g. "Alice, Architect"
+  - descriptive `alt` text, e.g. "Alice, the Architect, wearing a headset and glasses, pointing at a yellow blueprint"
+- The one line per card:
+
+  | Name | Role | Line |
+  |---|---|---|
+  | Alice | Architect | Helps you shape your goal and remembers why it matters to you. |
+  | Georgina | General Contractor | Turns your goal into a plan of small, manageable tasks. |
+  | Paula | Project Manager | Keeps an eye on your progress and adjusts the plan with you. |
+  | Sarah | Site Lead | Sends your task each day with a gentle nudge. |
+
+- **Images: supplied.** Four square portraits (2048×2048 originals). Serve them at **800×800 WebP** (~45 KB each). The canvas has web-ready copies.
+- **Decided:** portraits are used **on the landing page only**. Inside the app, teammates stay as **letter badges** (§4.4).
+- **Placeholder** if an image fails to load: grid paper with the teammate's letter badge (56px).
+
+**6. Closing CTA** (navy with grid, centered, max ~820px)
+- A small house icon with one yellow brick laid.
+- h2 "Big goals begin with one small step." (48px / 32px).
+- Highlight button "Get started on your goal →", going to `/signup` (full width on phone).
+
+**7. Footer** (`--color-ink`)
+- Logo + "Scaffold" on the left, "Built one brick at a time." on the right. They wrap on phone.
+
+**Page rules**
+- Every "Get started" button goes to `/signup`. There are no other calls to action.
+- Section spacing: 96px vertical padding on desktop, 56px on phone.
+- **Not included yet:** page title and meta description, a social share image, analytics. Add them at build time.
+
+### 6.0b Sign up
+
+**Goal:** create an account with the minimum needed for the core loop, then hand straight over to Alice.
+
+**Layout**
+- **Desktop:** split screen.
+  - **Left (44%):** navy panel with grid. Logo (links to the landing page); a small house-under-scaffolding illustration; h1 "Every dream house starts with a plan." (38px); "Create your account, then Alice, your Architect, will help you design your goal. It takes about 5 minutes."; and three yellow-check lines: "One small task a day, 5 to 15 minutes" · "A gentle nudge on WhatsApp" · "A weekly target that leaves room for life".
+  - **Right:** the form, centered, max 440px.
+- **Phone:** navy top bar with the logo, then the form only.
+
+**Form** (one column, 18px gaps)
+- h2 "Create your account", and below it "Already have one? **Log in**", which links to `/login`.
+- **Email:** `type="email"`, `autocomplete="email"`, placeholder "you@example.com".
+- **WhatsApp number:** `type="tel"`, `autocomplete="tel"`, placeholder "+34 600 000 000". Help text: "Sarah, your Site Lead, sends your daily task here. Include your country code."
+- **Password:** `type="password"`, `autocomplete="new-password"`. Help text: "At least 8 characters."
+- **WhatsApp consent checkbox** (in a white bordered box, 22px checkbox): "Yes, send me one message a day on WhatsApp with my task. I can stop it any time."
+- **Primary button:** "Create account →" (54px, full width).
+- **Legal line:** "By creating an account you agree to the [Terms] and [Privacy Policy]." These are placeholder links.
+- All inputs are 48px tall, radius 12, `--color-input-border`, with visible labels linked through `<label>` and help text through `aria-describedby`.
+
+**Behavior**
+- **Authentication: email + password** (decided). No magic link.
+- **Validation:** check email format; check the WhatsApp number is in international format with a country code (normalize to E.164); password at least 8 characters.
+- Show errors **inline under the field**, in `--color-text-secondary` text with a warning icon. **Don't use red** (red is reserved, §2.1). Move focus to the first invalid field.
+- **WhatsApp consent is required** to send daily nudges. **[OPEN]** If unchecked: block sign-up, or allow sign-up with nudges switched off? Recommendation: allow sign-up, keep nudges off, and remind the user gently in Profile.
+- **On success:** create the user and go straight to the onboarding chat (§6.4). Alice's first question asks for the name, so the form doesn't.
+- If the email already exists: "There's already an account with this email. Log in instead?" with a link.
+- **Not designed:** log in, forgot password / reset, and email verification. Use the same split layout and form components.
 
 ### 6.1 Home — before a goal is set
 
@@ -574,6 +681,12 @@ These are product decisions. Implement them exactly.
 - **Notes and photos are optional** and can be **added or edited any time later** from Plan. Adding them later never changes when the task was done and never affects targets or streaks.
 - **A missed task rolls forward:** tomorrow shows the same task, and the plan shifts by one day.
 - Proof sent by WhatsApp reply appears in the learning log (PRD).
+- **Task length check.** Every task must take **5–15 minutes in total**. Before a task is shown or saved, validate its total time:
+  - For repeated tasks written as "[count] × [minutes] each" (e.g. "Draw 5 hands, 2 minutes each"), the total is count × minutes. Here, 5 × 2 = 10 minutes.
+  - The "About [n] minutes" label must equal that total, never the per-item time.
+  - If the total is under 5 or over 15 minutes, Georgina must adjust the count or the minutes, or split the task, before it reaches the user.
+  - Do this in code after the AI generates the plan, not only in the prompt, so a mistake from the model can't slip through.
+  - Example of what **not** to produce: "Draw 10 hands, 3 minutes each" labeled "About 10 minutes" (it's really 30 minutes).
 
 ### 7.2 Weekly target and streak
 
@@ -702,7 +815,7 @@ WeekRecord   userId, weekStart (Monday), target, doneCount, hit (bool), celebrat
 This follows the PRD's "core first" plan, so a working, submittable version exists early.
 
 1. **Foundations:** tokens (§2), fonts, layout shell with sidebar / top bar / bottom tabs (§3), buttons, cards, chips, icons (§4).
-2. **Sign up / log in.** **[OPEN]** Screens not designed; use the standard card + input + primary button styles.
+2. **Landing page** (§6.0) and **sign up** with email + password (§6.0b). Log in and password reset reuse the sign-up layout (not designed).
 3. **Home before a goal** (§6.1) and the other empty states (§6.2).
 4. **Onboarding chat** (§6.4) with save-as-you-go.
 5. **Plan review + commit** (§6.5).
@@ -734,6 +847,7 @@ Update `prd.md` with these:
 10. **Abandoning deletes everything tied to the project,** including the learning log and team chats.
 11. **Notes and photos can be added or edited later;** "Mark as done" alone is the official record.
 12. **Weeks start on Monday** (open question #8, partly answered; nudge time is user-chosen).
+13. **Task example and length check: already applied to `prd.md`.** The example is now "draw 5 hands, 2 minutes each", and the task length check from §7.1 is an acceptance criterion under "The Plan".
 
 ---
 
@@ -752,8 +866,10 @@ Update `prd.md` with these:
 | 9 | A short "ground-breaking" moment after committing? | Optional, small, no confetti |
 | 10 | Profile before a goal exists | Contact, weekly target and nudge time only |
 | 11 | Home after today's task is done | Not designed: needs a "done for today" state |
-| 12 | Sign-up / log-in screens | Not designed: use standard components |
+| 12 | Log-in, password reset and email verification screens | Not designed: reuse the sign-up split layout and form components |
 | 13 | Levels and rewards, refreshers, cited sources (PRD open questions #2–4) | Not designed |
 | 14 | WhatsApp message templates, email and voice-note content | Not designed (copy needed) |
 | 15 | Dark mode | Not designed; light only for now |
 | 16 | WhatsApp proof: when the weekly target is reached via WhatsApp reply, where does the confetti show? | Next app visit, plus a congratulation in Sarah's WhatsApp reply |
+| 17 | WhatsApp consent unchecked at sign-up | Allow sign-up with nudges off; gentle reminder in Profile |
+| 18 | ~~Teammate images in the app?~~ | **Decided:** landing page only; the app keeps letter badges |

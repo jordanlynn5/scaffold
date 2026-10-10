@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useSyncExternalStore } from "react";
+import { useActionState, useEffect, useRef, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
-import { Field } from "@/components/ui/Field";
+import { Field, FieldError } from "@/components/ui/Field";
 import { logIn, signUp, type AuthState } from "./actions";
 
 const noop = () => () => {};
+const linkClass = "font-semibold text-navy underline-offset-2 hover:underline";
 
 // The time zone comes from the browser, so "9:00" means 9:00 where you are.
 function useTimezone() {
@@ -25,83 +25,125 @@ export function AuthForm({ mode }: { mode: "sign-up" | "log-in" }) {
     {},
   );
   const timezone = useTimezone();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // After a failed submit, move focus to the first field with a problem.
+  useEffect(() => {
+    formRef.current
+      ?.querySelector<HTMLElement>('[aria-invalid="true"]')
+      ?.focus();
+  }, [state]);
+
+  const emailError = state.emailTaken ? (
+    <>
+      There&apos;s already an account with this email.{" "}
+      <Link href="/log-in" className={linkClass}>
+        Log in instead?
+      </Link>
+    </>
+  ) : (
+    state.errors?.email
+  );
 
   return (
-    <Card className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-h1">
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-1.5">
+        {/* On desktop the navy panel holds the page's h1. */}
+        <h2 className="text-h1">
           {isSignUp ? "Create your account" : "Welcome back"}
-        </h1>
+        </h2>
         <p className="text-body-sm text-text-secondary">
-          {isSignUp
-            ? "You're the builder. Your team is ready when you are."
-            : "Log in to pick up where you left off."}
+          {isSignUp ? "Already have one? " : "New here? "}
+          <Link
+            href={isSignUp ? "/log-in" : "/sign-up"}
+            className={`inline-flex min-h-11 items-center ${linkClass}`}
+          >
+            {isSignUp ? "Log in" : "Create an account"}
+          </Link>
         </p>
       </div>
 
-      <form action={action} className="flex flex-col gap-4">
+      <form ref={formRef} action={action} noValidate className="flex flex-col gap-[18px]">
         <Field
           id="email"
           label="Email"
           type="email"
           autoComplete="email"
+          placeholder="you@example.com"
           required
-          defaultValue={state.email}
+          defaultValue={state.values?.email}
+          error={emailError}
         />
+        {isSignUp ? (
+          <Field
+            id="whatsapp"
+            label="WhatsApp number"
+            type="tel"
+            autoComplete="tel"
+            placeholder="+34 600 000 000"
+            required
+            defaultValue={state.values?.whatsapp}
+            error={state.errors?.whatsapp}
+            hint="Sarah, your Site Lead, sends your daily task here. Include your country code."
+          />
+        ) : null}
         <Field
           id="password"
           label="Password"
           type="password"
           autoComplete={isSignUp ? "new-password" : "current-password"}
           required
-          minLength={isSignUp ? 8 : undefined}
+          error={state.errors?.password}
           hint={isSignUp ? "At least 8 characters." : undefined}
         />
+
         {isSignUp ? (
           <>
-            <Field
-              id="whatsapp"
-              label="WhatsApp number"
-              type="tel"
-              autoComplete="tel"
-              required
-              placeholder="+34 612 345 678"
-              defaultValue={state.whatsapp}
-              hint="With your country code. Sarah, your Site Lead, sends your daily task here."
-            />
+            <label className="flex cursor-pointer items-start gap-3 rounded-input border border-input-border bg-surface p-3.5 text-body-sm text-ink">
+              <input
+                type="checkbox"
+                name="consent"
+                defaultChecked={state.values?.consent ?? false}
+                className="mt-0.5 size-[22px] shrink-0 accent-navy"
+              />
+              <span>
+                Yes, send me one message a day on WhatsApp with my task. I can
+                stop it any time.
+              </span>
+            </label>
             <input type="hidden" name="timezone" value={timezone} />
           </>
         ) : null}
 
-        {/* A quiet box, never red: red is reserved (handoff §2.1). */}
         <div aria-live="polite">
-          {state.error ? (
-            <p className="rounded-input bg-bg p-3.5 text-body-sm text-ink">
-              {state.error}
-            </p>
-          ) : null}
+          {state.formError ? <FieldError>{state.formError}</FieldError> : null}
         </div>
 
-        <Button type="submit" fullWidth disabled={pending}>
+        <Button type="submit" fullWidth disabled={pending} className="min-h-[54px]">
           {isSignUp
             ? pending
               ? "Creating your account…"
-              : "Create account"
+              : "Create account →"
             : pending
               ? "Logging in…"
-              : "Log in"}
+              : "Log in →"}
         </Button>
-      </form>
 
-      <p className="text-body-sm text-text-secondary">
-        {isSignUp ? "Already have an account? " : "New here? "}
-        <Link
-          href={isSignUp ? "/log-in" : "/sign-up"}
-          className="inline-flex min-h-11 items-center font-medium text-navy hover:underline"
-        >
-          {isSignUp ? "Log in" : "Create an account"}
-        </Link>
-      </p>
-    </Card>
+        {isSignUp ? (
+          // PLACEHOLDER links: the Terms and Privacy Policy are not written yet.
+          <p className="text-[13px] text-text-muted">
+            By creating an account you agree to the{" "}
+            <a href="#" className={linkClass}>
+              Terms
+            </a>{" "}
+            and{" "}
+            <a href="#" className={linkClass}>
+              Privacy Policy
+            </a>
+            .
+          </p>
+        ) : null}
+      </form>
+    </div>
   );
 }

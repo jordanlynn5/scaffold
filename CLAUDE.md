@@ -23,7 +23,9 @@ Read these before building. Where they disagree, the later one in this list wins
 Before building or changing any UI, read `SCAFFOLD_DESIGN_HANDOFF.md`. Follow its tokens, components and rules exactly. If something is not covered, ask instead of inventing.
 
 Known disagreements, already decided:
-- Tasks are **20 minutes or less**. The handoff's "5–15 minutes" is out of date.
+- Tasks are **20 minutes or less**. The handoff's "5–15 minutes" is out of date, including in the version of Oct 10, 2026 (§6.0b, §7.1). Its task-length check is adopted with the 20-minute limit: total time is count × minutes, and the "About n minutes" label must equal that total.
+- Addresses are `/sign-up` and `/log-in` (spec). The handoff's `/signup` and `/login` redirect to them.
+- Teammate portraits are for the landing page only. Inside the app, teammates are letter badges.
 - There is **no final voice note**. The missed-day sequence ends at the sincere email.
 - The handoff asks to be renamed `DESIGN.md`. It has not been; the PRD and spec cite it by its current name.
 
@@ -46,7 +48,8 @@ npm install        # once
 npm run dev        # http://localhost:3000
 npm run build      # production build and type check; every slice must pass it
 npm run lint       # eslint
-node --env-file=.env.local scripts/check-accounts.mjs   # slice 1 check against the real Supabase project
+node --env-file=.env.local scripts/check-accounts.mjs   # sign-up, profile row and access rules, against the real Supabase project
+node --env-file=.env.local scripts/check-pages.mjs      # every page logged out and logged in; needs `npm run dev` running
 ```
 
 Requires Node.js 22+ and a `.env.local` with the keys named in `.env.example`. There is no test runner. Each slice is verified by `npm run build` plus a small script in `scripts/` that runs against the real Supabase project and cleans up after itself.
@@ -58,7 +61,7 @@ Database changes are SQL files in `supabase/migrations/`, numbered in order. The
 Read `AGENTS.md` and the guides in `node_modules/next/dist/docs/` before writing Next.js code. This version differs from older ones.
 
 - `cacheComponents` is on. Anything that reads the session (cookies) must render inside a `<Suspense>` boundary. `app/(app)/layout.tsx` already wraps every page in one, so pages can be `async` and call `getProfile()` from `lib/profile.ts`.
-- Middleware is called `proxy.ts`. It refreshes the Supabase session and redirects logged-out visitors. `/api/*` is excluded on purpose: those routes check their own secrets.
+- Middleware is called `proxy.ts`. It refreshes the Supabase session, serves the landing page (`app/(public)/welcome`) at `/` for logged-out visitors, and redirects them to log-in from anywhere else. `/api/*` is excluded on purpose: those routes check their own secrets.
 
 ## Styling
 

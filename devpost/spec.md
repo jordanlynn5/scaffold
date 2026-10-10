@@ -94,7 +94,8 @@ Carries forward `prd.md > Look and Feel` and `scope.md > Inspiration & Identity`
 - **Motion:** every animation checks `prefers-reduced-motion` and shows its final state instead.
 - **Tone:** each teammate's instructions include the handoff's voice table (§9), so AI-written text follows the same "say / never say" rules as the fixed wording.
 - **Task size:** 20 minutes or less everywhere. The handoff's "5–15 minutes" is out of date (`prd.md > Product Decisions`).
-- **Not designed yet:** sign-up and log-in, Home after today's task is done, Profile before a goal, the **?** popover, and the "Mastery" tag. These use the handoff's existing card, input, button and label styles.
+- **Portraits:** the four teammate portraits appear on the landing page only. Inside the app, teammates are letter badges.
+- **Not designed yet:** log-in (reuses the sign-up layout), Home after today's task is done, Profile before a goal, the **?** popover, and the "Mastery" tag. These use the handoff's existing card, input, button and label styles.
 
 ## Components
 
@@ -102,8 +103,12 @@ Carries forward `prd.md > Look and Feel` and `scope.md > Inspiration & Identity`
 The frame around every screen: sidebar on desktop, top bar and bottom tabs on a phone, with the active item highlighted. Decides between the no-goal and active version of each screen by asking one question: does this person have an active project?
 PRD ref: `prd.md > Screens and Layout`.
 
+### Landing Page
+The public page a logged-out visitor sees at the main address. It is a plain page with no data behind it. `proxy.ts` serves it at `/` for visitors and sends logged-in people to the app instead. The hero reuses the real house drawing. The four portraits are files in `public/team/`, 800×800 WebP.
+PRD ref: `prd.md > Landing Page`.
+
 ### Accounts and Profile
-Sign-up and log-in with email and password through Supabase Auth, plus the WhatsApp number. A `profiles` row is created at sign-up. Profile edits name, weekly target, nudge time and contact details. The time zone is read from the browser at sign-up and saved, so "9:00" means 9:00 where you are. The abandon flow lives here: after the explicit confirmation it deletes the project, everything attached to it, and its photos.
+Sign-up and log-in with email and password through Supabase Auth, plus the WhatsApp number and the WhatsApp consent tick box, in the split layout from the handoff §6.0b. After sign-up you go straight to onboarding. A `profiles` row is created at sign-up. Profile edits name, weekly target, nudge time and contact details. The time zone is read from the browser at sign-up and saved, so "9:00" means 9:00 where you are. The abandon flow lives here: after the explicit confirmation it deletes the project, everything attached to it, and its photos.
 PRD ref: `prd.md > Sign Up and Profile`.
 
 ### Team Brains
@@ -161,7 +166,7 @@ PRD ref: `prd.md > Finding a Goal, Dreams, and Paths`.
 
 ### Nudge Sender
 Runs when Supabase rings the 15-minute bell. For each person whose nudge time has arrived, it runs `bringPlanUpToDate`, works out which message is due from the days since their last done task, has Sarah write it, picks the channel and sends. It records each send in `nudge_log` so nobody gets two in one day.
-**Channel rule:** WhatsApp if the person messaged the sandbox within the last 24 hours and joined within the last 3 days. Otherwise email.
+**Channel rule:** WhatsApp if the person ticked the WhatsApp consent box, messaged the sandbox within the last 24 hours and joined within the last 3 days. Otherwise email.
 PRD ref: `prd.md > WhatsApp Nudges and Replies`, `prd.md > Missed Days and Re-engagement`.
 
 | Days since last done task | Message | Channel |
@@ -188,7 +193,7 @@ All of this lives in Supabase's database. Each table is one spreadsheet. A rule 
 
 ```
 profiles        id (= the account), name, email, whatsapp, timezone, nudge_time,
-                weekly_target (1–7), houses_built,
+                weekly_target (1–7), houses_built, whatsapp_consent,
                 whatsapp_joined_at, whatsapp_last_inbound_at, created_at
 dreams          id, user_id, title, experience_level, active
 path_steps      id, dream_id, position, title, status (done|current|future), project_id?
@@ -238,6 +243,8 @@ scaffold/
 ├── app/
 │   ├── layout.tsx                # fonts, tokens, the page frame
 │   ├── globals.css               # design tokens from the handoff §2
+│   ├── (public)/
+│   │   └── welcome/page.tsx      # the landing page, shown at "/" to logged-out visitors
 │   ├── (auth)/
 │   │   ├── sign-up/page.tsx
 │   │   └── log-in/page.tsx
@@ -283,7 +290,8 @@ scaffold/
 │   └── dates.ts                  # time zones, "today", Monday week starts
 ├── supabase/
 │   └── migrations/               # the table definitions and access rules
-├── proxy.ts                      # sends logged-out visitors to log-in
+├── public/team/                  # the four teammate portraits (landing page only)
+├── proxy.ts                      # landing page for visitors at "/", log-in for the rest
 ├── .env.example                  # names of the secret keys, no values
 ├── SCAFFOLD_DESIGN_HANDOFF.md    # the design handoff, kept under its current name
 ├── CLAUDE.md                     # tells the coding agent to read the handoff first

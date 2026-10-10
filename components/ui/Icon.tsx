@@ -17,6 +17,9 @@ const paths = {
   "chevron-down": "M6 9l6 6 6-6",
   "chevron-up": "M6 15l6-6 6 6",
   "chevron-right": "M9 6l6 6-6 6",
+  target: "M12 21a9 9 0 100-18 9 9 0 000 18z M12 16a4 4 0 100-8 4 4 0 000 8z M12 12h.01",
+  heart: "M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.500-7 10-7 10z",
+  house: "M3 11l9-8 9 8 M5 10v10h14V10 M10 20v-6h4v6",
   scaffold: "M4 21V5 M20 21V5 M3 9h18 M3 15h18 M4 15l4-6",
 } as const;
 

@@ -38,8 +38,28 @@ const created = await admin.auth.admin.createUser({
 const id = created.data.user?.id;
 
 try {
-  // Logged out: every page sends you to log-in.
-  for (const [path] of pages) {
+  // Logged out: "/" is the landing page, every app page sends you to log-in.
+  const landing = await fetch(`${base}/`, { redirect: "manual" });
+  const landingHtml = await landing.text();
+  check(
+    "logged out, / shows the landing page",
+    landing.status === 200 && landingHtml.includes("one small task at a time"),
+    `status ${landing.status}`,
+  );
+  check(
+    "landing page: every call to action goes to sign-up",
+    (landingHtml.match(/href="\/sign-up"/g) ?? []).length === 3,
+  );
+  for (const who of ["alice", "georgina", "paula", "sarah"]) {
+    const img = await fetch(`${base}/team/${who}.webp`);
+    check(`landing page: ${who}'s portrait loads`, img.status === 200);
+  }
+  const old = await fetch(`${base}/signup`, { redirect: "manual" });
+  check(
+    "/signup forwards to /sign-up",
+    (old.headers.get("location") ?? "").endsWith("/sign-up"),
+  );
+  for (const [path] of pages.slice(1)) {
     const res = await fetch(base + path, { redirect: "manual" });
     check(
       `logged out, ${path} sends you to log-in`,
@@ -79,6 +99,11 @@ try {
   }
   const authPage = await fetch(`${base}/log-in`, { headers: { cookie }, redirect: "manual" });
   check("logged in, log-in sends you Home", authPage.status === 307);
+  const home = await fetch(`${base}/`, { headers: { cookie } });
+  check(
+    "logged in, / is the app, not the landing page",
+    !(await home.text()).includes("one small task at a time"),
+  );
 } finally {
   if (id) await admin.auth.admin.deleteUser(id);
 }

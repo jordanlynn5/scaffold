@@ -2,10 +2,12 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseAnonKey, supabaseConfigured, supabaseUrl } from "@/lib/supabase/env";
 
-const authPages = ["/log-in", "/sign-up"];
+// Pages only a logged-out visitor should see.
+const visitorPages = ["/log-in", "/sign-up", "/welcome"];
 
-// Runs before every page. Keeps the log-in session fresh, sends logged-out
-// visitors to log-in, and sends logged-in visitors away from the auth pages.
+// Runs before every page. Keeps the log-in session fresh, shows logged-out
+// visitors the landing page at "/", sends them to log-in from anywhere else,
+// and sends logged-in visitors straight into the app.
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
   let loggedIn = false;
@@ -32,15 +34,25 @@ export async function proxy(request: NextRequest) {
   }
 
   const { pathname } = request.nextUrl;
-  const onAuthPage = authPages.includes(pathname);
+  const onVisitorPage = visitorPages.includes(pathname);
 
-  if (!loggedIn && !onAuthPage) {
-    return redirectKeepingCookies(request, response, "/log-in");
+  if (loggedIn) {
+    return onVisitorPage
+      ? redirectKeepingCookies(request, response, "/")
+      : response;
   }
-  if (loggedIn && onAuthPage) {
+  if (pathname === "/") {
+    // Same address, different page: the landing page lives at /welcome.
+    const url = request.nextUrl.clone();
+    url.pathname = "/welcome";
+    return NextResponse.rewrite(url);
+  }
+  if (pathname === "/welcome") {
     return redirectKeepingCookies(request, response, "/");
   }
-  return response;
+  return onVisitorPage
+    ? response
+    : redirectKeepingCookies(request, response, "/log-in");
 }
 
 function redirectKeepingCookies(

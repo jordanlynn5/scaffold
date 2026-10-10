@@ -138,6 +138,19 @@
   background-size: 18px 18px;
 }
 
+/* §6.0: navy sections with a faint white grid, every 24px */
+@utility bg-grid-navy {
+  background-color: var(--color-navy);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-ink);

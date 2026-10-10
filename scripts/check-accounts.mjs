@@ -46,7 +46,9 @@ try {
   const signUp = await a.auth.signUp({
     email: people[0].email,
     password,
-    options: { data: { whatsapp: people[0].whatsapp, timezone: people[0].timezone } },
+    options: {
+      data: { whatsapp: people[0].whatsapp, timezone: people[0].timezone, whatsapp_consent: true },
+    },
   });
   ids[0] = signUp.data.user?.id ?? null;
   check("sign-up succeeds", !signUp.error, signUp.error?.message);
@@ -74,8 +76,15 @@ try {
       own.data?.houses_built === 0,
   );
 
-  const other = await admin.from("profiles").select("timezone").eq("id", ids[1]).maybeSingle();
+  check("profile records the WhatsApp consent that was ticked", own.data?.whatsapp_consent === true);
+
+  const other = await admin
+    .from("profiles")
+    .select("timezone, whatsapp_consent")
+    .eq("id", ids[1])
+    .maybeSingle();
   check("a missing time zone falls back to UTC", other.data?.timezone === "UTC");
+  check("no tick means no WhatsApp consent", other.data?.whatsapp_consent === false);
 
   // 3. One person cannot see or change another person's row.
   const all = await a.from("profiles").select("id");

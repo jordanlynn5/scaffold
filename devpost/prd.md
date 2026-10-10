@@ -44,7 +44,7 @@ The learner's menu structure:
 | **Talk to Team** | Chat with your build team. The team decides who answers, or you pick a teammate, who can bring in colleagues. Before a goal exists, this is the goal-finder chat with Alice. |
 | **Profile** | Current goal (changeable, with a warning), weekly target setting, daily nudge time, contact details, houses built. |
 
-Before these: **Sign up**. The **Onboarding / WOOP** conversation and the **plan review** happen on first use, but nothing is locked: every menu works before a goal exists and shows a friendly empty state pointing to Alice. *(design handoff §3.3, §7.7)*
+Before these: a public **landing page** and **Sign up**. The **Onboarding / WOOP** conversation and the **plan review** happen on first use, but nothing is locked: every menu works before a goal exists and shows a friendly empty state pointing to Alice. *(design handoff §3.3, §7.7)*
 
 Every screen works on both phone and desktop. On desktop the menu is a left sidebar; on a phone it's a bottom tab bar with Profile in the top bar. *(design handoff §3)*
 
@@ -53,7 +53,7 @@ Direction: **"Blueprint."** Full detail in `SCAFFOLD_DESIGN_HANDOFF.md` §2–§
 - **Theme: building a house.** You're the builder, and the team is behind you. The house is the main visual, drawn on blueprint grid paper.
 - **Colors:** navy for structure, yellow for highlights only (today, scaffolding, celebrations), on a light grey-blue background. **Red appears in exactly two places:** the abandon confirmation and the ribbon in the house-complete ceremony. Never for missed tasks or anything the user did "wrong."
 - **Typography:** Space Grotesk for headings, IBM Plex Sans for everything else.
-- **Teammates** have names and a small initial badge (A, G, P, S) but **no illustrations**, always labeled "Name · Role."
+- **Teammates** have names and a small initial badge (A, G, P, S), always labeled "Name · Role." Inside the app they are **not illustrated**. Their portraits appear on the landing page only. *(design handoff §6.0)*
 - **Tone:** gentle, encouraging teammates, never a drill sergeant. Short sentences. Simple, never overwhelming. (`scope.md > Inspiration & Identity`)
 - **References:** Duolingo (clear daily lessons, reminders, streaks, celebration) and Khan Academy (a ready-made path that feels less intimidating).
 - **Celebrations:** confetti for the weekly target, a "stage complete" stamp for a milestone, and a ribbon-cutting when the house is finished. Animations are skipped for people who've asked their device to reduce motion.
@@ -62,9 +62,19 @@ Direction: **"Blueprint."** Full detail in `SCAFFOLD_DESIGN_HANDOFF.md` §2–§
 
 ## Features and Behavior
 
+### Landing Page
+Added Oct 10, 2026 from the learner's design. *(design handoff §6.0)*
+- As a visitor, I want to understand quickly what Scaffold does and why it matters, so I know whether to sign up.
+  - [ ] Logged out, the site's main address shows the landing page. Logged in, the same address goes straight to the app.
+  - [ ] The page has a hero with the headline and a preview of the real product, three benefits, "How it works" in three steps, "Meet your team" with the four portraits, a closing call to action, and a footer.
+  - [ ] **One action only:** every button leads to sign-up. "How it works" links jump down the page.
+  - [ ] Each portrait has a text description for people using a screen reader, and a letter badge shows if an image fails to load.
+
 ### Sign Up and Profile
 - As a new user, I want to create an account so my goal and progress are mine and others can use Scaffold too.
   - [ ] I can sign up with my email and WhatsApp number, and log back in later to the same goal and progress.
+  - [ ] Sign-up asks for email, WhatsApp number (with country code) and a password of at least 8 characters, then takes me straight to Alice. A mistake is explained under the field it belongs to, never in red. *(design handoff §6.0b)*
+  - [ ] Sign-up has a tick box: "Yes, send me one message a day on WhatsApp with my task. I can stop it any time." My answer is saved. *(Whether an unticked box blocks sign-up is open. See Open Questions.)*
   - [ ] Profile shows my current goal, my weekly target (1–7 days), the time my daily nudge arrives, and my contact details, all editable.
   - [ ] Changing my goal means **abandoning the current project**. I see a warning listing what is deleted forever and what I keep, and must explicitly confirm ("Yes, I want to abandon this project") before the old goal is replaced. "Keep building" is the main button.
   - [ ] Abandoning **deletes everything tied to that project**: the house and its bricks, the goal and WOOP answers, the roadmap and plan, the learning log (all notes and photos), and team chats about the goal. I keep my account, settings, and houses-built count. *(design handoff §7.5)*
@@ -235,6 +245,8 @@ Includes the follow-up conversation from `scope.md > Later`.
 - **Plan view shows one week or a chosen time frame, never everything.** The whole plan at once is "ugly and overwhelming."
 - **Note or photo with each done task.** It holds me accountable for what I claim and is "great motivation later."
 - **Sign-up is in,** so others can use it (`scope.md > Who It's For`).
+- **A public landing page is in** (Oct 10, 2026). The learner designed it so a visitor understands the product before signing up. Teammate portraits are used there only; the app keeps letter badges.
+- **The new handoff's task-length check is adopted with the 20-minute limit.** A task's total time is its count times its minutes ("5 hands, 2 minutes each" is 10 minutes), and the "About n minutes" label must equal that total. The handoff states the range as 5–15 minutes; the 20-minutes-or-less decision above still stands unless the learner changes it.
 - **Two-way WhatsApp is in,** for replying with proof.
 - **A missed task rolls forward,** because "there is no progress without action."
 - **Weekly target instead of a daily streak,** set by the user, with a celebration when hit. It leaves room for life without guilt.
@@ -250,7 +262,7 @@ Includes the follow-up conversation from `scope.md > Later`.
 **Screens first, then WhatsApp.** Decided by the learner: "the WhatsApp nudge isn't valuable without the rest." The first screens follow the design handoff §11.
 
 **Core first.** This builds the first working, submittable version:
-1. Foundations (the look, the menu, shared pieces like buttons and cards), sign up and log in, Home before a goal, and the other empty states
+1. Foundations (the look, the menu, shared pieces like buttons and cards), the landing page, sign up and log in, Home before a goal, and the other empty states
 2. Onboarding + WOOP conversation, saved as you go
 3. AI roadmap + first 2-week plan, review, and commit
 4. Home: goal, today's task, mark done with note/photo
@@ -304,4 +316,6 @@ Can be confirmed at review:
    - Do missed days stay visible in Plan? (Recommended: yes.)
    - A small "ground-breaking" moment after committing? (Recommended: optional, no confetti.)
    - When the weekly target is hit by a WhatsApp reply, where does the celebration show? (Recommended: next app visit, plus a line in Sarah's reply.)
-7. **Not designed yet:** Home after today's task is done, Profile before a goal exists, sign-up and log-in screens, and and the wording of WhatsApp messages and the re-engagement email.
+7. **WhatsApp consent left unticked at sign-up:** block sign-up, or allow it with nudges switched off? (Handoff recommends: allow, keep nudges off, remind gently in Profile. Built that way for now.)
+8. **Terms and Privacy Policy:** the sign-up screen links to them, but neither is written. The links are placeholders.
+9. **Not designed yet:** Home after today's task is done, Profile before a goal exists, sign-up and log-in screens, and and the wording of WhatsApp messages and the re-engagement email.
