@@ -7,6 +7,7 @@ export type Profile = {
   name: string | null;
   email: string;
   whatsapp: string | null;
+  whatsapp_consent: boolean;
   timezone: string;
   nudge_time: string;
   weekly_target: number;
@@ -22,7 +23,7 @@ export async function getProfile(): Promise<Profile> {
   const { data, error } = await supabase
     .from("profiles")
     .select(
-      "id, name, email, whatsapp, timezone, nudge_time, weekly_target, houses_built",
+      "id, name, email, whatsapp, whatsapp_consent, timezone, nudge_time, weekly_target, houses_built",
     )
     .eq("id", auth.claims.sub)
     .single();

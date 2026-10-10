@@ -104,6 +104,31 @@ try {
   const houses = await admin.from("profiles").select("houses_built").eq("id", ids[0]).maybeSingle();
   check("cannot change own houses-built count", houses.data?.houses_built === 0);
 
+  // 4b. The settings Profile edits: target 1 to 7, nudge time, consent, contact.
+  const settings = await a
+    .from("profiles")
+    .update({ weekly_target: 5, nudge_time: "19:15", whatsapp_consent: false, whatsapp: "+34600000009" })
+    .eq("id", ids[0])
+    .select("weekly_target, nudge_time, whatsapp_consent, whatsapp");
+  check(
+    "can change own weekly target, nudge time, consent and number",
+    settings.data?.[0]?.weekly_target === 5 &&
+      settings.data?.[0]?.nudge_time?.startsWith("19:15") &&
+      settings.data?.[0]?.whatsapp_consent === false &&
+      settings.data?.[0]?.whatsapp === "+34600000009",
+    settings.error?.message,
+  );
+  const tooMany = await a.from("profiles").update({ weekly_target: 8 }).eq("id", ids[0]);
+  check("a weekly target of 8 is refused", Boolean(tooMany.error));
+
+  // 4c. Changing the email changes what you log in with.
+  const newEmail = `scaffold.check.c.${stamp}@gmail.com`;
+  const moved = await admin.auth.admin.updateUserById(ids[0], { email: newEmail, email_confirm: true });
+  check("email can be changed without a confirmation email", !moved.error, moved.error?.message);
+  const taken = await admin.auth.admin.updateUserById(ids[0], { email: people[1].email, email_confirm: true });
+  check("an email another account uses is refused", Boolean(taken.error));
+  people[0].email = newEmail;
+
   // 5. A visitor who is not logged in sees nothing.
   const anon = await asVisitor().from("profiles").select("id");
   check("a logged-out visitor sees no rows", (anon.data?.length ?? 0) === 0);

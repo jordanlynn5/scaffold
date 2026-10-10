@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseConfigured } from "@/lib/supabase/env";
+import { isEmail, messages, normalizeWhatsapp } from "@/lib/validation";
 
 type FieldName = "email" | "whatsapp" | "password";
 
@@ -20,13 +21,6 @@ export type AuthState = {
 const notSetUp =
   "Scaffold isn't connected to its database yet. Add the Supabase keys to .env.local.";
 
-// "+34 612 34 56 78" → "+34612345678" (the E.164 format). Returns null if it
-// isn't a full international number.
-function normalizeWhatsapp(input: string) {
-  const digits = input.replace(/[\s\-().]/g, "");
-  return /^\+[1-9]\d{7,14}$/.test(digits) ? digits : null;
-}
-
 export async function signUp(
   _prev: AuthState,
   formData: FormData,
@@ -39,14 +33,9 @@ export async function signUp(
   const values = { email, whatsapp: whatsappInput, consent };
 
   const errors: AuthState["errors"] = {};
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errors.email = "That email doesn't look complete. Check it and try again.";
-  }
+  if (!isEmail(email)) errors.email = messages.email;
   const whatsapp = normalizeWhatsapp(whatsappInput);
-  if (!whatsapp) {
-    errors.whatsapp =
-      "Write your number with its country code, starting with +. For example +34 600 000 000.";
-  }
+  if (!whatsapp) errors.whatsapp = messages.whatsapp;
   if (password.length < 8) {
     errors.password = "Pick a password with at least 8 characters.";
   }

@@ -93,8 +93,10 @@ try {
       `status ${res.status}`,
     );
     if (path === "/profile") {
-      check("profile shows this account's email", html.includes(email));
-      check("profile shows the WhatsApp number", html.includes("+34600000003"));
+      check("profile shows this account's email in an editable field", html.includes(`value="${email}"`));
+      check("profile shows the WhatsApp number in an editable field", html.includes('value="+34600000003"'));
+      check("profile has the weekly target stepper", html.includes("One day more"));
+      check("profile has the nudge time picker", html.includes("WhatsApp message arrives at"));
     }
   }
   const authPage = await fetch(`${base}/log-in`, { headers: { cookie }, redirect: "manual" });
