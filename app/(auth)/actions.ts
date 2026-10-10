@@ -77,8 +77,10 @@ export async function signUp(
       formError: "Check your email to confirm your account, then log in.",
     };
   }
-  // Straight to Alice. Her first question asks for the name, so the form doesn't.
-  redirect("/onboarding");
+  // New users land on the empty lot (Home before a goal), as the owner asked.
+  // The handoff §6.0b says to go straight to the onboarding chat instead:
+  // to be settled with the owner once that chat exists (checklist slice 2).
+  redirect("/");
 }
 
 export async function logIn(
