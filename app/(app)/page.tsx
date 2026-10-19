@@ -6,6 +6,9 @@ import { StepBar } from "@/components/ui/StepBar";
 import { TeammateBadge, type TeammateId } from "@/components/ui/Teammate";
 import { getOnboarding } from "@/lib/onboarding/flow";
 import { getProfile } from "@/lib/profile";
+import { getCurrentProject } from "@/lib/plans/data";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { todayInZone } from "@/lib/dates";
 
 const steps: { who: TeammateId; verb: string; withWhom: string }[] = [
   { who: "alice", verb: "Design", withWhom: "with Alice" },
@@ -17,6 +20,31 @@ const steps: { who: TeammateId; verb: string; withWhom: string }[] = [
 // someone who has started designing a goal with Alice and left partway.
 export default async function HomePage() {
   const profile = await getProfile();
+  const current = await getCurrentProject(profile.id);
+  if (current?.status === "active") {
+    const today = todayInZone(profile.timezone);
+    const { data: task, error } = await createAdminClient().from("tasks")
+      .select("title, how_to, minutes, count, minutes_per_item, why")
+      .eq("project_id", current.id).eq("scheduled_date", today).maybeSingle();
+    if (error) throw error;
+    return (
+      <div className="mx-auto flex w-full max-w-[800px] flex-col gap-5">
+        <p className="text-caption text-text-muted">{today}</p>
+        <h1 className="text-h1">Let’s build{profile.name ? `, ${profile.name}` : ""}</h1>
+        <Card variant="quiet"><p className="text-body">Building: <strong>{current.wish}</strong></p></Card>
+        <Card className="flex flex-col gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-label text-text-muted">TODAY’S BRICK</span>{task ? <span className="text-body-sm">About {task.minutes} minutes</span> : null}</div>
+          {task ? <><h2 className="text-h2">{task.title}</h2><p className="text-body text-text-secondary">{task.how_to}</p><p className="text-caption text-text-muted">{task.count} × {task.minutes_per_item} minutes = {task.minutes} minutes</p>
+            <details className="text-body-sm"><summary className="cursor-pointer text-navy">Why this task?</summary><p className="mt-2">{task.why}</p></details>
+          </> : <p className="text-body text-text-secondary">No task is scheduled for today. Your saved plan is still here.</p>}
+        </Card>
+        <Card variant="dark"><h2 className="text-h2">When the obstacle shows up</h2>{current.draft_plan?.if_then_plans.map((p, index) => <p key={index} className="mt-3 text-body"><strong className="text-yellow">If</strong> {p.if}, <strong className="text-yellow">then</strong> {p.then}</p>)}<p className="mt-5 text-body-sm">Why you started: {current.outcome}</p></Card>
+      </div>
+    );
+  }
+  if (current?.onboarding_step === "done") {
+    return <Card className="mx-auto flex max-w-[720px] flex-col gap-5"><h1 className="text-h1">Your design is ready</h1><p className="text-body text-text-secondary">{current.status === "draft_plan" ? "Georgina saved your draft. Review it, ask for changes, and commit when it feels right." : "Georgina is ready to turn your goal into a roadmap and small daily tasks."}</p><p className="text-body">Building: <strong>{current.wish}</strong></p><ButtonLink href="/onboarding/plan">{current.status === "draft_plan" ? "Review your plan →" : "See your plan →"}</ButtonLink></Card>;
+  }
   const onboarding = await getOnboarding(profile.id);
 
   if (onboarding && onboarding.project.onboarding_step !== "name") {

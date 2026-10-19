@@ -4,6 +4,7 @@ import { supabaseAnonKey, supabaseConfigured, supabaseUrl } from "@/lib/supabase
 
 // Pages only a logged-out visitor should see.
 const visitorPages = ["/log-in", "/sign-up", "/welcome"];
+const recoveryPages = ["/forgot-password", "/reset-password", "/auth/callback"];
 
 // Runs before every page. Keeps the log-in session fresh, shows logged-out
 // visitors the landing page at "/", sends them to log-in from anywhere else,
@@ -34,6 +35,8 @@ export async function proxy(request: NextRequest) {
   }
 
   const { pathname } = request.nextUrl;
+  // Recovery must work before a session exists and after the email signs in.
+  if (recoveryPages.includes(pathname)) return response;
   const onVisitorPage = visitorPages.includes(pathname);
 
   if (loggedIn) {

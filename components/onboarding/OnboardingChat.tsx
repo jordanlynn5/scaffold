@@ -199,17 +199,14 @@ export function OnboardingChat({
           ) : null}
 
           {done ? (
-            // PLACEHOLDER. Georgina's message and "See your plan →" (handoff
-            // §6.4) arrive with plan generation in checklist slice 3. This
-            // wording is not final copy.
             <Card variant="quiet" className="mt-3 flex flex-col gap-3 border border-line">
               <p className="text-body-sm text-text-secondary">
-                Placeholder: Georgina drawing up your plan is the next thing
-                being built. Your answers are saved for her.
+                Your design is ready. Georgina will turn it into a roadmap
+                and your first two weeks of small, clear tasks.
               </p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
-                <ButtonLink href="/" variant="secondary">
-                  Back to Home
+                <ButtonLink href="/onboarding/plan">
+                  See your plan →
                 </ButtonLink>
                 <StartOver />
               </div>

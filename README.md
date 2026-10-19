@@ -27,11 +27,32 @@ Requires Node.js 22 or newer.
    **Confirm email** off.
 5. `npm run dev`, then open http://localhost:3000
 
+For password-reset emails, set Supabase **Authentication > URL Configuration >
+Site URL** to the deployed origin and allow `<origin>/auth/callback` under
+Redirect URLs. For local recovery testing, also allow
+`http://localhost:3000/auth/callback`. Request and open the email in the same
+browser so its saved verification cookie is available.
+
 To check the accounts setup against your Supabase project:
 
 ```
 node --env-file=.env.local scripts/check-accounts.mjs
 ```
+
+For the plan builder (slice 3), apply `0004_plans.sql` before running the new
+app code. It adds private milestones and tasks, plus transactional draft-save
+and commitment routines. Draft tasks remain undated until commitment.
+
+```
+# Pure plan-shape and calendar checks (Node.js 24+)
+node scripts/check-plan-shape.mjs
+
+# With the app running: real generation, revisions, access rules and commitment
+node --env-file=.env.local scripts/check-plan.mjs
+```
+
+The second check uses disposable accounts and the configured `PLAN_MODEL`.
+Pass the deployed address as its final argument to check the live app as well.
 
 ## How it is built
 

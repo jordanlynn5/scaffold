@@ -96,6 +96,7 @@ export function AuthForm({ mode }: { mode: "sign-up" | "log-in" }) {
           error={state.errors?.password}
           hint={isSignUp ? "At least 8 characters." : undefined}
         />
+        {!isSignUp ? <Link href="/forgot-password" className={`inline-flex min-h-11 items-center ${linkClass}`}>Forgot password?</Link> : null}
 
         {isSignUp ? (
           <>

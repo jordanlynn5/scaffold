@@ -14,7 +14,7 @@ export function builderContext(facts: BuilderFacts) {
   const lines = [
     facts.name && `Name: ${facts.name}`,
     facts.nudge_time && `Daily message arrives at: ${facts.nudge_time.slice(0, 5)}`,
-    facts.weekly_target && `Days a week they want to build: ${facts.weekly_target}`,
+    facts.weekly_target && `Days a week they want to work on their project: ${facts.weekly_target}`,
     facts.wish && `Wish (their goal): ${facts.wish}`,
     facts.experience && `Experience with it so far: ${facts.experience}`,
     facts.outcome && `Outcome (their why): ${facts.outcome}`,

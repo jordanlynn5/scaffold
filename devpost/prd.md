@@ -73,6 +73,7 @@ Added Oct 10, 2026 from the learner's design. *(design handoff §6.0)*
 ### Sign Up and Profile
 - As a new user, I want to create an account so my goal and progress are mine and others can use Scaffold too.
   - [ ] I can sign up with my email and WhatsApp number, and log back in later to the same goal and progress.
+  - [ ] If I forget my password, log-in offers an email reset link. I choose and confirm a new password, then log in to the same saved goal. An expired link offers a fresh request.
   - [ ] Sign-up asks for email, WhatsApp number (with country code) and a password of at least 8 characters, then takes me straight to Alice. A mistake is explained under the field it belongs to, never in red. *(design handoff §6.0b)*
   - [ ] Sign-up has a tick box: "Yes, send me one message a day on WhatsApp with my task. I can stop it any time." My answer is saved. Leaving it unticked does not block sign-up: I get no WhatsApp messages until I tick it in Profile.
   - [ ] Profile shows my current goal, my weekly target (1–7 days), the time my daily nudge arrives, and my contact details, all editable.

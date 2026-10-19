@@ -25,7 +25,7 @@ const fixedChips: Partial<Record<OnboardingStep, string[]>> = {
 function ask(step: OnboardingStep, facts: Facts): string {
   switch (step) {
     case "name":
-      return `This is the first message of the chat. Introduce yourself, opening with the words "Hi, I'm Alice, your Architect. You're the builder here" and finishing that thought in a sentence or two: the team plans and supports, the builder lays the bricks, and you have a few quick questions that take about 5 minutes. Then, as its own short paragraph, ask: "What should I call you?"
+      return `This is the first message of the chat. Introduce yourself, opening with the words "Hi, I'm Alice, your Architect." Then explain in a sentence or two that you and the team will help them turn their goal into a practical plan, one small step at a time, and that you have a few quick questions that take about 5 minutes. Then, as its own short paragraph, ask: "What should I call you?"
 ${noChips}`;
     case "nudge_time":
       return `They have just told you their name. Greet them by it in a few words. Then ask, in these words: "${
@@ -35,10 +35,10 @@ ${noChips}`;
       }"
 ${noChips}`;
     case "days":
-      return `They have just chosen when their daily message arrives. Confirm the time in a few words. Then ask, in these words: "How many days a week do you want to build? Pick a number that leaves room for real life. You can change it later."
+      return `They have just chosen when their daily message arrives. Confirm the time in a few words. Then ask, in these words: "How many days a week would you like to work on your project? Pick a number that leaves room for real life. You can change it later."
 ${noChips}`;
     case "wish":
-      return `They have just chosen how many days a week to build. Acknowledge it in a few words. Then open the design: say "Now let's design your house. We'll use a method called WOOP" and explain it in one sentence (Wish, Outcome, Obstacle, Plan: a way of setting a goal that names what gets in the way before it does). Then, as its own short paragraph, ask: "Wish: what do you want to accomplish?"
+      return `They have just chosen how many days a week to work on their project. Acknowledge it in a few words. Then open the design: say "Now let's get clear on your goal. We'll use a method called WOOP" and explain it in one sentence (Wish, Outcome, Obstacle, Plan: a way of setting a goal that names what gets in the way before it does). Then, as its own short paragraph, ask: "Wish: what do you want to accomplish?"
 ${chipRule}
 Here the suggestions are three different example wishes, such as getting better at drawing, learning a language, or running a first 5k.`;
     case "experience":
@@ -54,7 +54,7 @@ Here the suggestions are three different outcomes that fit their Wish.`;
 ${chipRule}
 Here the suggestions are three honest, common inner obstacles that fit their Wish, such as scrolling on the phone instead, or being too tired after work.`;
     case "done":
-      return `They have just named their Obstacle, and the design is complete. Thank them for being honest in one short sentence. If, and only if, their obstacle involves their phone (scrolling, social apps, videos, games), add this as its own short paragraph: "One idea: set a daily limit for those apps in your phone's Screen Time settings. Totally up to you, Scaffold won't check." Then close with these words as the final paragraph: "Thank you, ${facts.name ?? "builder"}. Your design is ready. I'm handing it to Georgina, your General Contractor, to turn it into a plan."
+      return `They have just named their Obstacle, and the design is complete. Thank them for being honest in one short sentence. If, and only if, their obstacle involves their phone (scrolling, social apps, videos, games), add this as its own short paragraph: "One idea: set a daily limit for those apps in your phone's Screen Time settings. Totally up to you, Scaffold won't check." Then close with these words as the final paragraph: "Thank you${facts.name ? `, ${facts.name}` : " for sharing"}. Your design is ready. I'm handing it to Georgina, your General Contractor, to turn it into a plan."
 Do not ask anything further.
 ${noChips}`;
   }

@@ -111,7 +111,11 @@ PRD ref: `prd.md > Landing Page`.
 Sign-up and log-in with email and password through Supabase Auth, plus the WhatsApp number and the WhatsApp consent tick box, in the split layout from the handoff §6.0b. After sign-up you go straight to onboarding. A `profiles` row is created at sign-up. Profile edits name, weekly target, nudge time and contact details. The time zone is read from the browser at sign-up and saved, so "9:00" means 9:00 where you are. The abandon flow lives here: after the explicit confirmation it deletes the project, everything attached to it, and its photos.
 PRD ref: `prd.md > Sign Up and Profile`.
 
+Password recovery uses Supabase's reset email, a PKCE exchange at `/auth/callback`, and `/reset-password` for the builder to enter their own new password. These recovery pages remain accessible before and after authentication. Supabase's Site URL is the production origin, with the exact callback address in its redirect allowlist. Recovery requests show a neutral confirmation without revealing whether an account exists.
+
 ### Team Brains
+Conversation uses ordinary goal/project language and the person's actual activity. The construction metaphor is light, mainly tied to the progress illustration and milestones; avoid questions that imply the person is literally building a house. Teammate role names remain.
+
 The single place the app talks to Claude. It holds one set of instructions per teammate (role, voice, what she is allowed to do) and the shared context builder that tells her what she needs to know about you: name, Wish, Outcome, Obstacle, today's task, recent progress. Every other component that needs AI words goes through this one, so swapping the AI later means changing one folder.
 PRD ref: `prd.md > Talk to Team`, `prd.md > Product Decisions` (the build team).
 
@@ -201,10 +205,12 @@ dreams          id, user_id, title, experience_level, active
 path_steps      id, dream_id, position, title, status (done|current|future), project_id?
 projects        id, user_id, path_step_id?, status (onboarding|draft_plan|active|complete),
                 wish, experience, outcome, obstacle, if_then_plans (list),
-                onboarding_step, planned_through (date), committed_at, completed_at
+                onboarding_step, draft_plan (validated JSON), plan_revision,
+                planned_through (date), committed_at, completed_at
 milestones      id, project_id, position (1–5), stage_name, title, status
 tasks           id, project_id, milestone_id, scheduled_date, title, how_to, minutes (≤30),
-                why, is_mastery, status (upcoming|done|missed), done_at?, rolled_from_task_id?
+                position, count, minutes_per_item, why, is_mastery,
+                status (upcoming|done|missed), done_at?, rolled_from_task_id?
 proofs          id, task_id, note?, photo_path?, source (app|whatsapp), created_at, updated_at
 conversations   id, user_id, project_id? (empty before a goal), kind (onboarding|team|goal_finder)
 messages        id, conversation_id, sender (user|alice|georgina|paula|sarah|system),
@@ -384,6 +390,6 @@ Email-and-password log-in · saving the time zone from the browser · the 15-min
 ### Still open
 - **Resend and other people's email addresses.** If Resend needs a domain you own, the email backup and the sincere email will only reach your own address until you buy and connect one (about $10 a year). Check when the email step is built. If it is a blocker, friends would get WhatsApp-only nudges.
 - **Supabase Cron on the Free plan,** and whether it keeps the project from pausing.
-- **Vercel Hobby time limit** against a slow Opus plan. If it is too short, the plan is generated in two smaller requests.
+- **Vercel Hobby time limit:** verified in slice 3 on Oct 19, 2026. `/api/plan` allows 300 seconds, and full production-model generation and revision both succeeded on the live link. Splitting generation was unnecessary.
 - **House stage brick-slot counts** (how many slots each stage has). Set when the house is drawn.
 - **Carried from `prd.md > Open Questions`:** "Start over" confirmation in onboarding, a ground-breaking moment after commit, and the screens and wording not designed yet (Home after done, Profile before a goal, sign-up and log-in, WhatsApp and email copy). None blocks the build. Each is decided at its build step.

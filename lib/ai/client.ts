@@ -13,6 +13,20 @@ function claude() {
   return (client ??= new Anthropic());
 }
 
+export async function structuredReply<T>({ system, text, shape, model, maxTokens }: {
+  system: string; text: string; shape: z.ZodType<T>; model: string; maxTokens: number;
+}): Promise<T> {
+  const response = await claude().messages.parse({
+    model, max_tokens: maxTokens, system,
+    messages: [{ role: "user", content: text }],
+    output_config: { format: zodOutputFormat(shape) },
+  });
+  if (response.stop_reason !== "end_turn" || !response.parsed_output) {
+    throw new Error("Plan response was incomplete.");
+  }
+  return response.parsed_output;
+}
+
 // What was said so far. A teammate's lines are "assistant", yours are "user".
 export type Turn = { role: "user" | "assistant"; content: string };
 
