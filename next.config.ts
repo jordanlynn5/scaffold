@@ -11,6 +11,15 @@ const nextConfig: NextConfig = {
     ];
   },
   partialPrefetching: true,
+  // Use the same Tailwind transform when local verification needs webpack.
+  webpack(config) {
+    config.module.rules.push({
+      test: /globals\.css$/,
+      enforce: "pre",
+      use: ["@tailwindcss/turbopack"],
+    });
+    return config;
+  },
   turbopack: {
     rules: {
       "*.css": {
