@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Dialog } from "@/components/ui/Dialog";
@@ -12,6 +12,9 @@ export function MarkDone({ taskId, done }: { taskId: string; done: boolean }) {
   const [warning, setWarning] = useState("");
   const [completed, setCompleted] = useState(done);
   const form = useRef<HTMLFormElement>(null);
+  const photoInput = useRef<HTMLInputElement>(null);
+  const photoHintId = useId();
+  const [photoName, setPhotoName] = useState("");
   const router = useRouter();
   return <>
     {completed ? <div className="rounded-card bg-yellow-tint p-4" role="status"><p className="text-h3">✓ Today’s brick is laid</p><p className="mt-2 text-body-sm">You can keep practising, or call it a day. Your progress is saved.</p></div> : <div className="flex flex-wrap gap-3"><Button onClick={() => setOpen(true)}>Mark as done</Button><Button variant="link" onClick={() => setOpen(true)}>Add a note</Button><Button variant="link" onClick={() => setOpen(true)}>Add a photo</Button></div>}
@@ -40,7 +43,15 @@ export function MarkDone({ taskId, done }: { taskId: string; done: boolean }) {
         } finally { setSaving(false); }
       }}>
         <label className="text-body-sm">Note (optional)<textarea name="note" maxLength={4000} rows={4} className="mt-2 w-full rounded-input border border-input-border bg-surface p-3" placeholder="What did you notice or learn?" /></label>
-        <label className="text-body-sm">Photo (optional)<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" className="mt-2 block w-full text-body-sm" /><span className="mt-1 block text-caption text-text-muted">JPG, PNG or WebP, up to 3 MB.</span></label>
+        <div className="flex flex-col gap-2">
+          <p className="text-body-sm">Photo (optional)</p>
+          <input ref={photoInput} name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Photo attachment" className="hidden" onChange={(event) => setPhotoName(event.target.files?.[0]?.name ?? "")} />
+          <Button type="button" variant="secondary" fullWidth disabled={saving} aria-describedby={photoHintId} onClick={() => photoInput.current?.click()}>
+            <span aria-hidden="true">＋</span> {photoName ? "Change photo" : "Attach a photo"}
+          </Button>
+          <p aria-live="polite" className="break-all text-body-sm text-text-secondary">{photoName ? `Selected: ${photoName}` : "No photo attached"}</p>
+          <p id={photoHintId} className="text-caption text-text-muted">JPG, PNG or WebP, up to 3 MB.</p>
+        </div>
         {error ? <p role="alert" className="text-body-sm">{error}</p> : null}
         <Button type="submit" disabled={saving}>{saving ? "Saving your brick…" : "Mark as done"}</Button>
         <Button type="button" variant="link" disabled={saving} onClick={() => setOpen(false)}>Keep working</Button>

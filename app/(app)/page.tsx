@@ -11,6 +11,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { todayInZone, addDays } from "@/lib/dates";
 import { weekStart } from "@/lib/tasks/weeks";
 import { MarkDone } from "@/components/tasks/MarkDone";
+import { connection } from "next/server";
+import { Suspense } from "react";
 
 const steps: { who: TeammateId; verb: string; withWhom: string }[] = [
   { who: "alice", verb: "Design", withWhom: "with Alice" },
@@ -20,7 +22,18 @@ const steps: { who: TeammateId; verb: string; withWhom: string }[] = [
 
 // Home before a goal is set (handoff §6.1). Two versions: a new user, and
 // someone who has started designing a goal with Alice and left partway.
-export default async function HomePage() {
+export default function HomePage() {
+  return (
+    <Suspense fallback={<Card className="mx-auto w-full max-w-[800px]"><p role="status" className="text-body text-text-secondary">Loading your day…</p></Card>}>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+async function HomeContent() {
+  // Today's task and expiring proof-photo links must use the current request,
+  // rather than being evaluated during Next.js's speculative prerender.
+  await connection();
   const profile = await getProfile();
   const current = await getCurrentProject(profile.id);
   if (current?.status === "active") {
