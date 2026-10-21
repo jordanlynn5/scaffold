@@ -39,7 +39,7 @@ Build mode: learn
   Learner check: On the live link, finish onboarding and read the plan Georgina wrote for your illustration goal. Ask for one change. Commit. Say whether the tasks are clear enough that you would know exactly what to do, and whether any feel too big.
   Commit: `Add plan generation, review and commit`
 
-- [ ] **4. You can mark today's task done, with a note or photo**
+- [x] **4. You can mark today's task done, with a note or photo**
   Becomes usable: Home's "Mark as done" opens the sheet, takes an optional note and photo, and records the task. Home then shows it complete, this week's days fill in, and your if–then plan, your why and a line from Sarah appear.
   Why now: "I either did the task or I didn't" is the centre of the product. The one routine built here is reused by WhatsApp replies, celebrations and progress, so it has to be right before anything depends on it.
   PRD ref: `prd.md > Daily Task and Marking Done`, `prd.md > Weekly Target, Streak, and Celebration` (week record only)
@@ -173,6 +173,8 @@ Reflection: [offered/answered/declined/already covered — personal answer belon
 Activity mode: [live app and editor, explicit static fallback, focused alternative, prior practice, or recap]
 
 ## Revisions
+
+- Slice 4 learner check (Oct 21, 2026): the learner marked a task done with a photo and reloaded; the done state felt like a small win. Home's wording is agreed as is: “Today’s brick is laid” / “You can keep practising, or call it a day. Your progress is saved.” The learner also confirmed password recovery now works.
 
 - Slice 4 Home rendering fix (Oct 20, 2026): the learner encountered Next.js’s unstable `Date.now()` prerender error on Home. Added an explicit request boundary (`await connection()`) before Home reads today’s date or creates expiring photo URLs. The webpack production build, lint and real completion checks (including Home after saving a photo) pass; disposable test data was removed.
 
