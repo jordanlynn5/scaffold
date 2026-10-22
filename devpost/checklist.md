@@ -49,7 +49,7 @@ Build mode: learn
   Learner check: Mark today's task done with a note and a photo. Reload the page. Say whether the done state feels like a small win, and what you would want Home to say at that moment.
   Commit: `Add mark-as-done with optional proof`
 
-- [ ] **5. The house goes up brick by brick, with confetti when you hit your weekly target**
+- [x] **5. The house goes up brick by brick, with confetti when you hit your weekly target**
   Becomes usable: Progress shows your house on blueprint paper: finished stages solid, the current stage partly built, the rest dashed, scaffolding up. Each task you mark done adds to it. The roadmap, weekly target and streak sit beside it, and hitting your weekly target fires confetti.
   Why now: Visible progress is the third part of the kernel, and the house is the product's main image. With this, the full loop of task, done, progress works in the app.
   PRD ref: `prd.md > Progress: The House`, `prd.md > Weekly Target, Streak, and Celebration`, `prd.md > Levels and Rewards`
@@ -173,6 +173,13 @@ Reflection: [offered/answered/declined/already covered — personal answer belon
 Activity mode: [live app and editor, explicit static fallback, focused alternative, prior practice, or recap]
 
 ## Revisions
+
+- Slice 5 layout feedback (Oct 22, 2026): the learner found the house small and too much grey space on a wide desktop, and asked for layouts that adapt across web and mobile. Pages now grow from about 1040px (handoff §3.1) up to 1440px on very wide screens, with fluid sizing and no second breakpoint. Inside the app the house drawing is trimmed to its own outline so it fills its card (the landing page keeps the full canvas). Home on desktop puts today's task on the left and the house, week, if–then plan and Sarah on the right; the phone keeps the §6.6 order. On phones the stage names sit as one wrapping line under the stage bar, because five labels don't fit under the segments at 360px. Checked with screenshots at 2560, 1280, 390 and 360px wide, with no sideways scrolling.
+- Slice 5 learner check, first try: no confetti, as designed, because the weekly target was still 3 (1 of 3 days done). A disposable demo login with a target of 1 was prepared for the check; delete it afterwards.
+
+- Slice 5 brick slots (Oct 21, 2026): the learner chose 12 pieces per stage (51 for walls), each stage filling by percentage like a progress bar. "Bricks laid" stays the count of finished tasks. A stage is drawn just short of full until it is really finished, because a two-week plan can end partway through a stage. Until slice 11 marks milestones done, a stage counts as finished when all its planned tasks are done and the plan has moved on to a later stage. Slice 11 should keep the drawing from shrinking when a new chunk adds tasks to a stage that is already partly built.
+- Slice 5 weekly celebration: Sarah's line uses "That's your target for the week. Anything more this week is a bonus, not a must." in place of the handoff's example "That's a full week of work…", which reads oddly for a target of one or two days. Kept by the learner (Oct 22).
+- Slice 5 owed celebrations are checked on every app screen and shown one at a time; closing one marks it shown. Only the weekly kind is drawn so far; stage and house celebrations stay owed until slices 11 and 13 build their screens.
 
 - Slice 4 learner check (Oct 21, 2026): the learner marked a task done with a photo and reloaded; the done state felt like a small win. Home's wording is agreed as is: “Today’s brick is laid” / “You can keep practising, or call it a day. Your progress is saved.” The learner also confirmed password recovery now works.
 

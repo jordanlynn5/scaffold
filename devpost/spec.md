@@ -147,7 +147,7 @@ One routine, `bringPlanUpToDate`, run whenever you open the app and just before 
 PRD ref: `prd.md > Daily Task and Marking Done` (missed task rolls forward), `prd.md > Roadmap and 2-Week Chunks`.
 
 ### House and Progress
-The house is one SVG drawing component that takes numbers, not images: which stage you are on and how full it is. Each stage has a fixed number of brick slots, filled by the share of that stage's tasks you have done, so the drawing never changes size (handoff §13 #2, recommended option). Four states: empty lot, in progress, stage complete, finished. Progress also shows the roadmap, weekly target, streak and houses built.
+The house is one SVG drawing component that takes numbers, not images: which stage you are on and how full it is. Each stage has a fixed number of brick slots, filled by the share of that stage's tasks you have done, so the drawing never changes size (handoff §13 #2, recommended option). Slots per stage, decided by the learner on Oct 21, 2026: Groundwork 12, Foundation 12, Walls 51 (six rows, as the handoff draws them), Roof 12 tiles, Finishing 12 pieces (door, doorstep, two four-pane windows, attic window, chimney). A stage is finished when its milestone is done, or when all its planned tasks are done and the plan has moved on to a later stage; until then it is drawn just short of full. Four states: empty lot, in progress, stage complete, finished. Progress also shows the roadmap, weekly target, streak and houses built.
 PRD ref: `prd.md > Progress: The House`, `prd.md > Levels and Rewards`.
 
 ### Weekly Target, Streak and Celebrations
@@ -391,5 +391,4 @@ Email-and-password log-in · saving the time zone from the browser · the 15-min
 - **Resend and other people's email addresses.** If Resend needs a domain you own, the email backup and the sincere email will only reach your own address until you buy and connect one (about $10 a year). Check when the email step is built. If it is a blocker, friends would get WhatsApp-only nudges.
 - **Supabase Cron on the Free plan,** and whether it keeps the project from pausing.
 - **Vercel Hobby time limit:** verified in slice 3 on Oct 19, 2026. `/api/plan` allows 300 seconds, and full production-model generation and revision both succeeded on the live link. Splitting generation was unnecessary.
-- **House stage brick-slot counts** (how many slots each stage has). Set when the house is drawn.
 - **Carried from `prd.md > Open Questions`:** "Start over" confirmation in onboarding, a ground-breaking moment after commit, and the screens and wording not designed yet (Home after done, Profile before a goal, sign-up and log-in, WhatsApp and email copy). None blocks the build. Each is decided at its build step.
