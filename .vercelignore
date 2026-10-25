@@ -1,0 +1,10 @@
+.env*
+!.env.example
+devpost/
+.agents/
+.claude/
+agent/
+.git/
+.next/
+node_modules/
+.vercel/

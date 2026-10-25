@@ -15,8 +15,8 @@ export function readName(text: string) {
   return name.length > 0 && name.length <= 60 ? name : null;
 }
 
-// "Evening 19:00", "7pm", "7.30 in the evening" → "19:00", "19:00", "19:30".
-// Rounded to the nearest quarter hour, because the bell rings every 15 minutes.
+// "Evening 19:00", "7pm", "7.20 in the evening" → "19:00", "19:00", "19:00".
+// Rounded to the nearest hour, because the bell rings once an hour.
 export function readTime(text: string) {
   const lower = text.toLowerCase();
   if (/\b(noon|midday)\b/.test(lower)) return "12:00";
@@ -33,10 +33,8 @@ export function readTime(text: string) {
   if (!half && hours >= 1 && hours <= 11 && /evening|night|afternoon/.test(lower)) {
     hours += 12;
   }
-  const quarters = Math.round((hours * 60 + minutes) / 15) % 96;
-  const hh = String(Math.floor(quarters / 4)).padStart(2, "0");
-  const mm = String((quarters % 4) * 15).padStart(2, "0");
-  return `${hh}:${mm}`;
+  const hour = Math.round((hours * 60 + minutes) / 60) % 24;
+  return `${String(hour).padStart(2, "0")}:00`;
 }
 
 const numberWords = ["one", "two", "three", "four", "five", "six", "seven"];

@@ -11,13 +11,12 @@ export function normalizeWhatsapp(input: string) {
   return /^\+[1-9]\d{7,14}$/.test(digits) ? digits : null;
 }
 
-// Nudge times come in 15-minute steps, because the bell rings every 15
-// minutes (spec.md > What Was Simplified and Why).
-export const nudgeTimes = Array.from({ length: 96 }, (_, i) => {
-  const hours = String(Math.floor(i / 4)).padStart(2, "0");
-  const minutes = String((i % 4) * 15).padStart(2, "0");
-  return `${hours}:${minutes}`;
-});
+// Nudge times are on the hour, because the bell rings once an hour
+// (spec.md > What Was Simplified and Why).
+export const nudgeTimes = Array.from(
+  { length: 24 },
+  (_, hour) => `${String(hour).padStart(2, "0")}:00`,
+);
 
 export const messages = {
   email: "That email doesn't look complete. Check it and try again.",

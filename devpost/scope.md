@@ -8,7 +8,11 @@ status: approved
 A friend who keeps you on track with a goal you care about. She gives you one clear task each day and nudges you on WhatsApp to do it.
 
 ## The Unique Kernel
+
+**Current decision (Oct 25, 2026): WhatsApp is restored as the main nudge channel after the learner upgraded Twilio. Email remains the backup and Sarah's same line stays on Home. This supersedes the Oct 23 email-only/on-hold notes below. Reply-to-complete remains the next build slice.**
 **Clear, assigned tasks plus a nudge that reaches you.** The learner's problem isn't a missing plan: "I have a goal and I might even have a great plan, but if I'm not working on it I'll never achieve it." What works for them is step-by-step books and videos, because "I either did the task or I didn't." So the friend turns a goal into one small, finishable task a day, reminds you on WhatsApp along with your own why, and shows you how far you've come, Duolingo-style.
+
+*Version 1 change (learner decision, Oct 23, 2026):* the reminder arrives **by email**, and the same nudge waits on Home when you open the app. WhatsApp is on hold: Twilio's free trial refuses messages the app writes itself, and the learner chose to stay free rather than pay for an upgrade. The nudge still reaches you outside the app; WhatsApp can return later by switching it back on.
 
 ## Who It's For
 Someone who enjoys something and wants to get better at it, but struggles to be consistent without clear, assigned tasks. Today they rely on step-by-step books and videos, and drift when those run out or life gets busy.
@@ -16,7 +20,7 @@ First real user: the learner, who wants to become a better illustrator. Built so
 
 ## The Core Loop
 1. **Set up once:** the goal, why it matters (saved to remind you later), and roughly how much time you have.
-2. **Get nudged:** a WhatsApp message with today's task and a reminder of your why.
+2. **Get nudged:** a WhatsApp message with today's task and a reminder of your why. *(Version 1: an email, plus the same nudge on Home.)*
 3. **Do today's task:** one clear, small exercise, e.g. "draw 10 hands, 3 minutes each."
 4. **Mark it done** in the app. You either did it or you didn't.
 5. **See progress:** a Duolingo-style streak or path showing how far you've come.
@@ -33,7 +37,7 @@ You come back because the nudge finds you, the task is small and clear, and the 
 "I really enjoy art and creating it, but I struggle to be consistent when I don't have clear, assigned tasks." The learner is also practicing being a PM: "understand exactly why I am making certain decisions, and creating something with value and purpose based on a need."
 
 ## What "Working" Looks Like
-In a ~1-minute demo, the learner sets up "become a better illustrator," says why, and says how much time they have. Their **phone buzzes with a WhatsApp message**: today's task plus their why. They open the app, see the same clear task, mark it done, and the progress bar or streak moves.
+In a ~1-minute demo, the learner sets up "become a better illustrator," says why, and says how much time they have. Their **phone buzzes with a WhatsApp message**: today's task plus their why. *(Version 1: the nudge arrives as an email, and is waiting on Home.)* They open the app, see the same clear task, mark it done, and the progress bar or streak moves.
 **The "oh, that's cool" beat:** the nudge arrives on a real phone, in the learner's own words about why they started.
 
 ## The POC Boundary
@@ -41,7 +45,7 @@ In a ~1-minute demo, the learner sets up "become a better illustrator," says why
 - A clear, small daily task the friend assigns toward that goal
 - Marking the task done (did it or didn't)
 - A visible progress indicator (streak or path)
-- A WhatsApp nudge sent to the learner's own phone with today's task and their why, using the Twilio WhatsApp Sandbox (a free test setup)
+- A WhatsApp nudge sent to the learner's own phone with today's task and their why, using the Twilio WhatsApp Sandbox (a free test setup). *Version 1: an email nudge instead, plus the nudge on Home (Oct 23, 2026).*
 
 ## Later
 - Replying "done" directly in WhatsApp (two-way chat)

@@ -12,10 +12,12 @@ export type Profile = {
   nudge_time: string;
   weekly_target: number;
   houses_built: number;
+  whatsapp_joined_at: string | null;
+  whatsapp_last_inbound_at: string | null;
 };
 
 const columns =
-  "id, name, email, whatsapp, whatsapp_consent, timezone, nudge_time, weekly_target, houses_built";
+  "id, name, email, whatsapp, whatsapp_consent, timezone, nudge_time, weekly_target, houses_built, whatsapp_joined_at, whatsapp_last_inbound_at";
 
 // The logged-in person's own row, or null when nobody is logged in. For
 // places that answer with an error instead of sending you to log-in.

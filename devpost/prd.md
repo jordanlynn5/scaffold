@@ -15,8 +15,8 @@ Source: `scope.md > The Unique Kernel`, `scope.md > Who It's For`.
 ## The Core Journey
 Develops `scope.md > The Core Loop`.
 
-1. **Sign up.** Create an account with email and WhatsApp number.
-2. **Welcome and onboarding.** **Alice the Architect** welcomes you, then asks three questions to build your profile: what to call you, when your daily WhatsApp message should arrive, and how many days a week you want to build. Not sure what to build yet? Alice helps you find a goal first (see **Finding a Goal, Dreams, and Paths**).
+1. **Sign up.** Create an account with email and password. *(Version 1: no WhatsApp number; see Product Decisions, Oct 23, 2026.)*
+2. **Welcome and onboarding.** **Alice the Architect** welcomes you, then asks three questions to build your profile: what to call you, when your daily nudge should arrive, and how many days a week you want to build. Not sure what to build yet? Alice helps you find a goal first (see **Finding a Goal, Dreams, and Paths**).
 3. **Set your first goal through a WOOP conversation with Alice the Architect.** A back-and-forth chat, one step at a time:
    - **Wish:** what you want to accomplish (e.g. "become a better illustrator"). Alice then asks whether you've done any of this before, so tasks start at the right level.
    - **Outcome:** the best result if you achieve it. This is your *why*, saved and reused in reminders.
@@ -24,9 +24,9 @@ Develops `scope.md > The Core Loop`.
    - If the obstacle involves your phone, the Architect suggests setting a limit with your phone's own Screen Time settings.
 4. **Georgina the General Contractor builds your plan.** AI builds (a) a **roadmap of big milestones** toward the wish and (b) **daily tasks for the first 2 weeks**. Each task takes 30 minutes or less, sized to you. The plan includes if–then responses to your obstacle (the "P" in WOOP).
 5. **Commit.** You review the plan and commit to it. The process is now in play.
-6. **Every day: get nudged by Sarah the Site Lead.** One WhatsApp message with a motivational line and today's task.
+6. **Every day: get nudged by Sarah the Site Lead.** One email with a motivational line and today's task, and the same line from Sarah on Home. *(WhatsApp is on hold for version 1.)*
 7. **Do the task.** One small, clear task. Afterward you can keep going or stop until tomorrow.
-8. **Mark it done.** In the app or by replying on WhatsApp. "Mark as done" is the official record. A note ("today I achieved…") or photo is optional and can be added or edited any time later. You're on your honor.
+8. **Mark it done.** In the app (replying on WhatsApp is on hold for version 1). "Mark as done" is the official record. A note ("today I achieved…") or photo is optional and can be added or edited any time later. You're on your honor.
 9. **See progress: your house going up.** Every completed task adds a brick. Every milestone completes a construction stage, with a celebration.
 10. **Every 2 weeks: the next chunk.** The General Contractor generates the next 2 weeks of tasks toward the current milestone, informed by how the last chunk went.
 11. **Talk to Team anytime.** Chat about how it's going, get motivated, talk about how you feel, or change the plan. The team decides who answers, or you pick a teammate. The plan only changes after you confirm.
@@ -72,10 +72,10 @@ Added Oct 10, 2026 from the learner's design. *(design handoff §6.0)*
 
 ### Sign Up and Profile
 - As a new user, I want to create an account so my goal and progress are mine and others can use Scaffold too.
-  - [ ] I can sign up with my email and WhatsApp number, and log back in later to the same goal and progress.
+  - [ ] I can sign up with my email, and log back in later to the same goal and progress.
   - [ ] If I forget my password, log-in offers an email reset link. I choose and confirm a new password, then log in to the same saved goal. An expired link offers a fresh request.
-  - [ ] Sign-up asks for email, WhatsApp number (with country code) and a password of at least 8 characters, then takes me straight to Alice. A mistake is explained under the field it belongs to, never in red. *(design handoff §6.0b)*
-  - [ ] Sign-up has a tick box: "Yes, send me one message a day on WhatsApp with my task. I can stop it any time." My answer is saved. Leaving it unticked does not block sign-up: I get no WhatsApp messages until I tick it in Profile.
+  - [ ] Sign-up asks for email and a password of at least 8 characters, then takes me to the empty lot. *(Version 1: no WhatsApp number.)* A mistake is explained under the field it belongs to, never in red. *(design handoff §6.0b)*
+  - [ ] ~~Sign-up has a WhatsApp consent tick box.~~ On hold with WhatsApp for version 1 (Oct 23, 2026).
   - [ ] Profile shows my current goal, my weekly target (1–7 days), the time my daily nudge arrives, and my contact details, all editable.
   - [ ] Changing my goal means **abandoning the current project**. I see a warning listing what is deleted forever and what I keep, and must explicitly confirm ("Yes, I want to abandon this project") before the old goal is replaced. "Keep building" is the main button.
   - [ ] Abandoning **deletes everything tied to that project**: the house and its bricks, the goal and WOOP answers, the roadmap and plan, the learning log (all notes and photos), and team chats about the goal. I keep my account, settings, and houses-built count. *(design handoff §7.5)*
@@ -86,7 +86,7 @@ Added Oct 10, 2026 from the learner's design. *(design handoff §6.0)*
 ### Onboarding and WOOP Goal Setting
 Develops `scope.md > The Core Loop` step 1.
 - As someone starting something new, I want to set my goal through a conversation so it feels like a conversation, not filling in a form.
-  - [ ] Onboarding opens with a welcome, then three profile questions (my name, when the daily WhatsApp message should arrive, how many days a week I want to build), then the WOOP conversation. *(design handoff §6.4)*
+  - [ ] Onboarding opens with a welcome, then three profile questions (my name, when the daily nudge should arrive, how many days a week I want to build), then the WOOP conversation. *(design handoff §6.4)*
   - [ ] The Architect asks Wish, Outcome, Obstacle in order, one at a time, as chat messages. Each has quick-reply suggestions, and I can always type my own answer.
   - [ ] After my Wish, the Architect asks about my **prior experience**, so the plan starts from where I am now.
   - [ ] A step bar (You → Wish → Outcome → Obstacle → Plan) shows where I am.
@@ -130,18 +130,23 @@ Develops `scope.md > The Core Loop` steps 3–4.
   - [ ] **A missed task rolls forward:** tomorrow I get the same task and the plan shifts by one day. ("No progress without action.")
 
 ### WhatsApp Nudges and Replies
+
+**Current decision (Oct 25, 2026): WhatsApp is restored as the main nudge channel after the learner upgraded Twilio. Email remains the backup and Sarah's same line stays on Home. This supersedes the Oct 23 email-only/on-hold notes below. Reply-to-complete remains the next build slice.**
 Develops `scope.md > The Core Loop` step 2. Two-way replies were cut in scope and are now in.
+
+**Version 1 (learner decision, Oct 23, 2026): WhatsApp is on hold.** Twilio's free trial refuses messages the app writes itself. The learner chose to stay free: the daily nudge goes by email and is also shown on Home, and replying on WhatsApp waits for a later version. The heading is kept so code that cites it still resolves.
 - As a user, I want the nudge to reach me where I already am.
-  - [ ] Once a day I get one WhatsApp message: a motivational line plus today's task.
-  - [ ] I can reply on WhatsApp to mark the task done, with a photo or a statement ("today I achieved…") as proof.
-  - [ ] A WhatsApp reply marks the task done in the app, and the proof appears in the learning log.
+  - [ ] Once a day I get one email from Sarah at my chosen time: a motivational line plus today's task, with a link to the app.
+  - [ ] When I open the app that day, Home shows Sarah's same line next to today's task.
+  - [ ] "Send my nudge now" in Profile sends today's email straight away.
+  - On hold: one WhatsApp message a day; replying on WhatsApp to mark the task done with a photo or statement; the reply's proof appearing in the learning log.
 
 ### Missed Days and Re-engagement
 The no-guilt sequence, in the learner's design:
 
 | When | What happens |
 |---|---|
-| Day 1 missed | Normal WhatsApp nudge, gentle about yesterday. |
+| Day 1 missed | Normal nudge (email in version 1), gentle about yesterday. |
 | Day 2 missed | Smaller and warmer: "just 5 minutes today?" |
 | Day 3 missed | Sarah the Site Lead invites a chat with the team to adjust the plan. |
 | After day 3 | Daily nudges stop. |
@@ -152,7 +157,7 @@ The no-guilt sequence, in the learner's design:
 - "Activity" means **completing a task**. Opening the app or chatting doesn't count.
   - [ ] No nudges are sent after day 3 of inactivity.
   - [ ] The email is sent only if no task has been completed since the nudges stopped.
-  - [ ] When WhatsApp can't deliver a nudge, the same message is sent by email, and Home shows a short notice with the code word to reconnect WhatsApp. *(spec, Oct 9, 2026)*
+  - [ ] ~~When WhatsApp can't deliver a nudge, the same message is sent by email, and Home shows a notice to reconnect.~~ Version 1 sends every nudge by email, so there is nothing to reconnect (Oct 23, 2026).
   - [ ] Completing any task restarts daily nudges the next day.
 
 ### Weekly Target, Streak, and Celebration
@@ -195,7 +200,7 @@ Develops `scope.md > Later` ("real, cited sources behind tasks and suggestions")
 ### Mastery Tasks (Refreshers)
 Develops `scope.md > Later` ("refreshers that bring back things you learned earlier"). Called **mastery** in the app.
 - As a user, I want things I learned earlier to come back so I keep the skill, not just tick it off.
-  - [ ] A mastery task appears like any other daily task: on Home, in Plan, and in the WhatsApp nudge. Same size (30 minutes or less), same "Mark as done," same brick.
+  - [ ] A mastery task appears like any other daily task: on Home, in Plan, and in the daily nudge. Same size (30 minutes or less), same "Mark as done," same brick.
   - [ ] It is labeled "Mastery" so I can tell it revisits something I've already practiced.
   - [ ] Georgina decides when to include one as she plans each 2-week chunk. There is no fixed schedule.
 
@@ -252,11 +257,12 @@ Includes the follow-up conversation from `scope.md > Later`.
 - **Sign-up is in,** so others can use it (`scope.md > Who It's For`).
 - **A public landing page is in** (Oct 10, 2026). The learner designed it so a visitor understands the product before signing up. Teammate portraits are used there only; the app keeps letter badges.
 - **The new handoff's task-length check is adopted with the 30-minute limit.** A task's total time is its count times its minutes ("5 hands, 2 minutes each" is 10 minutes), and the "About n minutes" label must equal that total.
-- **Two-way WhatsApp is in,** for replying with proof.
+- **Two-way WhatsApp is in,** for replying with proof. *(On hold for version 1, Oct 23, 2026.)*
 - **A missed task rolls forward,** because "there is no progress without action."
 - **Weekly target instead of a daily streak,** set by the user, with a celebration when hit. It leaves room for life without guilt.
 - **No nudges after 3 missed days,** to avoid nagging. Re-engagement then ends gently: a sincere email, then silence.
 - **No final voice note, and email as the WhatsApp backup.** Decided in `4-spec` (Oct 9, 2026). The free WhatsApp test setup can't message someone who has been quiet for 24 hours, so a blocked nudge goes by email in the same words, and Home shows a notice when WhatsApp is disconnected. The voice note couldn't be delivered that way and needed another service. See `spec.md > What Was Simplified and Why`.
+- **Version 1: daily nudge by email plus on Home; WhatsApp on hold** (Oct 23, 2026). Found in `5-build`: Twilio's free trial only sends Twilio's own template messages, so the app's own nudge was refused (error 21654). Upgrading Twilio would cost a small top-up. The learner chose to stay free. Tradeoff accepted: the demo's moment is an email arriving, not a WhatsApp buzz, and friends only get the email once a domain is connected to Resend. The WhatsApp code stays in the project, switched off (`WHATSAPP_SENDING`). Supersedes the next decision for version 1.
 - **Daily nudge on WhatsApp, not email.** Briefly switched to email for cost, then moved back. WhatsApp better fits the kernel ("the nudge finds you") and the judging criteria (innovation, presentation, impact). Cost at hackathon scale is cents.
 - **App tracking (e.g. noticing Instagram use) replaced by a Screen Time suggestion.** Tracking would require a native phone app and could feel like surveillance.
 - **The team changes the plan only after confirmation.** The user stays in control.
@@ -272,10 +278,10 @@ Includes the follow-up conversation from `scope.md > Later`.
 3. AI roadmap + first 2-week plan, review, and commit
 4. Home: goal, today's task, mark done with note/photo
 5. Progress: the house growing brick by brick, roadmap position, weekly target and its celebration (confetti)
-6. Daily WhatsApp nudge, with email when WhatsApp is blocked, and Profile settings
+6. Daily nudge by email, also shown on Home, and Profile settings *(WhatsApp on hold for version 1)*
 
 **Then layered on**, one at a time:
-7. Two-way WhatsApp: replying with proof
+7. ~~Two-way WhatsApp: replying with proof~~ *(on hold for version 1)*
 8. Plan view (by week / time frame), learning log, missed tasks rolling forward, and "Why this task" explanations (the **?** next to a task)
 9. Missed-day nudges and the sincere re-engagement email
 10. Talk to Team chat with confirmed plan changes
@@ -294,6 +300,7 @@ Includes the follow-up conversation from `scope.md > Later`.
 - "Where you started → where you're going" (day 1 vs. day 20 proof comparison): dropped in favor of the house, but the saved proof would make it possible later.
 - A final WhatsApp voice note from the team, a week after the sincere email. Needs a real WhatsApp sender and a text-to-speech service.
 - A real WhatsApp sender, so nobody has to join with a code word.
+- WhatsApp nudges and replies (on hold for version 1): upgrade Twilio, set `WHATSAPP_SENDING=on`, and bring back the WhatsApp number and consent in sign-up and Profile.
 - Links to real, checkable sources (books, courses, studies) behind each "why this task."
 - Multiple goals at once.
 

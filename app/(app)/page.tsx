@@ -15,6 +15,7 @@ import { SmallHouse } from "@/components/house/SmallHouse";
 import { getProgress } from "@/lib/progress/data";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { WhatsAppNotice } from "@/components/nudges/WhatsAppNotice";
 
 const steps: { who: TeammateId; verb: string; withWhom: string }[] = [
   { who: "alice", verb: "Design", withWhom: "with Alice" },
@@ -54,6 +55,10 @@ async function HomeContent() {
     const { data: proof, error: proofError } = task?.status === "done" ? await db.from("proofs").select("note, photo_path").eq("task_id", task.id).maybeSingle() : { data: null, error: null };
     if (proofError) throw proofError;
     const house = await getProgress(profile.id, current.id, profile.timezone);
+    // Today's nudge from Sarah, the same line as her WhatsApp or email.
+    const { data: nudge } = await db.from("nudge_log").select("line")
+      .eq("user_id", profile.id).eq("sent_on", today).not("line", "is", null)
+      .order("created_at", { ascending: false }).limit(1).maybeSingle();
     let photoUrl: string | undefined;
     if (proof?.photo_path) {
       const signed = await db.storage.from("proofs").createSignedUrl(proof.photo_path, 600);
@@ -66,6 +71,7 @@ async function HomeContent() {
         <div className="flex min-w-0 flex-col gap-5">
         <p className="text-caption text-text-muted">{today}{task ? ` · Day ${task.position} of 14` : ""}</p>
         <h1 className="text-h1">Let’s build{profile.name ? `, ${profile.name}` : ""}</h1>
+        <WhatsAppNotice person={profile} />
         <Card variant="quiet"><p className="text-body">Building: <strong>{current.wish}</strong></p></Card>
         <Card className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-label text-text-muted">TODAY’S BRICK</span>{task ? <span className="text-body-sm">About {task.minutes} minutes</span> : null}</div>
@@ -84,7 +90,7 @@ async function HomeContent() {
           return <li key={date} aria-label={`${label}${complete ? ": done" : ": no task completed"}`} className="flex flex-col items-center gap-2 text-caption"><span>{label}</span><span aria-hidden="true" className={`flex h-8 w-8 items-center justify-center rounded-full border ${complete ? "border-navy bg-navy text-surface" : "border-line text-text-muted"}`}>{complete ? "✓" : "·"}</span></li>;
         })}</ul></Card>
         <Card variant="quiet"><h2 className="text-h2">When the obstacle shows up</h2>{current.draft_plan?.if_then_plans.map((p, index) => <p key={index} className="mt-3 text-body"><strong className="text-yellow">If</strong> {p.if}, <strong className="text-yellow">then</strong> {p.then}</p>)}<p className="mt-5 text-body-sm">Why you started: {current.outcome}</p></Card>
-        <Card variant="dark"><div className="flex items-center gap-3"><TeammateBadge who="sarah" /><p className="text-body-sm">Sarah · Site Lead</p></div><p className="mt-4 text-body">{task?.status === "done" ? "That’s one more brick in place. You showed up for your goal today." : "One small task. One more brick. Start with what’s in front of you."}</p><ButtonLink href="/team" variant="link" className="mt-3 text-yellow">Talk to the team →</ButtonLink></Card>
+        <Card variant="dark"><div className="flex items-center gap-3"><TeammateBadge who="sarah" /><p className="text-body-sm">Sarah · Site Lead</p></div><p className="mt-4 text-body">{nudge?.line ?? (task?.status === "done" ? "That’s one more brick in place. You showed up for your goal today." : "One small task. One more brick. Start with what’s in front of you.")}</p><ButtonLink href="/team" variant="link" className="mt-3 text-yellow">Talk to the team →</ButtonLink></Card>
         </div>
       </div>
     );

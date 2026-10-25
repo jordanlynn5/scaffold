@@ -48,10 +48,9 @@ export async function proxy(request: NextRequest) {
     // Same address, different page: the landing page lives at /welcome.
     const url = request.nextUrl.clone();
     url.pathname = "/welcome";
-    return NextResponse.rewrite(url);
-  }
-  if (pathname === "/welcome") {
-    return redirectKeepingCookies(request, response, "/");
+    const rewrite = NextResponse.rewrite(url);
+    for (const cookie of response.cookies.getAll()) rewrite.cookies.set(cookie);
+    return rewrite;
   }
   return onVisitorPage
     ? response

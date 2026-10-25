@@ -11,7 +11,7 @@ Scaffold is a website that works on a phone and on a desktop. It is made of six 
 
 1. **The app (Next.js).** Every screen you designed: Home, Progress, Plan, Talk to Team, Profile, onboarding. It also holds the rules: what counts as a missed task, when confetti fires, who on the team answers. Next.js is a *framework*, a pile of decisions already made for you about how to build a web app.
 2. **The host (Vercel).** A rented computer that is always on and runs the app, so other people can open it from a link and it works when your laptop is off.
-3. **The database (Supabase).** A set of spreadsheets the app reads and writes: people, goals, plans, tasks, notes, chats. Supabase also does three other jobs: it handles sign-up and log-in, it stores proof photos, and it rings a bell every 15 minutes that tells the app "check whose nudge is due."
+3. **The database (Supabase).** A set of spreadsheets the app reads and writes: people, goals, plans, tasks, notes, chats. Supabase also does three other jobs: it handles sign-up and log-in, it stores proof photos, and it rings a bell once an hour that tells the app "check whose nudge is due."
 4. **The team's brains (Claude).** When Alice asks a question, Georgina writes a plan, or Sarah writes a nudge, the app sends Claude a description of who is speaking and what they know about you, and Claude writes the words. Two models: **Opus 5.5** writes roadmaps and plans (rare, and quality matters most), **Haiku 5.5** handles chat and nudges (frequent, fast, cheap).
 5. **WhatsApp (Twilio sandbox).** Sends the daily nudge to your phone and passes your reply back to the app. The sandbox is Twilio's free test setup.
 6. **Email (Resend).** Sends the sincere re-engagement email, and stands in for WhatsApp whenever WhatsApp is not allowed to deliver.
@@ -28,7 +28,7 @@ PRD ref: `prd.md > The Core Journey`.
 3. **WOOP.** Same loop for Wish, prior experience, Outcome, Obstacle. Alice's instructions tell her to ask a follow-up for a vague obstacle and to suggest Screen Time if the obstacle involves your phone.
 4. **Georgina builds the plan.** The app sends your WOOP answers to Claude (Opus) and asks for a fixed shape back: five milestones, 14 daily tasks of 30 minutes or less, sized to you, at least one if–then plan, and a short "why" for each task. → The app checks the shape (five milestones, no task over 30 minutes, each task's minutes equal to its count times its per-item time) and saves it as a draft plan. → You see the plan review screen.
 5. **Commit.** You press "I commit to this plan." → The project is marked active, the tasks get calendar dates starting today, and Home switches from the empty lot to today's task.
-6. **Daily nudge.** Every 15 minutes Supabase rings the bell. → The app finds everyone whose nudge time just arrived in their own time zone. → For each, it brings their plan up to date (see step 8), asks Claude (Haiku) for Sarah's line, and sends it by WhatsApp or by email.
+6. **Daily nudge.** At the start of every hour Supabase rings the bell. → The app finds everyone whose nudge time just arrived in their own time zone. → For each, it brings their plan up to date (see step 8), asks Claude (Haiku) for Sarah's line, and sends it by WhatsApp or by email.
 7. **Mark it done.** In the app, you press "Mark as done" and optionally add a note or photo. On WhatsApp, you reply with words or a photo. → Either way the same piece of code runs: the task is marked done, the note or photo is saved as proof, this week's count goes up, and the app works out whether a celebration is owed.
 8. **A missed task rolls forward.** Whenever you open the app or your nudge is due, the app checks for a task dated before today that is not done. → It marks it missed, puts the same task on today, and moves every later task one day.
 9. **See progress.** Progress counts your done tasks and draws the house from that number: finished stages in slate, the current stage partly navy, the rest dashed.
@@ -76,13 +76,13 @@ Documentation:
 2. Start: `npm install` once, then `npm run dev`.
 3. Open: http://localhost:3000
 
-The local app talks to the same Supabase project as the hosted one. WhatsApp replies and the 15-minute bell only reach the hosted app, because Twilio and Supabase need a public address to call.
+The local app talks to the same Supabase project as the hosted one. WhatsApp replies and the hourly bell only reach the hosted app, because Twilio and Supabase need a public address to call.
 
 **Secret keys (`.env.local` locally, Vercel project settings when hosted):**
-`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`, `PLAN_MODEL` (optional), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM`, `TWILIO_SANDBOX_JOIN_CODE`, `RESEND_API_KEY`, `EMAIL_FROM`, `CRON_SECRET`, `APP_URL`.
+`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`, `PLAN_MODEL` (optional), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM`, `TWILIO_SANDBOX_JOIN_CODE`, `RESEND_API_KEY`, `EMAIL_FROM`, `CRON_SECRET`, `APP_URL`, `WHATSAPP_SENDING` (`on` to enable WhatsApp).
 These never go into the GitHub repository. `.env.example` lists the names with no values.
 
-**For the demo video** (required, along with the public GitHub repository): record on the hosted app. Join the sandbox from your phone, sign up, do the WOOP chat, commit, then press **"Send my nudge now"** in Profile so the WhatsApp message arrives on camera without waiting for the clock. Reply with a photo and show the brick appear. `6-ship` reads this section.
+**For the demo video** (required, along with the public GitHub repository): record on the hosted app. Join the sandbox from your phone, sign up, do the WOOP chat, commit, then press **"Send my nudge now"** in Profile so the WhatsApp message arrives on camera without waiting for the clock. Mark the task done in the app and show the brick appear; replying with proof joins the demo after slice 7. `6-ship` reads this section.
 
 ## Look and Feel
 Carries forward `prd.md > Look and Feel` and `scope.md > Inspiration & Identity`. The full detail is `SCAFFOLD_DESIGN_HANDOFF.md`, which the build treats as the source of truth for anything visual.
@@ -171,7 +171,8 @@ Alice's chat before a goal exists: an interest gets three goal ideas, a big drea
 PRD ref: `prd.md > Finding a Goal, Dreams, and Paths`.
 
 ### Nudge Sender
-Runs when Supabase rings the 15-minute bell. For each person whose nudge time has arrived, it runs `bringPlanUpToDate`, works out which message is due from the days since their last done task, has Sarah write it, picks the channel and sends. It records each send in `nudge_log` so nobody gets two in one day.
+**Current decision (Oct 25, 2026): WhatsApp is the main nudge channel again, with email backup and Sarah's line saved in `nudge_log.line` for Home.** The learner upgraded Twilio; the account API confirms `Full` and `active`. Enable sending with `WHATSAPP_SENDING=on` after configuration. The channel rule still enforces consent, sandbox membership and the 24-hour reply window. This supersedes the Oct 23 email-only decision.
+Runs when Supabase rings the hourly bell. For each person whose nudge time has arrived, it runs `bringPlanUpToDate`, works out which message is due from the days since their last done task, has Sarah write it, picks the channel and sends. It records each send in `nudge_log` so nobody gets two in one day.
 **Channel rule:** WhatsApp if the person ticked the WhatsApp consent box, messaged the sandbox within the last 24 hours and joined within the last 3 days. Otherwise email.
 PRD ref: `prd.md > WhatsApp Nudges and Replies`, `prd.md > Missed Days and Re-engagement`.
 
@@ -186,10 +187,12 @@ PRD ref: `prd.md > WhatsApp Nudges and Replies`, `prd.md > Missed Days and Re-en
 | Then | Silence | — |
 
 ### WhatsApp Inbox
+Slice 6 connects this address to Twilio and records joined/last-inbound times after signature checks. Reply-to-complete arrives in slice 7; it is not implemented in slice 6.
 The address Twilio calls when you reply. It checks the message really came from Twilio, finds you by phone number, and records the time (which reopens the 24-hour window). If the message is the join code, it records the join. Otherwise it treats the text as your note and any picture as your photo, copies the photo into Supabase Storage, runs `completeTask`, and has Sarah reply, including a congratulation if you hit your weekly target.
 PRD ref: `prd.md > WhatsApp Nudges and Replies`.
 
 ### WhatsApp Connection Notice
+**Restored Oct 25, 2026**, together with the WhatsApp number and consent controls in sign-up and Profile.
 A small line on Home when WhatsApp cannot currently reach you, showing the sandbox number and join code, and saying that nudges are arriving by email meanwhile.
 PRD ref: none. Added by the learner at review because of the sandbox choice (see **What Was Simplified and Why**).
 
@@ -218,7 +221,8 @@ messages        id, conversation_id, sender (user|alice|georgina|paula|sarah|sys
 plan_proposals  id, message_id, status (pending|confirmed|declined), changes (list of task, from, to)
 week_records    user_id, week_start (a Monday), target, done_count, hit, celebrated_at?
 pending_celebrations  id, user_id, kind (weekly|stage|house), payload, shown_at?
-nudge_log       id, user_id, sent_on (date), kind, channel (whatsapp|email)
+nudge_log       id, user_id, sent_on (date), trigger (scheduled|manual), kind,
+                line, channel (whatsapp|email)?, provider_id?, created_at
 ```
 
 Proof photos are files in a private Supabase Storage folder, one subfolder per person. The `proofs` row stores the path.
@@ -269,7 +273,7 @@ scaffold/
 │   │       └── plan/page.tsx     # plan review and commit
 │   └── api/
 │       ├── chat/route.ts         # streams a teammate's reply
-│       ├── cron/tick/route.ts    # the 15-minute bell lands here
+│       ├── cron/tick/route.ts    # the hourly bell lands here
 │       └── whatsapp/inbound/route.ts   # Twilio calls this on every reply
 ├── components/
 │   ├── ui/                       # Button, Card, Chip, Dialog, Stepper, icons
@@ -326,10 +330,11 @@ The app's files sit in the repository root alongside `devpost/`. Next.js's setup
 - **Free plan (checked Oct 9, 2026):** 500 MB database, 1 GB file storage, 50,000 monthly users, 2 projects. A project pauses after 1 week with no activity.
 - **Auth:** email and password. Email confirmation is switched off (see **What Was Simplified and Why**).
 - **Storage:** one private bucket, `proofs`.
-- **Cron:** a job every 15 minutes that calls `POST {APP_URL}/api/cron/tick` with the header `Authorization: Bearer {CRON_SECRET}`. Used because Vercel's free plan only allows scheduled jobs once a day, with up to an hour of drift (https://vercel.com/docs/cron-jobs/usage-and-pricing).
+- **Cron:** a job at the start of every hour that calls `POST {APP_URL}/api/cron/tick` with the header `Authorization: Bearer {CRON_SECRET}`. Used because Vercel's free plan only allows scheduled jobs once a day, with up to an hour of drift (https://vercel.com/docs/cron-jobs/usage-and-pricing).
 - **Keys:** the URL and anon key (safe in the browser) and the service role key (server only, used by the bell and the WhatsApp inbox).
 
 ### Twilio WhatsApp Sandbox
+**Restored Oct 25, 2026 after upgrading the account (`Full`, `active`).** Earlier in `5-build`: a free trial account can only send Twilio's own WhatsApp templates; a message with the app's own text is refused with error 21654 ("ContentSid Required"), even right after the person writes to the sandbox. Twilio's trial guide: "You won't be able to write your own message." Upgrading the account lifts this. The keys are kept in `.env.local`.
 - **Docs:** https://www.twilio.com/docs/whatsapp/sandbox
 - **Send:** `POST https://api.twilio.com/2010-04-01/Accounts/{AccountSid}/Messages.json`, signed in with the Account SID and Auth Token. Fields: `From=whatsapp:+14155238886`, `To=whatsapp:{number}`, `Body`.
 - **Receive:** Twilio sends a form `POST` to `/api/whatsapp/inbound` with `From`, `Body`, `NumMedia`, `MediaUrl0`, `MediaContentType0`. The app checks the `X-Twilio-Signature` header before trusting it. Downloading the photo needs the same SID and token.
@@ -340,7 +345,7 @@ The app's files sit in the repository root alongside `devpost/`. Next.js's setup
 - **Docs:** https://resend.com/docs · Pricing: https://resend.com/pricing
 - **Send:** `POST https://api.resend.com/emails` with `Authorization: Bearer {RESEND_API_KEY}` and `{ from, to, subject, html }`.
 - **Free plan (checked Oct 9, 2026):** 3,000 emails a month, 100 a day.
-- **Unverified:** sending to other people's addresses probably requires a domain you own. See **Decisions and Open Issues**.
+- **Verified rule (Oct 25, 2026):** the `resend.dev` test sender can send only to the Resend account email. Other recipients need a verified domain. See https://resend.com/docs/knowledge-base/403-error-resend-dev-domain. Until then, a failed fallback still leaves the nudge on Home.
 
 ### Vercel
 - **Docs:** https://vercel.com/docs
@@ -352,15 +357,16 @@ The app's files sit in the repository root alongside `devpost/`. Next.js's setup
 - **The plan comes back the wrong shape** (a task over 30 minutes, not five milestones) → the app asks once more without bothering you. If it fails again, the same "Try again" message.
 - **A teammate's chat reply fails** → your message stays in the chat with "That didn't send. Try again."
 - **WhatsApp can't reach you** → the nudge goes by email, and Home shows the connection notice with the join code.
-- **Nobody has used the app for a week** → Supabase's free plan pauses the project. Fix: press "Restore" in the Supabase dashboard. The 15-minute bell should keep it awake, which is something to confirm during the build.
+- **Nobody has used the app for a week** → Supabase's free plan pauses the project. Fix: press "Restore" in the Supabase dashboard. The hourly bell should keep it awake, which is something to confirm during the build.
 - **Photo upload fails** → the task is still marked done, with "Your photo didn't save. You can add it later from Plan."
 
 ## What Was Simplified and Why
 
+- **WhatsApp restored** (Oct 25, 2026): the learner upgraded Twilio and chose WhatsApp first, email backup and the same line on Home. The Oct 23 email-only experiment is superseded.
 - **Free WhatsApp sandbox** instead of a real WhatsApp sender. Free and certain to work for the demo. The fuller version needs a Meta business account and verification that Twilio says can take several weeks. Cost of the choice: people join with a code word and rejoin every 3 days.
 - **Email as the backup channel** instead of every nudge on WhatsApp. The sandbox cannot message someone who has been quiet for 24 hours, which is exactly the missed-day case. Email keeps the no-guilt sequence reaching people, in the same words.
 - **No final voice note.** The sequence ends at the sincere email, then silence. The voice note cannot be delivered in the sandbox and would need a sixth service to turn text into speech. It moves to possible later enhancements.
-- **Nudge times in 15-minute steps** instead of any minute, because the bell rings every 15 minutes.
+- **Nudge times on the hour** instead of any minute, because the bell rings once an hour (learner decision, Oct 23, 2026). Where the clock is offset by half an hour, such as India, the nudge arrives 30 minutes after the chosen time.
 - **No "confirm your email" step at sign-up.** Supabase's built-in confirmation emails are tightly limited on the free plan. The fuller version sends them through Resend with a verified domain.
 - **The "why" for each task is written with the task,** not when you press **?**. Faster and cheaper, and Georgina explains her own reasoning while she still has it.
 - **Roll-forward happens when you open the app or your nudge is due,** not at the stroke of midnight. Same result, no extra scheduled job.
@@ -382,13 +388,14 @@ Nothing in the kernel (`scope.md > The Unique Kernel`) is faked: the tasks are w
 - **A small notice on Home when WhatsApp is disconnected,** with the code word to rejoin. Confirmed at review.
 
 ### Derived by the agent from those decisions
-Email-and-password log-in · saving the time zone from the browser · the 15-minute bell in Supabase · fixed brick slots per stage · one `completeTask` routine shared by app and WhatsApp · celebrations from WhatsApp shown on the next visit, plus a line in Sarah's reply · chat history kept · missed days stay visible in Plan · "Ask for changes" goes to Georgina · the dream survives abandoning its current house · voice-note timing no longer applies. The last five follow the designer's recommendations in handoff §13.
+Email-and-password log-in · saving the time zone from the browser · the hourly bell in Supabase · fixed brick slots per stage · one `completeTask` routine shared by app and WhatsApp · celebrations from WhatsApp shown on the next visit, plus a line in Sarah's reply · chat history kept · missed days stay visible in Plan · "Ask for changes" goes to Georgina · the dream survives abandoning its current house · voice-note timing no longer applies. The last five follow the designer's recommendations in handoff §13.
 
 ### The learner's open question, and what answered it
 **"What will this cost, and can it be free?"** raised three times: for hosting, for Gemini, and for free tiers generally. Answered by looking up current prices together rather than guessing. Hosting, database and email fit free plans. The AI and WhatsApp cost cents per use. The estimate is $5–20 for the hackathon, mostly AI use while testing. To check during the build: set a spending cap in the Claude Console on day one, and look at actual spend after the first full onboarding-to-plan run.
 
 ### Still open
-- **Resend and other people's email addresses.** If Resend needs a domain you own, the email backup and the sincere email will only reach your own address until you buy and connect one (about $10 a year). Check when the email step is built. If it is a blocker, friends would get WhatsApp-only nudges.
-- **Supabase Cron on the Free plan,** and whether it keeps the project from pausing.
+- **Resend and other people's email addresses.** If Resend needs a domain you own, the email backup and the sincere email will only reach your own address until you buy and connect one (about $10 a year). Check when the email step is built. WhatsApp was restored Oct 25, 2026. Until a domain is connected, friends whose WhatsApp is unavailable get the nudge on Home; Resend cannot deliver their fallback email.
+- **Supabase Cron on Free is verified (Oct 25, 2026):** the hourly job is installed; a temporary scheduled execution succeeded and the hosted endpoint returned HTTP 200. The temporary timer was removed. Whether Cron activity prevents project pausing remains unverified.
+- **Twilio approval and delivery verified (Oct 25, 2026):** the learner completed verification, the real WhatsApp send returned a Twilio message ID, and the learner confirmed receipt. The real incoming sandbox callback and hands-on manual/hourly checks remain to confirm.
 - **Vercel Hobby time limit:** verified in slice 3 on Oct 19, 2026. `/api/plan` allows 300 seconds, and full production-model generation and revision both succeeded on the live link. Splitting generation was unnecessary.
 - **Carried from `prd.md > Open Questions`:** "Start over" confirmation in onboarding, a ground-breaking moment after commit, and the screens and wording not designed yet (Home after done, Profile before a goal, sign-up and log-in, WhatsApp and email copy). None blocks the build. Each is decided at its build step.

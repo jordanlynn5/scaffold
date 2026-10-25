@@ -5,6 +5,10 @@ import { DailyNudge, WeeklyTarget } from "@/components/profile/RhythmSettings";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { getProfile } from "@/lib/profile";
+import { SendNudgeNow } from "@/components/profile/SendNudgeNow";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { todayInZone } from "@/lib/dates";
+import { connection } from "next/server";
 
 export const metadata: Metadata = { title: "Profile · Scaffold" };
 
@@ -12,7 +16,13 @@ export const metadata: Metadata = { title: "Profile · Scaffold" };
 // (§13 #10). The current-goal card and the abandon flow arrive in checklist
 // slice 12.
 export default async function ProfilePage() {
+  await connection();
   const profile = await getProfile();
+  // "Send my nudge now" needs today's task to send.
+  const { data: task } = await createAdminClient().from("tasks")
+    .select("id, projects!inner(user_id, status)")
+    .eq("projects.user_id", profile.id).eq("projects.status", "active")
+    .eq("scheduled_date", todayInZone(profile.timezone)).maybeSingle();
 
   return (
     <div className="flex flex-col gap-4 desk:gap-5">
@@ -22,7 +32,9 @@ export default async function ProfilePage() {
       <DailyNudge
         initialTime={profile.nudge_time.slice(0, 5)}
         initialConsent={profile.whatsapp_consent}
-      />
+      >
+        <SendNudgeNow hasTask={Boolean(task)} />
+      </DailyNudge>
       <ContactForm
         initial={{
           name: profile.name ?? "",
