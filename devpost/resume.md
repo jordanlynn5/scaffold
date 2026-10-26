@@ -5,6 +5,88 @@ status: in-progress
 
 # Resume at slice 6
 
+## Latest state: real incoming WhatsApp works
+
+Slice 6's remaining learner checks are now complete: the learner confirmed
+today's automatic email receipt with "yes", following the updated WhatsApp
+and Home retry. All mechanical checks passed. Preserve today's scheduled
+claim. Save the slice 6 commit, tick it in the checklist, then start slice 7.
+The older pending-check notes below are superseded by this completion.
+
+The learner reported the manual nudge said "morning" and requested neutral
+"Hi" wording. Updated `lib/nudges/message.ts` to add the greeting in code,
+ask Sarah for encouragement without a greeting/time-of-day assumption, and
+fall back to the neutral line if generated text mentions morning, afternoon,
+evening or tonight. Updated the PRD/spec decision. Local webpack build,
+lint and a one-off check of named/unnamed greetings, AI failure and rejected
+morning wording passed; WhatsApp/email use the same composed line.
+Deployed to the existing public address as `dpl_Ha617Jv5reymG5gSAmqWPmrfXcE6`;
+Vercel's normal Turbopack build passed and the deployment is READY.
+The existing live nudge checks also passed after this deployment; all three
+disposable accounts were removed and this run sent no real messages.
+The learner retried the updated nudge and confirmed "ok good" after being
+asked to check WhatsApp and Home. The greeting fix and Home comparison are
+confirmed. The learner also confirmed the automatic email receipt after
+being asked to check the 13:00 Madrid nudge, including the spam folder.
+
+On October 26, the learner sent the rejoin phrase and hello. Twilio recorded
+real incoming messages at 18:50:18 and 18:50:28 UTC; Scaffold's actual profile
+now has both `whatsapp_joined_at` and `whatsapp_last_inbound_at` at
+18:50:30.416 UTC. No synthetic timestamps were inserted. The learner reported
+no reply, which is expected: slice 6's handler deliberately returns empty
+TwiML, and reply-to-complete remains slice 7. The real route is now proven.
+The exact cause of the earlier default responder is not established; the
+connection worked after the terms step and rejoin test, without a URL edit.
+
+The learner pressed Profile → Send my nudge now and confirmed "ok I got it".
+Twilio's matching outgoing message at 18:54:08 UTC has status `read`, without
+an error. Manual WhatsApp receipt is confirmed. The subsequent greeting
+revision and matching Home line are also learner-confirmed as recorded above.
+Automatic email receipt is now learner-confirmed as well.
+
+The real account also has today's scheduled email receipt from
+12:00:03.757 UTC (13:00 Madrid), confirmed by the learner. Do not promise
+another scheduled nudge today by changing
+the time: the one-scheduled-nudge-per-day rule has already claimed today.
+Tomorrow's existing 13:00 Madrid time is within 24 hours of the fresh hello.
+If a scheduled WhatsApp check is still needed, retain the existing schedule
+and obtain the learner's delivery report then; do not delete today's claim.
+
+## October 26 continuation
+
+- The learner approved Safari use: "ok twilio is signed in on safari".
+  The earlier Safari permission gate below is resolved for this work.
+- Reran the live `scripts/check-nudges.mjs` without `--real`: channel/due
+  boundaries, duplicate prevention, saved Home line before/after completion,
+  private access, cron authentication, forged inbound rejection and the
+  correctly signed fixture all passed. All three disposable accounts were
+  removed. No real messages were sent by this run.
+- Read the latest Twilio automatic outgoing reply via its API. It says:
+  "You said :Hello. Configure your WhatsApp Sandbox's Inbound URL to change
+  this message." This confirms the default responder is still handling the
+  learner's messages; the cause is not yet resolved.
+- The legacy Sandbox still shows the correct Scaffold inbound URL and POST,
+  plus the learner as a participant. Its account, sender number and join code
+  match local configuration. Do not resave unchanged fields or request more
+  hellos without a routing change.
+- The learner completed the newer Console's sandbox terms step. Its Sandbox
+  mode now shows **New WhatsApp sandbox coming soon!** and a link to the
+  legacy Sandbox. This rules out the hypothesis of a separate Auto-reply
+  control in the upgraded account's newer test panel. Following its link to
+  the current One Console's legacy Sandbox also shows the correct Scaffold
+  URL, POST, join code and participant. No routing settings were changed.
+- Asked the learner to send the existing join phrase again, then one hello,
+  and report the replies. The real messages reached Scaffold, as recorded
+  above. Rejoining was an experiment; its precise role in restoring routing
+  is not established.
+- A read-only temporary diagnostic at
+  `/private/tmp/scaffold-inbound-status.mjs` reads recent Twilio flags and
+  matched Scaffold timestamps without printing contacts or credentials.
+  Run with `node --env-file=.env.local` from the project folder.
+  Slice 6 remains unchecked.
+
+## Earlier October 25 checkpoint
+
 Saved October 25, 2026, at the learner's request before shutting down.
 The learner explicitly requested a commit of this unfinished checkpoint.
 Branch: `develop`. Build mode: learn. Slices 1–5 are complete; slice 6 is

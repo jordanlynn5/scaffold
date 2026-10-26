@@ -174,6 +174,7 @@ PRD ref: `prd.md > Finding a Goal, Dreams, and Paths`.
 **Current decision (Oct 25, 2026): WhatsApp is the main nudge channel again, with email backup and Sarah's line saved in `nudge_log.line` for Home.** The learner upgraded Twilio; the account API confirms `Full` and `active`. Enable sending with `WHATSAPP_SENDING=on` after configuration. The channel rule still enforces consent, sandbox membership and the 24-hour reply window. This supersedes the Oct 23 email-only decision.
 Runs when Supabase rings the hourly bell. For each person whose nudge time has arrived, it runs `bringPlanUpToDate`, works out which message is due from the days since their last done task, has Sarah write it, picks the channel and sends. It records each send in `nudge_log` so nobody gets two in one day.
 **Channel rule:** WhatsApp if the person ticked the WhatsApp consent box, messaged the sandbox within the last 24 hours and joined within the last 3 days. Otherwise email.
+**Greeting (learner feedback, Oct 26):** use "Hi" with the person's name when known, regardless of send time. Sarah writes time-neutral encouragement; the same complete line is saved for Home and used in WhatsApp and email.
 PRD ref: `prd.md > WhatsApp Nudges and Replies`, `prd.md > Missed Days and Re-engagement`.
 
 | Days since last done task | Message | Channel |

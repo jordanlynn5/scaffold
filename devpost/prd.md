@@ -136,6 +136,7 @@ Develops `scope.md > The Core Loop` step 2. Two-way replies were cut in scope an
 
 **Version 1 (learner decision, Oct 23, 2026): WhatsApp is on hold.** Twilio's free trial refuses messages the app writes itself. The learner chose to stay free: the daily nudge goes by email and is also shown on Home, and replying on WhatsApp waits for a later version. The heading is kept so code that cites it still resolves.
 - As a user, I want the nudge to reach me where I already am.
+  - The greeting is "Hi" (with my name when known), at any send time. It does not assume it is morning. *(learner feedback, Oct 26, 2026)*
   - [ ] Once a day I get one email from Sarah at my chosen time: a motivational line plus today's task, with a link to the app.
   - [ ] When I open the app that day, Home shows Sarah's same line next to today's task.
   - [ ] "Send my nudge now" in Profile sends today's email straight away.

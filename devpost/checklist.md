@@ -7,11 +7,14 @@ status: approved
 
 Build mode: learn
 
-**Resume handoff:** `devpost/resume.md` records the exact October 25 shutdown
-checkpoint. Slice 6 is unfinished: real outgoing WhatsApp/email and the hourly
-scheduler pass; real incoming-message routing remains unresolved. Safari use
-was rejected by automatic approval review and permission to continue is pending.
-The learner explicitly requested a work-in-progress commit before shutdown.
+**Resume handoff:** `devpost/resume.md` records the October 25 shutdown and
+October 26 continuation. Slice 6's manual WhatsApp receipt, matching Home line,
+revised "Hi" greeting and automatic email receipt are learner-confirmed.
+Outgoing WhatsApp/email, the hourly scheduler
+and real incoming-message routing now pass. Safari use is approved. The
+learner completed the newer Console's terms step and rejoin/hello test;
+Scaffold recorded the actual inbound at 18:50:30 UTC. The live automated
+nudge checks passed again on October 26.
 
 ## Slices
 
@@ -158,7 +161,7 @@ The learner explicitly requested a work-in-progress commit before shutdown.
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 1, the look and the menu on your own phone, before any screen is built on top of them
-- [ ] Core journey explored end to end — after slice 6, from sign-up to the email nudge on the live link (the first submittable version)
+- [x] Core journey explored end to end — after slice 6, from sign-up to WhatsApp/manual and scheduled email nudges on the live link; learner confirmed receipt and the revised greeting on October 26
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
@@ -179,6 +182,16 @@ Reflection: [offered/answered/declined/already covered — personal answer belon
 Activity mode: [live app and editor, explicit static fallback, focused alternative, prior practice, or recap]
 
 ## Revisions
+
+- Slice 6 completed learner checks (Oct 26, 2026): the learner confirmed today's automatic email receipt after confirming manual WhatsApp delivery, the matching Home line and the neutral greeting revision. Today's actual scheduler send provides the hands-on evidence instead of moving the chosen time to the next hour: the daily claim already exists and is preserved. Mechanical checks pass, real incoming routing works, and the core-journey checkpoint is complete.
+
+- Slice 6 greeting retry confirmed (Oct 26, 2026): after being asked to resend and compare WhatsApp with Home, the learner replied "ok good". Build, lint, focused greeting checks and the existing live nudge checks pass; disposable accounts are removed. The remaining learner check is today's automatic email receipt, which has been requested.
+
+- Slice 6 wording feedback (Oct 26, 2026): the learner received "morning" in an evening manual send and requested neutral "Hi" wording. The shared nudge composer now adds the greeting itself, asks Sarah for time-neutral encouragement without a greeting, and falls back to the existing neutral line if the generated text mentions a time of day. The composed line is shared by WhatsApp, email and Home. Local webpack build, lint, named/unnamed greeting and AI-fallback checks passed. Vercel's normal Turbopack build passed; deployment `dpl_Ha617Jv5reymG5gSAmqWPmrfXcE6` is live. Learner retry pending.
+
+- Slice 6 manual learner check (Oct 26, 2026): the learner pressed Profile's send button and confirmed receiving the WhatsApp nudge. Twilio's corresponding message at 18:54:08 UTC is `read`, without an error. Still awaiting the Home comparison, wording feedback and today's automatic email receipt report before completion.
+
+- Slice 6 real incoming route verified (Oct 26, 2026): after the newer Console's terms step and a rejoin/hello test, Twilio recorded the learner's actual messages and Scaffold saved join/last-inbound timestamps at 18:50:30.416 UTC. The empty reply is the implemented slice 6 behavior. No webhook URL edit or synthetic profile timestamp was used; the precise cause of the previous default reply remains unproven. All automated live nudge checks passed again and disposable accounts were removed. The real account also received a scheduled email provider receipt at 12:00 UTC today. Awaiting learner confirmation of manual WhatsApp delivery, the matching Home line, Sarah's wording and automatic delivery. Today's existing scheduled claim must be preserved.
 
 - Slice 6 WhatsApp delivery verified (Oct 25, 2026): after the learner completed Twilio verification, the deployed real-send check passed both channels: a WhatsApp message returned a Twilio `SM` receipt, email returned a Resend receipt, and ringing the bell twice sent no duplicate. All five disposable accounts were removed. The learner confirmed receiving the WhatsApp message. The compliance refusal is resolved. Still to confirm: the real sandbox callback updates Scaffold, the Profile manual-send and hourly learner check, and Sarah's wording. Slice 6 stays unchecked until those checks are complete.
 

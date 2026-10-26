@@ -32,12 +32,16 @@ async function sarahsLine(person: NudgePerson, task: NudgeTask) {
 
 ${builderContext(person)}
 
-Write the opening line of today's message to the builder: one or two short sentences of encouragement that fit their goal and today's task. Greet them by name if you know it. Do not restate the task's steps or minutes, which follow your line. ${task.status === "done" ? "They have already done today's task, so thank them for it instead of urging them on." : ""} No emoji, no quotation marks.`,
+Write one or two short sentences of encouragement that fit their goal and today's task. The app adds "Hi" and their name, so do not include a greeting. Keep the encouragement neutral about the time of day: do not mention morning, afternoon, evening or tonight. Do not restate the task's steps or minutes, which follow your line. ${task.status === "done" ? "They have already done today's task, so thank them for it instead of urging them on." : ""} No emoji, no quotation marks.`,
     text: `Today's task: ${task.title}`,
     shape: z.object({ line: z.string() }),
   });
   const line = reply?.line.trim();
-  return line && line.length <= 280 ? line : FALLBACK_LINE;
+  const encouragement = line && line.length <= 280 && !/\b(morning|afternoon|evening|tonight)\b/i.test(line)
+    ? line : FALLBACK_LINE;
+  // The greeting is fixed so manual and scheduled sends fit any time of day.
+  const name = person.name?.trim();
+  return `Hi${name ? ` ${name}` : ""}. ${encouragement}`;
 }
 
 function appUrl() {
