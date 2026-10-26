@@ -3,14 +3,14 @@ doc: resume
 status: in-progress
 ---
 
-# Resume at slice 6
+# Resume at slice 7
 
 ## Latest state: real incoming WhatsApp works
 
 Slice 6's remaining learner checks are now complete: the learner confirmed
 today's automatic email receipt with "yes", following the updated WhatsApp
 and Home retry. All mechanical checks passed. Preserve today's scheduled
-claim. Save the slice 6 commit, tick it in the checklist, then start slice 7.
+claim. Slice 6 is committed and checked off. Slice 7 is next in learn mode.
 The older pending-check notes below are superseded by this completion.
 
 The learner reported the manual nudge said "morning" and requested neutral

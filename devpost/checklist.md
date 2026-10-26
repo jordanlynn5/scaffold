@@ -68,7 +68,7 @@ nudge checks passed again on October 26.
   Learner check: Set your weekly target to 1, mark a task done, and watch for confetti. Open Progress and look at the house. Say whether a single brick feels like progress, and whether the house reads as yours.
   Commit: `Add the house, Progress and weekly celebration`
 
-- [ ] **6. Sarah sends today's nudge on WhatsApp, with email backup and the same line on Home**
+- [x] **6. Sarah sends today's nudge on WhatsApp, with email backup and the same line on Home**
   Becomes usable: At your chosen time, Sarah sends a motivational line and today's task on WhatsApp when consent, sandbox membership and the reply window allow it; otherwise the same nudge arrives by email. Home shows her same line. "Send my nudge now" in Profile sends it immediately. *(WhatsApp restored Oct 25, 2026 after the learner upgraded Twilio.)*
   Why now: This completes the kernel and is the moment the demo depends on. The free scheduler and email without your own domain need verifying, so it is placed straight after the core loop instead of near the end. After this step there is a version you could submit.
   PRD ref: `prd.md > WhatsApp Nudges and Replies` (first criterion), `prd.md > Missed Days and Re-engagement` (email when WhatsApp is blocked), `prd.md > Sign Up and Profile` (editable settings)
