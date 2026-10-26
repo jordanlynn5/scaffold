@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Scaffold: a web app whose AI "build team" (Alice the Architect, Georgina the General Contractor, Paula the Project Manager, Sarah the Site Lead) turns a goal into one small daily task, nudges the user on WhatsApp, and draws progress as a house going up brick by brick. Built for the Devpost "Build With AI: Basics" hackathon. Submission deadline: Oct 26, 2026.
+Scaffold: a web app whose AI "build team" (Alice the Architect, Georgina the General Contractor, Paula the Project Manager, Sarah the Site Lead) turns a goal into one small daily task, nudges the user on WhatsApp with email backup, and draws progress as a house going up brick by brick. Built for the Devpost "Build With AI: Basics" hackathon. Submission deadline: Oct 26, 2026.
 
 **Current state: building.** `devpost/checklist.md` is the progress record: the first unchecked slice is where the build is up to. Slice 1 created the app (shell, sign-up and log-in, empty states). The architecture below describes the finished plan, so check what actually exists before relying on a piece of it.
 
@@ -25,10 +25,10 @@ Before building or changing any UI, read `SCAFFOLD_DESIGN_HANDOFF.md`. Follow it
 Known disagreements, already decided:
 - Tasks are **30 minutes or less**, and the length is chosen for the person (goal, experience, conversations with the team). 30 is a ceiling, not a target. The handoff's "5–15 minutes" is out of date, including in the version of Oct 10, 2026 (§6.0b, §7.1). Its task-length check is adopted with the 30-minute limit: total time is count × minutes, and the "About n minutes" label must equal that total.
 - Addresses are `/sign-up` and `/log-in` (spec). The handoff's `/signup` and `/login` redirect to them.
-- WhatsApp consent is optional at sign-up. No consent means no WhatsApp messages, never a blocked sign-up.
 - After sign-up a new user lands on the empty-lot Home, not in the onboarding chat (the handoff §6.0b says otherwise).
 - Teammate portraits are for the landing page only. Inside the app, teammates are letter badges.
 - There is **no final voice note**. The missed-day sequence ends at the sincere email.
+- **WhatsApp was restored Oct 25, 2026** after the learner upgraded Twilio and explicitly chose WhatsApp first, email backup and Sarah's same line on Home. Number and consent controls are restored. Enable sending with `WHATSAPP_SENDING=on`; slice 7 is again planned after slice 6.
 - The handoff asks to be renamed `DESIGN.md`. It has not been; the PRD and spec cite it by its current name.
 
 The `*.html` files in `devpost/` are review companions generated from the markdown. The markdown is canonical; regenerate the HTML after changing it.
@@ -75,7 +75,7 @@ Read `AGENTS.md` and the guides in `node_modules/next/dist/docs/` before writing
 
 ## Architecture (planned; partly built)
 
-Next.js 16 (App Router, TypeScript, Tailwind v4) hosted on Vercel's free plan, with Supabase (database, auth, photo storage, cron), Claude (`claude-opus-5-5` for plans, `claude-haiku-5-5` for chat and nudges), the Twilio WhatsApp Sandbox, and Resend for email.
+Next.js 16 (App Router, TypeScript, Tailwind v4) hosted on Vercel's free plan, with Supabase (database, auth, photo storage, cron), Claude (`claude-opus-5-5` for plans, `claude-haiku-5-5` for chat and nudges), the upgraded Twilio WhatsApp Sandbox, and Resend for email.
 
 Things that take reading several sections of the spec to see:
 
@@ -83,8 +83,8 @@ Things that take reading several sections of the spec to see:
 - **`lib/` is the only layer that talks to outside services.** Screens in `app/` and `components/` never call Claude, Twilio or Resend directly.
 - **`completeTask` is the only way a task becomes done,** whether the tap came from the app or a WhatsApp reply. It also updates the week record and decides which celebrations are owed. Celebrations are never triggered by anything else, including settings changes.
 - **`bringPlanUpToDate` runs lazily** on app open and before each nudge. It rolls missed tasks forward and starts next-chunk generation. There is no midnight job.
-- **Scheduling comes from Supabase Cron, not Vercel.** Vercel's free plan allows cron once a day only, so Supabase calls `/api/cron/tick` every 15 minutes.
-- **Every nudge chooses its channel.** WhatsApp only if the user messaged the sandbox within 24 hours and joined within 3 days; otherwise the same message goes by email. This is a WhatsApp platform rule, not a preference, and it is why inbound-message time is stored on the profile.
+- **Scheduling comes from Supabase Cron, not Vercel.** Vercel's free plan allows cron once a day only, so Supabase calls `/api/cron/tick` at the start of every hour. Nudge times are on the hour.
+- **Every nudge chooses its channel.** With `WHATSAPP_SENDING=on`: WhatsApp only if the user messaged the sandbox within 24 hours and joined within 3 days; otherwise email. This is a WhatsApp platform rule, which is why inbound-message time is stored on the profile.
 - **Derived values are never stored:** today's task, bricks laid, current stage, streak.
 - **Abandoning a project is a hard delete** that cascades to everything under the project. The profile, `houses_built`, week records and the dream survive.
 - **AI plan output is validated** (five milestones, no task over 30 minutes, minutes label equal to count × per-item time) before it is saved, with one silent retry.

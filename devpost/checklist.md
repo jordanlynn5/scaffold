@@ -7,6 +7,20 @@ status: approved
 
 Build mode: learn
 
+**Submission boundary (Oct 26, 2026):** the learner explicitly stopped
+feature work after slice 6 to prepare the hackathon submission. Slices 7–14
+below are deferred, not completed. Finish the existing review and shipping
+work for the working six-slice proof of concept; do not start slice 7.
+
+**Resume handoff:** `devpost/resume.md` records the October 25 shutdown and
+October 26 continuation. Slice 6's manual WhatsApp receipt, matching Home line,
+revised "Hi" greeting and automatic email receipt are learner-confirmed.
+Outgoing WhatsApp/email, the hourly scheduler
+and real incoming-message routing now pass. Safari use is approved. The
+learner completed the newer Console's terms step and rejoin/hello test;
+Scaffold recorded the actual inbound at 18:50:30 UTC. The live automated
+nudge checks passed again on October 26.
+
 ## Slices
 
 - [x] **1. You can sign up, log in, and land on the empty lot, on a live link**
@@ -49,7 +63,7 @@ Build mode: learn
   Learner check: Mark today's task done with a note and a photo. Reload the page. Say whether the done state feels like a small win, and what you would want Home to say at that moment.
   Commit: `Add mark-as-done with optional proof`
 
-- [ ] **5. The house goes up brick by brick, with confetti when you hit your weekly target**
+- [x] **5. The house goes up brick by brick, with confetti when you hit your weekly target**
   Becomes usable: Progress shows your house on blueprint paper: finished stages solid, the current stage partly built, the rest dashed, scaffolding up. Each task you mark done adds to it. The roadmap, weekly target and streak sit beside it, and hitting your weekly target fires confetti.
   Why now: Visible progress is the third part of the kernel, and the house is the product's main image. With this, the full loop of task, done, progress works in the app.
   PRD ref: `prd.md > Progress: The House`, `prd.md > Weekly Target, Streak, and Celebration`, `prd.md > Levels and Rewards`
@@ -59,17 +73,21 @@ Build mode: learn
   Learner check: Set your weekly target to 1, mark a task done, and watch for confetti. Open Progress and look at the house. Say whether a single brick feels like progress, and whether the house reads as yours.
   Commit: `Add the house, Progress and weekly celebration`
 
-- [ ] **6. Your phone buzzes with today's task on WhatsApp**
-  Becomes usable: At your chosen time, Sarah sends one WhatsApp message with a motivational line and today's task. "Send my nudge now" in Profile sends it immediately. If WhatsApp cannot reach you, the same message arrives by email and Home shows how to reconnect.
-  Why now: This completes the kernel and is the moment the demo depends on. It also depends on three things nobody has verified yet (the free scheduler, WhatsApp's rules, and email without your own domain), so it is placed straight after the core loop instead of near the end. After this step there is a version you could submit.
+- [x] **6. Sarah sends today's nudge on WhatsApp, with email backup and the same line on Home**
+  Becomes usable: At your chosen time, Sarah sends a motivational line and today's task on WhatsApp when consent, sandbox membership and the reply window allow it; otherwise the same nudge arrives by email. Home shows her same line. "Send my nudge now" in Profile sends it immediately. *(WhatsApp restored Oct 25, 2026 after the learner upgraded Twilio.)*
+  Why now: This completes the kernel and is the moment the demo depends on. The free scheduler and email without your own domain need verifying, so it is placed straight after the core loop instead of near the end. After this step there is a version you could submit.
   PRD ref: `prd.md > WhatsApp Nudges and Replies` (first criterion), `prd.md > Missed Days and Re-engagement` (email when WhatsApp is blocked), `prd.md > Sign Up and Profile` (editable settings)
   Spec ref: `spec.md > Components > Nudge Sender`, `spec.md > Components > WhatsApp Inbox` (join and last-message time only), `spec.md > Components > WhatsApp Connection Notice`, `spec.md > Components > Accounts and Profile`, `spec.md > External Services and Dependencies` (Twilio, Resend, Supabase Cron), `spec.md > Decisions and Open Issues > Still open`
-  Build: Set up Twilio and Resend with the learner. Add `lib/nudges/` (who is due, channel rule, WhatsApp send, email send) and `nudge_log`. Add `/api/cron/tick`, protected by `CRON_SECRET`, and the 15-minute Supabase Cron job. Add `/api/whatsapp/inbound` far enough to check Twilio's signature and record the join and last-message time. Sarah writes the normal nudge with Haiku. Add "Send my nudge now" to Profile (its settings were built in slice 1) and the connection notice on Home. Record what Resend and Supabase Cron actually allow on free plans under Revisions.
-  Verify (mechanical): `npm run build` passes. A script checks the channel rule at its edges (23 and 25 hours since the last message, joined 2 and 4 days ago) and that a second nudge the same day is refused. A request to `/api/cron/tick` without the secret is rejected. A forged request to the WhatsApp address is rejected. A real send returns a Twilio message ID, a real email returns a Resend ID, and the Supabase Cron run history shows a successful call.
-  Learner check: Join the sandbox from your phone, press "Send my nudge now," and wait for the buzz. Then set your nudge time to the next quarter hour and wait for it to arrive on its own. Say how Sarah's message reads on a real phone.
-  Commit: `Add the daily nudge by WhatsApp and email`
+  Build: Connect the upgraded Twilio account and Resend with the learner. Add `lib/nudges/` (who is due, channel rule, WhatsApp send, email send) and `nudge_log`, including Sarah's line for Home. Add `/api/cron/tick`, protected by `CRON_SECRET`, and the hourly Supabase Cron job. Connect `/api/whatsapp/inbound` to the sandbox, checking Twilio's signature and recording the join and last-message time. Restore WhatsApp number and consent in sign-up/Profile, and the quiet reconnect notice on Home. Sarah writes the normal nudge with Haiku. Add "Send my nudge now" to Profile (its settings were built in slice 1) and show Sarah's same line on Home. Record what Resend and Supabase Cron actually allow on free plans under Revisions.
+  Verify (mechanical): `npm run build` passes. `scripts/check-nudges.mjs` checks the channel rule at its edges (kept for when WhatsApp returns) and that everyone gets email while it is switched off, the due window, that a second scheduled nudge the same day is refused, that `/api/cron/tick` rejects a missing or wrong secret, and that a forged request to the WhatsApp address is rejected. A real WhatsApp nudge returns a Twilio message ID, a real fallback email returns a Resend ID, and Supabase Cron plus its HTTP response history show a successful call.
+  Learner check: Join the sandbox and send hello, then press "Send my nudge now" and check WhatsApp on your phone. Open Home and find Sarah's same line. Set your nudge time to the next hour and wait for the scheduled nudge. Say how Sarah's message reads. Check a fallback email too.
+  Commit: `Add the daily nudge with WhatsApp and email backup`
 
-- [ ] **7. You can reply on WhatsApp to mark the task done**
+## Deferred After Submission
+
+These planned slices are outside the October 26 submission build.
+
+- **7. You can reply on WhatsApp to mark the task done** (deferred)
   Becomes usable: Reply to the nudge with a few words or a photo and the task is marked done, the proof is saved, a brick is added, and Sarah answers. If the reply hit your weekly target, she says so, and the confetti is waiting next time you open the app.
   Why now: It reuses the two pieces just built, the mark-done routine and the WhatsApp address, while both are fresh, and it is the demo's closing beat.
   PRD ref: `prd.md > WhatsApp Nudges and Replies`
@@ -79,7 +97,7 @@ Build mode: learn
   Learner check: Reply to your nudge with a photo of a sketch. Open the app. Say whether the brick, the photo and Sarah's answer are what you expected.
   Commit: `Add marking done by WhatsApp reply`
 
-- [ ] **8. You can browse your plan and learning log, a missed task rolls forward, and every task can explain itself**
+- **8. You can browse your plan and learning log, a missed task rolls forward, and every task can explain itself** (deferred)
   Becomes usable: Plan shows tasks a week at a time or by a chosen time frame, each marked done, today, missed or upcoming. The learning log tab lists your notes and photos, newest first, and you can add or edit proof on any finished task. Miss a day and the same task is waiting today with the plan shifted. A **?** beside each task opens Georgina's reason for it.
   Why now: Roll-forward is what the missed-day messages in the next step are built on, and until it exists a skipped day leaves Home with no task.
   PRD ref: `prd.md > Roadmap and 2-Week Chunks` (Plan view), `prd.md > Learning Log`, `prd.md > Daily Task and Marking Done` (rolls forward), `prd.md > Why This Task`
@@ -89,7 +107,7 @@ Build mode: learn
   Learner check: Open Plan and switch time frames. Add a note to a task you already finished. Press **?** on a task and read why Georgina chose its numbers. Say whether the missed-task wording feels free of blame.
   Commit: `Add Plan view, learning log, roll-forward and why-this-task`
 
-- [ ] **9. Miss a few days and the team eases off, then sends one sincere email**
+- **9. Miss a few days and the team eases off, then sends one sincere email** (deferred)
   Becomes usable: After a missed day the nudge is gentle about yesterday, then "just 5 minutes today?", then Sarah invites a chat with the team. After that the daily nudges stop. If the next week starts with still nothing done, one email arrives with your own Outcome, then silence. Marking any task done resets everything.
   Why now: It is the no-guilt promise in the product's own words, and it needs both the nudge sender and roll-forward to exist first.
   PRD ref: `prd.md > Missed Days and Re-engagement`
@@ -99,7 +117,7 @@ Build mode: learn
   Learner check: Read the four messages and the email, generated for your own goal. Say whether any line would make you feel guilty, and which you would reword.
   Commit: `Add the missed-day sequence and re-engagement email`
 
-- [ ] **10. You can talk to your team, and change the plan only when you confirm**
+- **10. You can talk to your team, and change the plan only when you confirm** (deferred)
   Becomes usable: Talk to Team is a chat with history. The right teammate answers, labeled "Name · Role," or you pick one and she hands over when the topic belongs to someone else. A plan change appears as a card with the old task and the new one side by side. Confirm applies it. Decline leaves the plan as it was.
   Why now: It is the largest remaining feature and the one that lets you adjust instead of giving up. It needs the Plan view so a confirmed change has somewhere to show.
   PRD ref: `prd.md > Talk to Team`
@@ -109,7 +127,7 @@ Build mode: learn
   Learner check: Tell the team a task is too big. Decline the first proposal and check Plan is unchanged. Ask again, confirm, and check Plan. Then pick Sarah and ask her about the plan. Say whether the handover felt natural.
   Commit: `Add Talk to Team with confirmed plan changes`
 
-- [ ] **11. Finishing a milestone completes a stage, and Georgina plans the next two weeks**
+- **11. Finishing a milestone completes a stage, and Georgina plans the next two weeks** (deferred)
   Becomes usable: When a milestone is done, the house gets a "Stage n complete" stamp and a line from Paula. When the planned two weeks run out, Georgina writes the next 14 tasks from what you did and missed, and may bring back earlier practice as a task tagged "Mastery."
   Why now: Without it the app stops after 14 days. It comes after the core is submittable because nobody reaches day 15 during the hackathon, so it is proven with test data.
   PRD ref: `prd.md > Roadmap and 2-Week Chunks` (next chunk), `prd.md > Mastery Tasks (Refreshers)`, `prd.md > Progress: The House` (stage celebration), `prd.md > Weekly Target, Streak, and Celebration` (milestone before weekly)
@@ -119,7 +137,7 @@ Build mode: learn
   Learner check: On a test account prepared one task short of a milestone, mark the task done and watch the stamp. Open Plan and read the next two weeks. Say whether the new tasks follow on from the old ones.
   Commit: `Add stage celebrations, next-chunk planning and mastery tasks`
 
-- [ ] **12. You can abandon a project, with a clear warning first**
+- **12. You can abandon a project, with a clear warning first** (deferred)
   Becomes usable: Profile shows your current goal with "Change goal." The warning lists what is deleted forever and what you keep, suggests talking to the team first, and makes "Keep building" the main button. Only "Yes, I want to abandon this project" deletes it, and you are back on the empty lot with your houses-built count intact.
   Why now: It is the only way to start over, which matters as soon as other people try the app, and it must be built after every table that hangs off a project exists so the delete can be checked against all of them.
   PRD ref: `prd.md > Sign Up and Profile` (abandon criteria)
@@ -129,7 +147,7 @@ Build mode: learn
   Learner check: On a second test account, abandon the project. Read the warning as if it were your real illustration goal. Say whether it is clear enough about what you lose.
   Commit: `Add the abandon flow`
 
-- [ ] **13. The scaffolding comes down, you cut the ribbon, and you start your next house**
+- **13. The scaffolding comes down, you cut the ribbon, and you start your next house** (deferred)
   Becomes usable: When the last task of the last milestone is done, the finished house is revealed and waits for you to cut the ribbon. Your houses-built count goes up by one, and you are offered a next house.
   Why now: It is the ending the name promises. It sits late because it can only be reached with test data during the hackathon and nothing else depends on it.
   PRD ref: `prd.md > Progress: The House` (house complete, next house)
@@ -139,7 +157,7 @@ Build mode: learn
   Learner check: On a test account prepared one task from the end, mark it done and cut the ribbon. Say whether the moment feels earned.
   Commit: `Add the house-complete ceremony`
 
-- [ ] **14. Alice helps you find a goal, and a big dream becomes a path of houses**
+- **14. Alice helps you find a goal, and a big dream becomes a path of houses** (deferred)
   Becomes usable: Before a goal exists, Talk to Team is a chat with Alice. Name an interest and she offers three goal ideas. Name a big dream and Georgina joins to break it into a path of smaller goals. "Design this goal with Alice" opens onboarding with the Wish filled in, and Home and Progress show "House n of m."
   Why now: It serves people who arrive without a goal. The first user arrives with one, so every earlier step works without it, and it is the safest piece to drop if the deadline gets close.
   PRD ref: `prd.md > Finding a Goal, Dreams, and Paths`
@@ -152,7 +170,7 @@ Build mode: learn
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 1, the look and the menu on your own phone, before any screen is built on top of them
-- [ ] Core journey explored end to end — after slice 6, from sign-up to the WhatsApp nudge on the live link (the first submittable version)
+- [x] Core journey explored end to end — after slice 6, from sign-up to WhatsApp/manual and scheduled email nudges on the live link; learner confirmed receipt and the revised greeting on October 26
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
@@ -173,6 +191,37 @@ Reflection: [offered/answered/declined/already covered — personal answer belon
 Activity mode: [live app and editor, explicit static fallback, focused alternative, prior practice, or recap]
 
 ## Revisions
+
+- Slice 6 completed learner checks (Oct 26, 2026): the learner confirmed today's automatic email receipt after confirming manual WhatsApp delivery, the matching Home line and the neutral greeting revision. Today's actual scheduler send provides the hands-on evidence instead of moving the chosen time to the next hour: the daily claim already exists and is preserved. Mechanical checks pass, real incoming routing works, and the core-journey checkpoint is complete.
+
+- Slice 6 greeting retry confirmed (Oct 26, 2026): after being asked to resend and compare WhatsApp with Home, the learner replied "ok good". Build, lint, focused greeting checks and the existing live nudge checks pass; disposable accounts are removed. The remaining learner check is today's automatic email receipt, which has been requested.
+
+- Slice 6 wording feedback (Oct 26, 2026): the learner received "morning" in an evening manual send and requested neutral "Hi" wording. The shared nudge composer now adds the greeting itself, asks Sarah for time-neutral encouragement without a greeting, and falls back to the existing neutral line if the generated text mentions a time of day. The composed line is shared by WhatsApp, email and Home. Local webpack build, lint, named/unnamed greeting and AI-fallback checks passed. Vercel's normal Turbopack build passed; deployment `dpl_Ha617Jv5reymG5gSAmqWPmrfXcE6` is live. Learner retry pending.
+
+- Slice 6 manual learner check (Oct 26, 2026): the learner pressed Profile's send button and confirmed receiving the WhatsApp nudge. Twilio's corresponding message at 18:54:08 UTC is `read`, without an error. Still awaiting the Home comparison, wording feedback and today's automatic email receipt report before completion.
+
+- Slice 6 real incoming route verified (Oct 26, 2026): after the newer Console's terms step and a rejoin/hello test, Twilio recorded the learner's actual messages and Scaffold saved join/last-inbound timestamps at 18:50:30.416 UTC. The empty reply is the implemented slice 6 behavior. No webhook URL edit or synthetic profile timestamp was used; the precise cause of the previous default reply remains unproven. All automated live nudge checks passed again and disposable accounts were removed. The real account also received a scheduled email provider receipt at 12:00 UTC today. Awaiting learner confirmation of manual WhatsApp delivery, the matching Home line, Sarah's wording and automatic delivery. Today's existing scheduled claim must be preserved.
+
+- Slice 6 WhatsApp delivery verified (Oct 25, 2026): after the learner completed Twilio verification, the deployed real-send check passed both channels: a WhatsApp message returned a Twilio `SM` receipt, email returned a Resend receipt, and ringing the bell twice sent no duplicate. All five disposable accounts were removed. The learner confirmed receiving the WhatsApp message. The compliance refusal is resolved. Still to confirm: the real sandbox callback updates Scaffold, the Profile manual-send and hourly learner check, and Sarah's wording. Slice 6 stays unchecked until those checks are complete.
+
+- Slice 6 scheduler verified (Oct 25, 2026): the learner saved `cron_secret` in Scaffold's Supabase Vault themselves. Applied `0008_nudge_bell.sql`. The active `nudge-bell` job has schedule `0 * * * *`. A temporary one-minute copy ran successfully at 14:36 UTC and its pg_net HTTP response was 200 (`checked: 0`, `sent: 0`); the temporary job was removed, leaving only the hourly job. The deployed email-only path returned a real Resend receipt and the repeated bell sent no duplicate. The real WhatsApp test failed: Twilio reports that the Primary compliance profile is not approved and requires its KYC process in Trust Hub, despite the account being Full/active and a fresh inbound message opening the window. All disposable accounts were removed. The test fixture now uses the owner's real email for both delivery paths so a blocked WhatsApp send can exercise fallback without sending to a nonexistent test mailbox. Still pending: learner completes Twilio verification, the sandbox inbound webhook is confirmed, a real WhatsApp receipt succeeds, and the learner tries manual plus scheduled nudges and reviews Sarah's wording. Slice 6 remains unchecked; the app and hourly scheduler remain usable by email.
+
+- Slice 6 WhatsApp restored (Oct 25, 2026): the learner saved the Resend key, upgraded Twilio, and explicitly chose WhatsApp as the main nudge channel again, with email backup and the same line on Home. Twilio's account API confirms `Full` and `active`. Restored the approved sign-up/Profile number and consent fields, onboarding/review wording and Home reconnect notice. `WHATSAPP_SENDING=on` locally and in production. The restored build is deployed at https://scaffold-theta-three.vercel.app (deployment `dpl_H5nZzd7XgQdNV3Q4bQzD854SQFrS`), with the service settings encrypted in Vercel. Local production build, lint, page/account checks and a real email receipt pass. The learner must reopen the WhatsApp window (last inbound was Oct 23) and sign in to the Twilio Console before its inbound webhook can be connected. Approval to store the existing scheduler credential in Supabase Vault/install the hourly job is pending. Real WhatsApp delivery and scheduler verification are still pending. A delivery failure now retains the saved line on Home. This supersedes the Oct 23 email-only decision; slice 7 is again the next planned slice, and is not yet implemented.
+
+- Slice 6 resumed (Oct 25, 2026): applied the saved `0007_nudge_line.sql` migration to Scaffold's Supabase project after the expanded check found that `nudge_log.line` was missing. Home now keeps Sarah's saved email line after today's task is marked done, and a successful manual send refreshes the client router. The nudge script now checks exact WhatsApp expiry boundaries, saved-line rendering before and after completion, and private access; email-only real checks no longer require a WhatsApp number. Database and nudge checks pass and disposable accounts were removed. Also repaired a logged-out landing-page redirect loop found by `check-pages.mjs`; all page checks pass. Added a request boundary before initializing server-side Supabase auth after the running app exposed its clock read during speculative prerendering. Slice 6 remains unchecked: the local Resend key is empty (the test sender is now configured), production has none of the nudge settings, and the database has neither Cron nor pg_net installed. Still required: connect Resend, deploy/configure the nudge code, install the hourly job, verify a real Resend ID and scheduler HTTP success, and complete the learner's manual/scheduled email check.
+
+- Slice 6 WhatsApp on hold (Oct 23, 2026): Twilio's free trial refused the app's own WhatsApp text (error 21654, "ContentSid Required"), even right after the learner joined the sandbox and wrote to it. Twilio's trial guide confirms trial accounts can only send Twilio's own templates. Offered upgrading Twilio (a small top-up, recommended), email only, or reply-only. The learner chose to stay free: **version 1 nudges by email and shows Sarah's same line on Home**. Removed the WhatsApp number and consent from sign-up and Profile, the reconnect notice, and WhatsApp wording in onboarding and plan review. WhatsApp code stays, switched off by `WHATSAPP_SENDING`. Slice 7 is on hold. The scope's kernel and demo moment now read "email", recorded in `scope.md`, `prd.md` and `spec.md`. Consequence: until a domain is connected to Resend, only the account owner's address receives email.
+
+- Slice 6 bell (Oct 23, 2026): the learner chose an hourly bell and nudge times on the hour (24 choices in Profile) instead of every 15 minutes, for simplicity. Typed times in onboarding round to the nearest hour, existing times moved to the nearest hour, and the database now refuses times that aren't on the hour. Where the clock is offset by half an hour (India, for example) the nudge arrives 30 minutes late. Considered and dropped: three fixed choices (9:00, 12:00, 17:00).
+- Slice 6 "Send my nudge now" sends a fresh nudge each time it is pressed (at most one a minute) and doesn't count toward the one scheduled nudge a day. Without this the learner check couldn't press the button and then wait for the scheduled nudge on the same day. The scheduled nudge is skipped if today's task is already done.
+- Slice 6 added `lib/nudges/message.ts` (Sarah's line plus the task copied from the plan), `lib/nudges/send.ts` (the sender both the bell and the button use) and `lib/nudges/inbound.ts`. Twilio may not pass on the "join" message itself, so a join is also recorded from the first message after the last recorded join expired.
+
+- Slice 5 layout feedback (Oct 22, 2026): the learner found the house small and too much grey space on a wide desktop, and asked for layouts that adapt across web and mobile. Pages now grow from about 1040px (handoff §3.1) up to 1440px on very wide screens, with fluid sizing and no second breakpoint. Inside the app the house drawing is trimmed to its own outline so it fills its card (the landing page keeps the full canvas). Home on desktop puts today's task on the left and the house, week, if–then plan and Sarah on the right; the phone keeps the §6.6 order. On phones the stage names sit as one wrapping line under the stage bar, because five labels don't fit under the segments at 360px. Checked with screenshots at 2560, 1280, 390 and 360px wide, with no sideways scrolling.
+- Slice 5 learner check, first try: no confetti, as designed, because the weekly target was still 3 (1 of 3 days done). A disposable demo login with a target of 1 was prepared for the check; delete it afterwards.
+
+- Slice 5 brick slots (Oct 21, 2026): the learner chose 12 pieces per stage (51 for walls), each stage filling by percentage like a progress bar. "Bricks laid" stays the count of finished tasks. A stage is drawn just short of full until it is really finished, because a two-week plan can end partway through a stage. Until slice 11 marks milestones done, a stage counts as finished when all its planned tasks are done and the plan has moved on to a later stage. Slice 11 should keep the drawing from shrinking when a new chunk adds tasks to a stage that is already partly built.
+- Slice 5 weekly celebration: Sarah's line uses "That's your target for the week. Anything more this week is a bonus, not a must." in place of the handoff's example "That's a full week of work…", which reads oddly for a target of one or two days. Kept by the learner (Oct 22).
+- Slice 5 owed celebrations are checked on every app screen and shown one at a time; closing one marks it shown. Only the weekly kind is drawn so far; stage and house celebrations stay owed until slices 11 and 13 build their screens.
 
 - Slice 4 learner check (Oct 21, 2026): the learner marked a task done with a photo and reloaded; the done state felt like a small win. Home's wording is agreed as is: “Today’s brick is laid” / “You can keep practising, or call it a day. Your progress is saved.” The learner also confirmed password recovery now works.
 

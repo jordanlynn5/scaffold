@@ -162,6 +162,38 @@ body {
   outline-offset: 2px;
 }
 
+/* §2.5 celebrations: confetti falls behind the dialog, which pops in */
+@keyframes confetti-fall {
+  from {
+    transform: translateY(0) rotate(0deg);
+  }
+  to {
+    transform: translateY(110vh) rotate(540deg);
+  }
+}
+.confetti-piece {
+  animation-name: confetti-fall;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+@keyframes celebration-pop {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.celebration-pop {
+  animation: celebration-pop 400ms ease-out both;
+}
+
 /* §2.5: reduced motion shows final states immediately */
 @media (prefers-reduced-motion: reduce) {
   *,

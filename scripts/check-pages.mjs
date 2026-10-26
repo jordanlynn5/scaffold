@@ -70,7 +70,9 @@ try {
   const logIn = await fetch(`${base}/log-in`);
   check("log-in page opens", logIn.status === 200 && (await logIn.text()).includes("Welcome back"));
   const signUp = await fetch(`${base}/sign-up`);
-  check("sign-up page opens", signUp.status === 200 && (await signUp.text()).includes("WhatsApp number"));
+  const signUpHtml = await signUp.text();
+  check("sign-up page opens", signUp.status === 200 && signUpHtml.includes("WhatsApp number"));
+  check("sign-up has optional WhatsApp consent", signUpHtml.includes('name="consent"'));
 
   // Log in the way the app does, collecting the session cookies.
   const jar = new Map();
@@ -96,7 +98,7 @@ try {
       check("profile shows this account's email in an editable field", html.includes(`value="${email}"`));
       check("profile shows the WhatsApp number in an editable field", html.includes('value="+34600000003"'));
       check("profile has the weekly target stepper", html.includes("One day more"));
-      check("profile has the nudge time picker", html.includes("WhatsApp message arrives at"));
+      check("profile has the nudge time picker and send button", html.includes("WhatsApp message arrives at") && html.includes("Send my nudge now"));
     }
   }
   const authPage = await fetch(`${base}/log-in`, { headers: { cookie }, redirect: "manual" });

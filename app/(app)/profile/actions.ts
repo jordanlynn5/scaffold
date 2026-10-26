@@ -1,6 +1,7 @@
 "use server";
 
 import { refresh } from "next/cache";
+import { sendNudge } from "@/lib/nudges/send";
 import { getProfile } from "@/lib/profile";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -103,11 +104,44 @@ export async function saveContact(
   const supabase = await createClient();
   const { error } = await supabase
     .from("profiles")
-    .update({ name: name || null, email, whatsapp })
+    .update({
+      name: name || null, email, whatsapp,
+      // A new phone number has not joined the sandbox or opened its window.
+      ...(whatsapp !== profile.whatsapp
+        ? { whatsapp_joined_at: null, whatsapp_last_inbound_at: null }
+        : {}),
+    })
     .eq("id", profile.id);
   if (error) {
     return { values, formError: "That didn't save. Try again in a moment." };
   }
   refresh();
   return { saved: true, values };
+}
+
+export type NudgeNowState = { message?: string; sent?: boolean };
+
+// "Send my nudge now" (spec.md > What Was Simplified and Why): sends a real
+// nudge through the same path as the hourly bell, without waiting.
+export async function sendNudgeNow(): Promise<NudgeNowState> {
+  const profile = await getProfile();
+  const result = await sendNudge(profile.id, "manual");
+  if (result.sent) {
+    refresh();
+    return {
+      sent: true,
+      message:
+        result.channel === "whatsapp"
+          ? "Sent. Check WhatsApp."
+          : `Sent. Check your email (${profile.email}).`,
+    };
+  }
+  const reasons = {
+    "no-task": "There's no task for today yet, so there's nothing to send.",
+    "too-soon": "Sarah just sent one. Try again in a minute.",
+    "already-done": "Today's task is already done.",
+    "already-sent": "Sarah just sent one. Try again in a minute.",
+    failed: "That didn't send. Try again in a moment.",
+  } as const;
+  return { message: reasons[result.reason] };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, type ReactNode } from "react";
 import { saveRhythm } from "@/app/(app)/profile/actions";
 import { Card } from "@/components/ui/Card";
 import { nudgeTimes } from "@/lib/validation";
@@ -106,9 +106,11 @@ export function WeeklyTarget({ initial }: { initial: number }) {
 export function DailyNudge({
   initialTime,
   initialConsent,
+  children,
 }: {
   initialTime: string;
   initialConsent: boolean;
+  children?: ReactNode;
 }) {
   const [time, setTime] = useState(initialTime);
   const [consent, setConsent] = useState(initialConsent);
@@ -161,7 +163,9 @@ export function DailyNudge({
           Sarah won&apos;t message you on WhatsApp until this is ticked.
         </p>
       )}
+      <p className="text-body-sm text-text-secondary">If WhatsApp cannot reach you, Sarah sends the same nudge by email. Her line also waits on Home.</p>
       <SaveStatus status={status} pending={pending} />
+      {children}
     </Card>
   );
 }
