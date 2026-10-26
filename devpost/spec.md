@@ -5,6 +5,12 @@ status: approved
 
 # Scaffold — Technical Spec
 
+**October 26 submission build:** slices 1–6 are implemented and verified.
+The learner stopped further feature work to submit this proof of concept.
+Later components in this blueprint remain planned. In particular, the
+WhatsApp inbox records real connection timestamps but does not complete
+tasks or send reply acknowledgements; those belong to deferred slice 7.
+
 ## How This Works, In Plain Language
 
 Scaffold is a website that works on a phone and on a desktop. It is made of six pieces. Five of them are services run by other companies, each with its own account.
@@ -397,6 +403,6 @@ Email-and-password log-in · saving the time zone from the browser · the hourly
 ### Still open
 - **Resend and other people's email addresses.** If Resend needs a domain you own, the email backup and the sincere email will only reach your own address until you buy and connect one (about $10 a year). Check when the email step is built. WhatsApp was restored Oct 25, 2026. Until a domain is connected, friends whose WhatsApp is unavailable get the nudge on Home; Resend cannot deliver their fallback email.
 - **Supabase Cron on Free is verified (Oct 25, 2026):** the hourly job is installed; a temporary scheduled execution succeeded and the hosted endpoint returned HTTP 200. The temporary timer was removed. Whether Cron activity prevents project pausing remains unverified.
-- **Twilio approval and delivery verified (Oct 25, 2026):** the learner completed verification, the real WhatsApp send returned a Twilio message ID, and the learner confirmed receipt. The real incoming sandbox callback and hands-on manual/hourly checks remain to confirm.
+- **Twilio and scheduled delivery verified (Oct 26, 2026):** the real incoming callback updated the account's connection timestamps. Manual WhatsApp delivery, Sarah's matching Home line and the neutral greeting were learner-confirmed. The learner also confirmed the automatic email sent by the hourly scheduler. The precise cause of the earlier default responder was not established; real routing worked after the sandbox terms/rejoin steps.
 - **Vercel Hobby time limit:** verified in slice 3 on Oct 19, 2026. `/api/plan` allows 300 seconds, and full production-model generation and revision both succeeded on the live link. Splitting generation was unnecessary.
 - **Carried from `prd.md > Open Questions`:** "Start over" confirmation in onboarding, a ground-breaking moment after commit, and the screens and wording not designed yet (Home after done, Profile before a goal, sign-up and log-in, WhatsApp and email copy). None blocks the build. Each is decided at its build step.

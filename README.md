@@ -6,6 +6,31 @@ progress as a house going up brick by brick.
 
 Built for the Devpost "Build With AI: Basics" hackathon.
 
+## Try the submission build
+
+Live app: https://scaffold-theta-three.vercel.app
+
+Create an account, define a goal with Alice, review Georgina's five-milestone
+roadmap and first 14 tasks, then commit. Home shows today's task. Complete it
+with an optional note or photo, then open Progress to see the house grow.
+
+To try WhatsApp, use the sandbox number and join phrase shown on Home. Send
+the join phrase and then `hello` from the number saved in Profile. Press
+**Send my nudge now** in Profile and compare the received opening line with
+Home. Messages require WhatsApp consent, current sandbox membership and an
+open 24-hour reply window. Email is the backup; the current Resend test sender
+only delivers to its owner's email until a domain is verified.
+
+This proof of concept contains build slices 1–6. Mark tasks done in the app:
+WhatsApp replies currently reconnect the channel but do not complete tasks.
+The Plan page shows the committed roadmap; date filtering, proof editing,
+missed-task roll-forward, open-ended team chat, later plan chunks and further
+celebrations remain deferred. The planning documents describe those future
+features as well as the implemented submission boundary.
+
+Planning and progress: [scope](devpost/scope.md), [requirements](devpost/prd.md),
+[technical spec](devpost/spec.md), and [build checklist](devpost/checklist.md).
+
 ## The build team
 
 | Teammate | Role | Does |

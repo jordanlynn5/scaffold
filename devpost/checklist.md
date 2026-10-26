@@ -7,6 +7,11 @@ status: approved
 
 Build mode: learn
 
+**Submission boundary (Oct 26, 2026):** the learner explicitly stopped
+feature work after slice 6 to prepare the hackathon submission. Slices 7–14
+below are deferred, not completed. Finish the existing review and shipping
+work for the working six-slice proof of concept; do not start slice 7.
+
 **Resume handoff:** `devpost/resume.md` records the October 25 shutdown and
 October 26 continuation. Slice 6's manual WhatsApp receipt, matching Home line,
 revised "Hi" greeting and automatic email receipt are learner-confirmed.
@@ -78,7 +83,11 @@ nudge checks passed again on October 26.
   Learner check: Join the sandbox and send hello, then press "Send my nudge now" and check WhatsApp on your phone. Open Home and find Sarah's same line. Set your nudge time to the next hour and wait for the scheduled nudge. Say how Sarah's message reads. Check a fallback email too.
   Commit: `Add the daily nudge with WhatsApp and email backup`
 
-- [ ] **7. You can reply on WhatsApp to mark the task done**
+## Deferred After Submission
+
+These planned slices are outside the October 26 submission build.
+
+- **7. You can reply on WhatsApp to mark the task done** (deferred)
   Becomes usable: Reply to the nudge with a few words or a photo and the task is marked done, the proof is saved, a brick is added, and Sarah answers. If the reply hit your weekly target, she says so, and the confetti is waiting next time you open the app.
   Why now: It reuses the two pieces just built, the mark-done routine and the WhatsApp address, while both are fresh, and it is the demo's closing beat.
   PRD ref: `prd.md > WhatsApp Nudges and Replies`
@@ -88,7 +97,7 @@ nudge checks passed again on October 26.
   Learner check: Reply to your nudge with a photo of a sketch. Open the app. Say whether the brick, the photo and Sarah's answer are what you expected.
   Commit: `Add marking done by WhatsApp reply`
 
-- [ ] **8. You can browse your plan and learning log, a missed task rolls forward, and every task can explain itself**
+- **8. You can browse your plan and learning log, a missed task rolls forward, and every task can explain itself** (deferred)
   Becomes usable: Plan shows tasks a week at a time or by a chosen time frame, each marked done, today, missed or upcoming. The learning log tab lists your notes and photos, newest first, and you can add or edit proof on any finished task. Miss a day and the same task is waiting today with the plan shifted. A **?** beside each task opens Georgina's reason for it.
   Why now: Roll-forward is what the missed-day messages in the next step are built on, and until it exists a skipped day leaves Home with no task.
   PRD ref: `prd.md > Roadmap and 2-Week Chunks` (Plan view), `prd.md > Learning Log`, `prd.md > Daily Task and Marking Done` (rolls forward), `prd.md > Why This Task`
@@ -98,7 +107,7 @@ nudge checks passed again on October 26.
   Learner check: Open Plan and switch time frames. Add a note to a task you already finished. Press **?** on a task and read why Georgina chose its numbers. Say whether the missed-task wording feels free of blame.
   Commit: `Add Plan view, learning log, roll-forward and why-this-task`
 
-- [ ] **9. Miss a few days and the team eases off, then sends one sincere email**
+- **9. Miss a few days and the team eases off, then sends one sincere email** (deferred)
   Becomes usable: After a missed day the nudge is gentle about yesterday, then "just 5 minutes today?", then Sarah invites a chat with the team. After that the daily nudges stop. If the next week starts with still nothing done, one email arrives with your own Outcome, then silence. Marking any task done resets everything.
   Why now: It is the no-guilt promise in the product's own words, and it needs both the nudge sender and roll-forward to exist first.
   PRD ref: `prd.md > Missed Days and Re-engagement`
@@ -108,7 +117,7 @@ nudge checks passed again on October 26.
   Learner check: Read the four messages and the email, generated for your own goal. Say whether any line would make you feel guilty, and which you would reword.
   Commit: `Add the missed-day sequence and re-engagement email`
 
-- [ ] **10. You can talk to your team, and change the plan only when you confirm**
+- **10. You can talk to your team, and change the plan only when you confirm** (deferred)
   Becomes usable: Talk to Team is a chat with history. The right teammate answers, labeled "Name · Role," or you pick one and she hands over when the topic belongs to someone else. A plan change appears as a card with the old task and the new one side by side. Confirm applies it. Decline leaves the plan as it was.
   Why now: It is the largest remaining feature and the one that lets you adjust instead of giving up. It needs the Plan view so a confirmed change has somewhere to show.
   PRD ref: `prd.md > Talk to Team`
@@ -118,7 +127,7 @@ nudge checks passed again on October 26.
   Learner check: Tell the team a task is too big. Decline the first proposal and check Plan is unchanged. Ask again, confirm, and check Plan. Then pick Sarah and ask her about the plan. Say whether the handover felt natural.
   Commit: `Add Talk to Team with confirmed plan changes`
 
-- [ ] **11. Finishing a milestone completes a stage, and Georgina plans the next two weeks**
+- **11. Finishing a milestone completes a stage, and Georgina plans the next two weeks** (deferred)
   Becomes usable: When a milestone is done, the house gets a "Stage n complete" stamp and a line from Paula. When the planned two weeks run out, Georgina writes the next 14 tasks from what you did and missed, and may bring back earlier practice as a task tagged "Mastery."
   Why now: Without it the app stops after 14 days. It comes after the core is submittable because nobody reaches day 15 during the hackathon, so it is proven with test data.
   PRD ref: `prd.md > Roadmap and 2-Week Chunks` (next chunk), `prd.md > Mastery Tasks (Refreshers)`, `prd.md > Progress: The House` (stage celebration), `prd.md > Weekly Target, Streak, and Celebration` (milestone before weekly)
@@ -128,7 +137,7 @@ nudge checks passed again on October 26.
   Learner check: On a test account prepared one task short of a milestone, mark the task done and watch the stamp. Open Plan and read the next two weeks. Say whether the new tasks follow on from the old ones.
   Commit: `Add stage celebrations, next-chunk planning and mastery tasks`
 
-- [ ] **12. You can abandon a project, with a clear warning first**
+- **12. You can abandon a project, with a clear warning first** (deferred)
   Becomes usable: Profile shows your current goal with "Change goal." The warning lists what is deleted forever and what you keep, suggests talking to the team first, and makes "Keep building" the main button. Only "Yes, I want to abandon this project" deletes it, and you are back on the empty lot with your houses-built count intact.
   Why now: It is the only way to start over, which matters as soon as other people try the app, and it must be built after every table that hangs off a project exists so the delete can be checked against all of them.
   PRD ref: `prd.md > Sign Up and Profile` (abandon criteria)
@@ -138,7 +147,7 @@ nudge checks passed again on October 26.
   Learner check: On a second test account, abandon the project. Read the warning as if it were your real illustration goal. Say whether it is clear enough about what you lose.
   Commit: `Add the abandon flow`
 
-- [ ] **13. The scaffolding comes down, you cut the ribbon, and you start your next house**
+- **13. The scaffolding comes down, you cut the ribbon, and you start your next house** (deferred)
   Becomes usable: When the last task of the last milestone is done, the finished house is revealed and waits for you to cut the ribbon. Your houses-built count goes up by one, and you are offered a next house.
   Why now: It is the ending the name promises. It sits late because it can only be reached with test data during the hackathon and nothing else depends on it.
   PRD ref: `prd.md > Progress: The House` (house complete, next house)
@@ -148,7 +157,7 @@ nudge checks passed again on October 26.
   Learner check: On a test account prepared one task from the end, mark it done and cut the ribbon. Say whether the moment feels earned.
   Commit: `Add the house-complete ceremony`
 
-- [ ] **14. Alice helps you find a goal, and a big dream becomes a path of houses**
+- **14. Alice helps you find a goal, and a big dream becomes a path of houses** (deferred)
   Becomes usable: Before a goal exists, Talk to Team is a chat with Alice. Name an interest and she offers three goal ideas. Name a big dream and Georgina joins to break it into a path of smaller goals. "Design this goal with Alice" opens onboarding with the Wish filled in, and Home and Progress show "House n of m."
   Why now: It serves people who arrive without a goal. The first user arrives with one, so every earlier step works without it, and it is the safest piece to drop if the deadline gets close.
   PRD ref: `prd.md > Finding a Goal, Dreams, and Paths`

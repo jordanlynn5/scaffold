@@ -5,6 +5,11 @@ status: approved
 
 # Dream Friend (working title)
 
+**Submission boundary (Oct 26, 2026):** submit the working build through
+slice 6: onboarding, a committed AI plan, task completion with optional
+proof, the progress house, and WhatsApp nudges with email backup. The learner
+explicitly deferred slice 7 and further feature work to prepare submission.
+
 A friend who keeps you on track with a goal you care about. She gives you one clear task each day and nudges you on WhatsApp to do it.
 
 ## The Unique Kernel

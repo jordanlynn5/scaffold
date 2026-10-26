@@ -5,6 +5,14 @@ status: approved
 
 # Scaffold — Product Requirements
 
+**October 26 submission build:** the learner chose to stop feature work
+after slice 6. Working behavior covers sign-up, Alice onboarding, Georgina's
+first plan and commitment, in-app task completion with optional proof,
+the progress house/weekly celebration, and WhatsApp nudges with email
+backup plus Sarah's matching Home line. Later features described here
+remain planned and are not part of this submission. WhatsApp replies
+currently reconnect the channel; they do not mark tasks done.
+
 You're the builder, and you have a team behind you. Scaffold's AI build team (Alice the Architect, Georgina the General Contractor, Paula the Project Manager, Sarah the Site Lead) turns your dream into one small task a day, nudges you on WhatsApp, collects your proof, and shows how far you've come. For anyone who enjoys something and wants to get better at it but struggles to stay consistent without clear, assigned tasks. First real user: the learner, becoming a better illustrator.
 Source: `scope.md > The Unique Kernel`, `scope.md > Who It's For`.
 
